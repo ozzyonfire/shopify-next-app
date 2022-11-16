@@ -7,6 +7,8 @@ export const AppInstallations = {
     }
     const shopSessions = await Shopify.Context.SESSION_STORAGE.findSessionsByShop(shopDomain);
 
+    console.log('shopSessions', shopSessions);
+
     if (shopSessions.length > 0) {
       for (const session of shopSessions) {
         if (session.accessToken) return true;

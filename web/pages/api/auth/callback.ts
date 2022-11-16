@@ -1,9 +1,10 @@
 import Shopify, { AuthQuery } from "@shopify/shopify-api";
 import { gdprTopics } from "@shopify/shopify-api/dist/webhooks/registry";
 import { NextApiRequest, NextApiResponse } from "next";
+import withShopifyContext from "../../../api-helpers/withShopifyContext";
 import redirectToAuth from "../../../helpers/redirect-to-auth";
 
-export default async function Callback(req: NextApiRequest, res: NextApiResponse) {
+const Callback = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const session = await Shopify.Auth.validateAuthCallback(
       req,
@@ -19,6 +20,8 @@ export default async function Callback(req: NextApiRequest, res: NextApiResponse
       shop: session.shop,
       accessToken: session.accessToken,
     });
+
+    console.log('responses', responses);
 
     Object.entries(responses).map(([topic, response]) => {
       // The response from registerAll will include errors for the GDPR topics.  These can be safely ignored.
@@ -81,3 +84,5 @@ export default async function Callback(req: NextApiRequest, res: NextApiResponse
     }
   }
 }
+
+export default withShopifyContext(Callback);

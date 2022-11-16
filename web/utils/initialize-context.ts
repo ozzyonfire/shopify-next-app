@@ -1,4 +1,5 @@
 import Shopify, { LATEST_API_VERSION } from "@shopify/shopify-api";
+import { deleteSession, loadSession, storeSession, findSessionsByShop, deleteSessions } from "./session-storage";
 
 export default function initializeContext() {
   Shopify.Context.initialize({
@@ -10,8 +11,12 @@ export default function initializeContext() {
     API_VERSION: LATEST_API_VERSION,
     IS_EMBEDDED_APP: true,
     // This should be replaced with your preferred storage strategy
-    // See note below regarding using CustomSessionStorage with this template.
-    SESSION_STORAGE: new Shopify.Session.SQLiteSessionStorage(DB_PATH),
-    ...(process.env.SHOP_CUSTOM_DOMAIN && { CUSTOM_SHOP_DOMAINS: [process.env.SHOP_CUSTOM_DOMAIN] }),
+    SESSION_STORAGE: {
+      storeSession,
+      loadSession,
+      deleteSession,
+      deleteSessions,
+      findSessionsByShop,
+    }
   });
 }

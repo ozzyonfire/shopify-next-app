@@ -2,7 +2,8 @@ import { Card, Page, Text } from '@shopify/polaris'
 import { GetServerSidePropsContext } from 'next';
 import { useState } from 'react';
 import { useFetcher } from '../providers/APIProvider';
-import { gql, useQuery } from '@apollo/client';
+import { gql, useLazyQuery, useQuery } from '@apollo/client';
+import { performChecks } from '../utils/shopify-oauth';
 
 interface Data {
   name: string;
@@ -16,18 +17,26 @@ query {
   }
 }`;
 
+interface ShopData {
+  shop: {
+    name: string;
+  }
+}
+
 export default function Home() {
   const fetcher = useFetcher();
   const [data, setData] = useState<Data | null>(null);
-  const {
-    data: gqlData
-  } = useQuery(GET_SHOP);
-
-  console.log('gqlData', gqlData);
+  const [graphqlData, setGraphglData] = useState<ShopData | null>(null);
+  const [getShop] = useLazyQuery<ShopData>(GET_SHOP);
 
   const handleGetAPIRequest = async () => {
-    const data = await fetcher<Data>('/api/hello');
-    setData(data);
+    try {
+      const data = await fetcher<Data>('/api/hello');
+      console.log(data);
+      setData(data);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
@@ -36,13 +45,13 @@ export default function Home() {
     >
       <Card
         sectioned
-        title="API Call to the Express JS Server"
+        title="NextJs API Routes"
         primaryFooterAction={{
           content: 'Call API',
           onAction: handleGetAPIRequest,
         }}
       >
-        <Text as='p' variant='bodyMd'>Call the express server from within your app. The request is verified use session tokens.</Text>
+        <Text as='p' variant='bodyMd'>Call a NextJS api route from within your app. The request is verified using session tokens.</Text>
         {data && (
           <Text as="h1" variant="headingSm">
             {data.name} is {data.height} tall.
@@ -52,35 +61,37 @@ export default function Home() {
 
       <Card
         sectioned
-        title="Use Apollo Client to query Shopify"
+        title="Use Apollo Client to query Shopify GraphQL"
         primaryFooterAction={{
           content: 'GraphQL Query',
-          onAction: () => { },
+          onAction: async () => {
+            const {
+              data,
+              error
+            } = await getShop();
+            if (data) {
+              setGraphglData(data);
+            }
+            if (error) {
+              console.error(error);
+            }
+          },
         }}
       >
-        <Text as='p' variant='bodyMd'>Use Apollo Client to query Shopify&apos;s GraphQL API. The request is verified use session tokens.</Text>
+        <Text as='p' variant='bodyMd'>Use Apollo Client to query Shopify&apos;s GraphQL API. The request uses online session tokens.</Text>
+        <Text as='p' variant='bodyMd'>Response:</Text>
+        {graphqlData && (
+          <Text as="h1" variant="headingSm">
+            {graphqlData.shop.name}
+          </Text>
+        )}
       </Card>
     </Page>
   )
 }
 
-//   /**
-//    * We need to get a couple things ready before the page loads
-//    * 1. Get the shop, host and session from the query string
-//    * 2. Get the API key from the environment
-//    * 3. Check to see if the app needs to be authorized
-//    * 4. If the app needs to be authorized, redirect to the OAuth page
-//    * 5. If the app is authorized, check to see if there is a subscription
-//    */
-// export async function getServerSideProps(context: GetServerSidePropsContext) {
-//   const { shop, host, session } = context.query;
-//   const apiKey = process.env.SHOPIFY_API_KEY;
-
-//   return {
-//     props: {
-//       shop,
-//       host,
-//       session,
-//     }
-//   }
-// }
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const apiKey = process.env.SHOPIFY_API_KEY;
+  const result = await performChecks(context);
+  return result;
+}
