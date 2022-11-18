@@ -18,11 +18,22 @@ The goal of this template is to provide a quick and easy way to spin up a Shopif
     - In order to accomplish this, a request is sent to `/api/auth/verify` on every page load (client side). This was done client side to preserve the [Automatic Static Optimization](https://nextjs.org/docs/advanced-features/automatic-static-optimization) features in Next.js. 
     - This route does checks for online and offline tokens existing, validating online tokens and scope mismatches. 
 
-## OAuth
+### OAuth
 
 OAuth is handled using the `/api/auth` and `/api/auth/callback` routes. The app is setup to use both online and offline tokens by default. 
 
 *Note that in order to use the `/api/graphql` route out of the box, you need to use **online** tokens.*
+
+### Environment Variables
+There are a couple environment variables you need to set up in order for the app to run. Create a file called `.env.local` in the `/web` directory (or the root of your Next.js app) and add the following lines;
+
+```bash
+NEXT_PUBLIC_HOST=$HOST
+NEXT_PUBLIC_SHOPIFY_API_KEY=$SHOPIFY_API_KEY
+MONGODB_URI= # mongoDB uri goes here
+```
+
+The first two variables are automatically populated by the Shopify CLI.
 
 ## Todo
 
