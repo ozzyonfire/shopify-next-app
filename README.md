@@ -30,6 +30,7 @@ OAuth is handled using the `/api/auth` and `/api/auth/callback` routes. The app 
 - ✅ OAuth flow for online and offline tokens
 - ✅ GraphQl call using Apollo
 - ⬜ Remove getServerSideProps from index.tsx
+- ⬜ AppUninstalled webhook - cleanup and delete sessions
 - ⬜ Content-Security-Policy header (set in next.config.js?)
 - ⬜ Billing checks in `/api/auth/verify`
 - ⬜ Add the Shopify types for Graphql and Typescript (using graphql-codegen)
