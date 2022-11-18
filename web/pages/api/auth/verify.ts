@@ -15,6 +15,16 @@ const TEST_GRAPHQL_QUERY = `
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    // check to see if the app is installed
+    const sanitizedShop = Shopify.Utils.sanitizeShop(req.query.shop as string);
+    if (!sanitizedShop) {
+      throw new Error('Invalid shop provided');
+    }
+    const appInstalled = await AppInstallations.includes(sanitizedShop);
+    if (!appInstalled) {
+      throw new Error('App not installed');
+    }
+
     // check for offline token
     const offlineSession = await verifyRequest(req, res, false);
     // check for online token
@@ -40,6 +50,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     Shopify.Webhooks.Registry.addHandler("APP_UNINSTALLED", {
       path: "/api/webhooks",
       webhookHandler: async (_topic, shop, _body) => {
+        console.log("Uninstalled app from shop: " + shop);
         await AppInstallations.delete(shop);
       },
     });
@@ -50,6 +61,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   } catch (err) {
     const error = err as Error;
+    console.log('Error in Verify', error);
     return res.json({
       status: "error",
       message: error.message,

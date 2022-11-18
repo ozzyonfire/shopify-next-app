@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { Provider } from "@shopify/app-bridge-react";
-import { Banner, Layout, Page } from "@shopify/polaris";
-import { AppConfigV2 } from "@shopify/app-bridge";
+import { Banner, Layout, Loading, Page, Spinner, Text } from "@shopify/polaris";
+import createApp, { AppConfigV2 } from "@shopify/app-bridge";
 import { useRouter } from "next/router";
-
+import { useAuthRedirect, useVerifySession } from "../hooks/auth";
 declare global {
   interface Window {
     __SHOPIFY_DEV_HOST: string;
@@ -43,6 +43,15 @@ export function AppBridgeProvider({ children }: { children: React.ReactNode }) {
   // See: https://stackoverflow.com/questions/60482318/version-of-usememo-for-caching-a-value-that-will-never-change
 
   const router = useRouter();
+  const { route: location } = router;
+  const history = useMemo(() => {
+    return {
+      replace: (path: string) => {
+        router.replace(path);
+      },
+    };
+  }
+    , [router]);
   const host = router.query.host as string;
 
   console.log('host', host);
@@ -56,10 +65,6 @@ export function AppBridgeProvider({ children }: { children: React.ReactNode }) {
     }),
     [host]
   );
-
-  if (!router.isReady) { // Todo: show a nice loading bar
-    return <Page>Loading...</Page>;
-  }
 
   if (!process.env.NEXT_PUBLIC_SHOPIFY_API_KEY || !appBridgeConfig.host) {
     const bannerProps = !process.env.NEXT_PUBLIC_SHOPIFY_API_KEY
@@ -97,9 +102,11 @@ export function AppBridgeProvider({ children }: { children: React.ReactNode }) {
     );
   }
 
-  // TODO: Router Config for Next Js
   return (
-    <Provider config={appBridgeConfig}>
+    <Provider config={appBridgeConfig} router={{
+      history,
+      location,
+    }}>
       {children}
     </Provider>
   );

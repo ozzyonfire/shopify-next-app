@@ -15,14 +15,18 @@ The goal of this template is to provide a quick and easy way to spin up a Shopif
   - **APIProvider**: This is just an optional helper for accessing the API routes with session tokens from Shopify.
   - **ApolloProvider**: Sets up the Apollo context for running Graphql queries and mutations. This runs through the `/api/graphql` Next.js route and is handled by the Shopify API library.
   - **SessionProvider**: This ensures that the user always has an active session and that the app is installed correctly. It basically redirects the user to authenticate when it needs to.
-    - In order to accomplish this, a request is sent to `/api/auth/verify` on every page load (client side). This was done client side to preserve the [Automatic Static Optimization](https://nextjs.org/docs/advanced-features/automatic-static-optimization) features in Next.js. 
+    - In order to accomplish this, a request is sent to `/api/auth/verify` on every page load (client side). This was done client side to preserve the [Automatic Static Optimization](https://nextjs.org/docs/advanced-features/automatic-static-optimization) features in Next.js (only for pages that aren't the install page)
     - This route does checks for online and offline tokens existing, validating online tokens and scope mismatches. 
 
 ### OAuth
 
-OAuth is handled using the `/api/auth` and `/api/auth/callback` routes. The app is setup to use both online and offline tokens by default. 
+OAuth is handled using the `/api/auth` and `/api/auth/callback` routes. The app is setup to use both online and offline tokens, by default. 
 
 *Note that in order to use the `/api/graphql` route out of the box, you need to use **online** tokens.*
+
+The install page, i.e. `/index.tsx`, must use getServerSideProps to handle the initial visit to the app and redirect users to OAuth from the server. 
+
+*For some reason, I couldn't get client side redirects to work... If someone can do this please submit a pull request!*
 
 ### Environment Variables
 There are a couple environment variables you need to set up in order for the app to run. Create a file called `.env.local` in the `/web` directory (or the root of your Next.js app) and add the following lines;
@@ -40,12 +44,14 @@ The first two variables are automatically populated by the Shopify CLI.
 - ✅ Session saving using MongoDB
 - ✅ OAuth flow for online and offline tokens
 - ✅ GraphQl call using Apollo
-- ⬜ Remove getServerSideProps from index.tsx
-- ⬜ AppUninstalled webhook - cleanup and delete sessions
-- ⬜ Content-Security-Policy header (set in next.config.js?)
+- ❌ ~~Remove getServerSideProps from index.tsx~~
+- ✅ New router config for Next.js and App Bridge (need to test)
+- ✅ AppUninstalled webhook - cleanup and delete sessions
+- ⬜ Content-Security-Policy header (set in next.config.js? Currently this is set in getServerSideProps)
 - ⬜ Billing checks in `/api/auth/verify`
 - ⬜ Add the Shopify types for Graphql and Typescript (using graphql-codegen)
 - ⬜ Prune excess leftover unused code
+- ⬜ Remove the exitiframe.tsx page (unused)
 - ⬜ Update project to use the new `/apps` directory from Next.js
 
 ## Benefits

@@ -8,6 +8,8 @@ import ApolloProvider from '../providers/ApolloProvider';
 import SessionProvider from '../providers/SessionProvider';
 
 export default function App({ Component, pageProps }: AppProps) {
+  console.log('in _app.tsx');
+
   return (
     <AppProvider i18n={translations}>
       <AppBridgeProvider>

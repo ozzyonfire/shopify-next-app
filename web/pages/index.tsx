@@ -90,8 +90,11 @@ export default function Home() {
   )
 }
 
+/**
+ * This is needed on the page that the user hits when first installing the app.
+ * The redirect will not work properly if it is done client side.
+ */
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const apiKey = process.env.SHOPIFY_API_KEY;
   const result = await performChecks(context);
   return result;
 }

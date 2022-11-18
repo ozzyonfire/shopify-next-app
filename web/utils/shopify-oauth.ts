@@ -1,5 +1,5 @@
 import Shopify from "@shopify/shopify-api";
-import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from "next";
+import { GetServerSidePropsContext } from "next";
 import { AppInstallations } from "./app_installations";
 import initializeContext from "./initialize-context";
 
@@ -10,7 +10,7 @@ const TEST_GRAPHQL_QUERY = `
   }
 }`;
 
-export function clientSideRedirect(context: GetServerSidePropsContext, shop: string) {
+export function embeddedAppRedirect(context: GetServerSidePropsContext, shop: string) {
   const redirectUriParams = new URLSearchParams({
     shop,
     host: context.query.host as string,
@@ -24,7 +24,7 @@ export function clientSideRedirect(context: GetServerSidePropsContext, shop: str
   return `/exitiframe?${queryParams}`;
 }
 
-export function redirectToAuth(context: GetServerSidePropsContext) {
+export function serverSideRedirect(context: GetServerSidePropsContext) {
   const { shop, embedded } = context.query;
   console.log(shop, embedded);
 
@@ -33,7 +33,7 @@ export function redirectToAuth(context: GetServerSidePropsContext) {
     throw new Error('Invalid shop provided');
   }
   if (embedded === "1") {
-    return clientSideRedirect(context, sanitizedShop);
+    return embeddedAppRedirect(context, sanitizedShop);
   } else {
     return `/api/auth?shop=${shop}`;
   }
@@ -109,28 +109,28 @@ export async function performChecks(context: GetServerSidePropsContext) {
   if (!isInstalled) {
     return {
       redirect: {
-        destination: redirectToAuth(context),
+        destination: serverSideRedirect(context),
         permanent: false,
       }
     }
   }
 
   // Don't even need to do this anymore since it happens in _app.tsx
-  const verified = await verify(context);
-  if (!verified) {
-    return {
-      redirect: {
-        destination: redirectToAuth(context),
-        permanent: false,
-      }
-    }
-  }
+  // const verified = await verify(context);
+  // if (!verified) {
+  //   return {
+  //     redirect: {
+  //       destination: serverSideRedirect(context),
+  //       permanent: false,
+  //     }
+  //   }
+  // }
 
   return {
     props: {
-      shop: shop as string,
-      host: host as string,
-      session: session as string,
+      shop: shop as string || null,
+      host: host as string || null,
+      session: session as string || null,
     }
   }
 }
