@@ -13,14 +13,16 @@ The goal of this template is to provide a quick and easy way to spin up a Shopif
 - in _app.tsx there are a number of Providers which are needed to get everything established for an Embedded App
   - **AppBridgeProvider**: This sets up AppBridge and resolves the host (from next/router) and API Key (from environment variables).
   - **APIProvider**: This is just an optional helper for accessing the API routes with session tokens from Shopify.
-  - **ApolloProvider**: Sets up the Apollo context for running Graphql queries and mutations. This runs through the /api/graphql Next.js route and is handled by the Shopify API library.
+  - **ApolloProvider**: Sets up the Apollo context for running Graphql queries and mutations. This runs through the `/api/graphql` Next.js route and is handled by the Shopify API library.
   - **SessionProvider**: This ensures that the user always has an active session and that the app is installed correctly. It basically redirects the user to authenticate when it needs to.
     - In order to accomplish this, a request is sent to `/api/auth/verify` on every page load (client side). This was done client side to preserve the [Automatic Static Optimization](https://nextjs.org/docs/advanced-features/automatic-static-optimization) features in Next.js. 
     - This route does checks for online and offline tokens existing, validating online tokens and scope mismatches. 
 
 ## OAuth
 
-OAuth is handled using the `/api/auth` and `/api/auth/callback` routes. The app is setup to use both online and offline tokens by default. *Note that in order to use the `/api/graphql` route out of the box, you need to use **online** tokens.*
+OAuth is handled using the `/api/auth` and `/api/auth/callback` routes. The app is setup to use both online and offline tokens by default. 
+
+*Note that in order to use the `/api/graphql` route out of the box, you need to use **online** tokens.*
 
 ## Todo
 
