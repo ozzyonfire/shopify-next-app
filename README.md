@@ -32,6 +32,7 @@ OAuth is handled using the `/api/auth` and `/api/auth/callback` routes. The app 
 - ⬜ Billing checks in `/api/auth/verify`
 - ⬜ Add the Shopify types for Graphql and Typescript (using graphql-codegen)
 - ⬜ Prune excess leftover unused code
+- ⬜ Update project to use the new `/apps` directory from Next.js
 
 ## Benefits
 
