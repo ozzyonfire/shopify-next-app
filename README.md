@@ -16,7 +16,7 @@ The goal of this template is to provide a quick and easy way to spin up a Shopif
   - **ApolloProvider**: Sets up the Apollo context for running Graphql queries and mutations. This runs through the `/api/graphql` Next.js route and is handled by the Shopify API library.
   - **SessionProvider**: This ensures that the user always has an active session and that the app is installed correctly. It basically redirects the user to authenticate when it needs to.
     - In order to accomplish this, a request is sent to `/api/auth/verify` on every page load (client side). This was done client side to preserve the [Automatic Static Optimization](https://nextjs.org/docs/advanced-features/automatic-static-optimization) features in Next.js (only for pages that aren't the install page)
-    - This route does checks for online and offline tokens existing, validating online tokens and scope mismatches. 
+    - This route checks for online and offline tokens existing, validating online tokens and scope mismatches. 
 
 ### OAuth
 

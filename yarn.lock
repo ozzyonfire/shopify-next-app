@@ -164,7 +164,7 @@
     widest-line "^3.1.0"
     wrap-ansi "^7.0.0"
 
-"@oclif/core@^1.2.0", "@oclif/core@^1.20.0", "@oclif/core@^1.20.2":
+"@oclif/core@^1.2.0", "@oclif/core@^1.20.0", "@oclif/core@^1.20.4":
   version "1.20.4"
   resolved "https://registry.yarnpkg.com/@oclif/core/-/core-1.20.4.tgz#7378b52e1f1b502e383ffb07f95dffc9fd8588ff"
   integrity sha512-giug32M4YhSYNYKQwE1L57/+k5gp1+Bq3/0vKNQmzAY1tizFGhvBJc6GIRZasHjU+xtZLutQvrVrJo7chX3hxg==
@@ -212,11 +212,11 @@
     lodash "^4.17.11"
 
 "@oclif/plugin-help@^5.1.12":
-  version "5.1.18"
-  resolved "https://registry.yarnpkg.com/@oclif/plugin-help/-/plugin-help-5.1.18.tgz#8f1d864f76ee151e840e3d20de5a05f00ed91a54"
-  integrity sha512-EICYITNwc155RHBiRnhUmvuc5oEuRE+9B+8rErw4OKKpPfZ5edvth38e4QOONfDRjb3MHfNu0sds1aB3i/BikA==
+  version "5.1.19"
+  resolved "https://registry.yarnpkg.com/@oclif/plugin-help/-/plugin-help-5.1.19.tgz#43051772fefafe9bfe8823e2298103feb351b9c7"
+  integrity sha512-eQVRCFJOwRj8Tbqz8Lzd9GN38egwLCg+ohJ0xfg12CoXml03WqkfcFiAWkVwSWmLVrZUlUVrxfXKKkmpUaXZHg==
   dependencies:
-    "@oclif/core" "^1.20.2"
+    "@oclif/core" "^1.20.4"
 
 "@oclif/plugin-plugins@^2.1.0":
   version "2.1.7"
@@ -240,14 +240,14 @@
   resolved "https://registry.yarnpkg.com/@oclif/screen/-/screen-3.0.3.tgz#e679ad10535e31d333f809f7a71335cc9aef1e55"
   integrity sha512-KX8gMYA9ujBPOd1HFsV9e0iEx7Uoj8AG/3YsW4TtWQTg4lJvr82qNm7o/cFQfYRIt+jw7Ew/4oL4A22zOT+IRA==
 
-"@shopify/app@^3.22.1":
-  version "3.22.1"
-  resolved "https://registry.yarnpkg.com/@shopify/app/-/app-3.22.1.tgz#fe4dbdc07ac22b706188043f2eb0c18fdb3688ce"
-  integrity sha512-K2+P8aWQHLhAJq6tv0H76S5Z72lcJi9Sq4Q0baE2l2bhGmFZrEWj0byV7RpsBmzF6z/+2R+wQMTRcnILEXBwaQ==
+"@shopify/app@^3.23.0":
+  version "3.23.0"
+  resolved "https://registry.yarnpkg.com/@shopify/app/-/app-3.23.0.tgz#b6c4f457c58e4ba10f823d6d4b90e1eae9ec892d"
+  integrity sha512-OCSvEb6m5w3EZIPASX/oI30ORsMbgRsO4npCrI5BONgCpzOOh6evB71qJ170hzZNPNydNVfLfmDeqghnMLMxGg==
   dependencies:
     "@luckycatfactory/esbuild-graphql-loader" "3.7.0"
     "@oclif/core" "1.9.2"
-    "@shopify/cli-kit" "3.22.1"
+    "@shopify/cli-kit" "3.23.0"
     "@shopify/shopify-cli-extensions" "3.21.0"
     abort-controller "^3.0.0"
     chokidar "3.5.3"
@@ -258,10 +258,10 @@
     serve-static "1.15.0"
     ws "8.8.1"
 
-"@shopify/cli-kit@3.22.1":
-  version "3.22.1"
-  resolved "https://registry.yarnpkg.com/@shopify/cli-kit/-/cli-kit-3.22.1.tgz#846ec071f24917f04521fdd1b344cd9dffc7f921"
-  integrity sha512-q/c4pU6NUvdUU+bTnCiYMakPI8VdDc3+YaEdlpmBUb6jUJcig0tEHh29VHWDsmJRfgaGD97sblGUb+VOaTb1oQ==
+"@shopify/cli-kit@3.23.0":
+  version "3.23.0"
+  resolved "https://registry.yarnpkg.com/@shopify/cli-kit/-/cli-kit-3.23.0.tgz#6c2f44a95089b214fed8cac7d1e1c643a38b6b8f"
+  integrity sha512-RAtAlykzKXLGWIg9gt36bRmoF9fL8+YX5YDbIdZd9w/YS3BmxzSJd7n6pV4mOkN/IHBKPF9g07rVeb8HIiMywg==
   dependencies:
     "@bugsnag/js" "^7.16.7"
     "@iarna/toml" "^2.2.5"
@@ -321,17 +321,17 @@
     unique-string "^3.0.0"
     zod "^3.17.3"
 
-"@shopify/cli@^3.22.1":
-  version "3.22.1"
-  resolved "https://registry.yarnpkg.com/@shopify/cli/-/cli-3.22.1.tgz#5ae1155eaf20b35f086612c3c1ad20d82f1878af"
-  integrity sha512-4F5RkPV1kcpc/7gBczpksrec9oXcS2P/Chn7H+3rk4PfFYcVl2mrAivaNO/OGMJ6hA7Rca5TxzJW+Wf6WZcwVg==
+"@shopify/cli@^3.23.0":
+  version "3.23.0"
+  resolved "https://registry.yarnpkg.com/@shopify/cli/-/cli-3.23.0.tgz#5f4774b76079d4f563f87ae3dad496b4a4d215e1"
+  integrity sha512-BsrQbGQCQd4Xnxky08UrWgXGd45I+QnjapBOjpsvQBOYL47tLYGPmt/VVeGIpbSvk7871+bdLGxqVMjKRAazYQ==
   dependencies:
     "@oclif/core" "1.9.2"
     "@oclif/plugin-commands" "^2.2.0"
     "@oclif/plugin-help" "^5.1.12"
     "@oclif/plugin-plugins" "^2.1.0"
-    "@shopify/cli-kit" "3.22.1"
-    "@shopify/plugin-ngrok" "^3.22.1"
+    "@shopify/cli-kit" "3.23.0"
+    "@shopify/plugin-ngrok" "^3.23.0"
 
 "@shopify/ngrok@^4.3.2":
   version "4.3.2"
@@ -347,13 +347,13 @@
   optionalDependencies:
     hpagent "^0.1.2"
 
-"@shopify/plugin-ngrok@^3.22.1":
-  version "3.22.1"
-  resolved "https://registry.yarnpkg.com/@shopify/plugin-ngrok/-/plugin-ngrok-3.22.1.tgz#1d54cf8c823e0bc7eea4a21636e747a5cd504382"
-  integrity sha512-saZnU+clLmZBIKYWbUresXlvQJU6GYmu2Oy2clylHf/ovlmwYeoMs2Y+/g/Pgts5SAsMaTdWKRbYx538D+dyAQ==
+"@shopify/plugin-ngrok@^3.23.0":
+  version "3.23.0"
+  resolved "https://registry.yarnpkg.com/@shopify/plugin-ngrok/-/plugin-ngrok-3.23.0.tgz#2555c971f038248b3d37b3d56b1c52bc9721ccf0"
+  integrity sha512-n/7PzSSt56dRpDgaxkKHCvrq5ZJkN4VtnM4wqkJMEZVaeV70nnTfnckzM1Mf4ANhJJkXS61ZJIfR0OxHbV5K2Q==
   dependencies:
     "@oclif/core" "1.9.2"
-    "@shopify/cli-kit" "3.22.1"
+    "@shopify/cli-kit" "3.23.0"
     "@shopify/ngrok" "^4.3.2"
 
 "@shopify/shopify-cli-extensions@3.21.0":
@@ -486,9 +486,9 @@ ajv-formats@^2.1.1:
     ajv "^8.0.0"
 
 ajv@^8.0.0, ajv@^8.6.3:
-  version "8.11.0"
-  resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.11.0.tgz#977e91dd96ca669f54a11e23e378e33b884a565f"
-  integrity sha512-wGgprdCvMalC0BztXvitD2hC04YffAvtsUn93JbGXYLAtCUO4xd17mCCZQxUOItiBwZvJScWo8NIvQMQ71rdpg==
+  version "8.11.2"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.11.2.tgz#aecb20b50607acf2569b6382167b65a96008bb78"
+  integrity sha512-E4bfmKAhGiSTvMfL1Myyycaub+cUEU2/IvpylXkUu7CHBkBj1f/ikdzbD7YQ6FKUbixDxeYvB/xY4fvyroDlQg==
   dependencies:
     fast-deep-equal "^3.1.1"
     json-schema-traverse "^1.0.0"
@@ -544,9 +544,9 @@ ansicolors@~0.3.2:
   integrity sha512-QXu7BPrP29VllRxH8GwB7x5iX5qWKAAMLqKQGWTeLWVlNHNOpVMJ91dsxQAIWXpjuW5wqvxu3Jd/nRjrJ+0pqg==
 
 anymatch@~3.1.2:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/anymatch/-/anymatch-3.1.2.tgz#c0557c096af32f106198f4f4e2a383537e378716"
-  integrity sha512-P43ePfOAIupkguHUycrc4qJ9kz8ZiuOUijaETwX7THt0Y/GNK7v0aa8rY816xWjZ7rJdA5XdMcpVFTKMq+RvWg==
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/anymatch/-/anymatch-3.1.3.tgz#790c58b19ba1720a84205b57c618d5ad8524973e"
+  integrity sha512-KMReFUr0B4t+D+OBkjR3KYqvocp2XaSzO55UcB6mgQMd3KbcE+mWTyvVV7D/zsdEbNnV6acZUutkiHQXvTr1Rw==
   dependencies:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
@@ -1193,9 +1193,9 @@ depd@2.0.0:
   integrity sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==
 
 destr@^1.1.1:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/destr/-/destr-1.2.0.tgz#8adb17fa3861b8032ea1bba92f60ba989a9ff119"
-  integrity sha512-JG+cG4ZPB1L27sl2C2URg8MIOmIUtTbE5wEx02BpmrTCqg/hXxFKXsYsnODl5PdpqNRaS1KQGUQ56V8jk8XpYQ==
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/destr/-/destr-1.2.1.tgz#03f2e7cbcd01f9190938d05718948de9d7dfb71a"
+  integrity sha512-ud8w0qMLlci6iFG7CNgeRr8OcbUWMsbfjtWft1eJ5Luqrz/M8Ebqk/KCzne8rKUlIQWWfLv0wD6QHrqOf4GshA==
 
 destroy@1.2.0:
   version "1.2.0"
@@ -1946,9 +1946,9 @@ ieee754@^1.1.13:
   integrity sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==
 
 ignore@^5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.2.0.tgz#6d3bac8fa7fe0d45d9f9be7bac2fc279577e345a"
-  integrity sha512-CmxgYGiEPCLhfLnpPp1MoRmifwEIOgjcHXxOBjv7mY96c+eWScsOP9c112ZyLdWHi0FxHjI+4uVhKYp/gcdRmQ==
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.2.1.tgz#c2b1f76cb999ede1502f3a226a9310fdfe88d46c"
+  integrity sha512-d2qQLzTJ9WxQftPAuEQpSPmKqzxePjzVbpAVv62AQ64NTL+wR4JkrVqR/LqFsFEUsHDAiId52mJteHDFuDkElA==
 
 indent-string@^4.0.0:
   version "4.0.0"
@@ -2281,9 +2281,9 @@ lines-and-columns@^1.1.6:
   integrity sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==
 
 liquidjs@^9.36.0:
-  version "9.42.1"
-  resolved "https://registry.yarnpkg.com/liquidjs/-/liquidjs-9.42.1.tgz#7c3200e40d17b264ddb3e4d949fbc46b403d02d4"
-  integrity sha512-7Dbxs2M7W0EwemTWkBNCLR7YZJ6Bm5FYJ+djMgAj4znqquSoex314JncMSxFsU5CkOC/4LZxecMq3LNgXrVYoQ==
+  version "9.43.0"
+  resolved "https://registry.yarnpkg.com/liquidjs/-/liquidjs-9.43.0.tgz#69924ed3bbe143c17c13ea675cc70390d72eb307"
+  integrity sha512-qZZuL5Emja2UgCqiLewiw9bvwZQwm19TTGFxDkonVzB4YSTOZ8tuTVo/7Uu/AeW1cL2Qb/at3DSoV8wwyFXQCw==
 
 listr2@^4.0.5:
   version "4.0.5"
@@ -2976,9 +2976,9 @@ prebuild-install@^7.0.1:
     tunnel-agent "^0.6.0"
 
 prettier@^2.7.1:
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.7.1.tgz#e235806850d057f97bb08368a4f7d899f7760c64"
-  integrity sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.8.0.tgz#c7df58393c9ba77d6fba3921ae01faf994fb9dc9"
+  integrity sha512-9Lmg8hTFZKG0Asr/kW9Bp8tJjRVluO8EJQVfY2T7FMw9T5jy4I/Uvx0Rca/XWf50QQ1/SS48+6IJWnrb+2yemA==
 
 printable-characters@^1.0.42:
   version "1.0.42"
@@ -3039,9 +3039,9 @@ rc@1.2.8, rc@^1.2.7, rc@^1.2.8:
     strip-json-comments "~2.0.1"
 
 react-devtools-core@^4.19.1:
-  version "4.26.1"
-  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-4.26.1.tgz#2893fea58089be64c5356d5bd0eebda8d1bbf317"
-  integrity sha512-r1csa5n9nABVpSdAadwTG7K+SfgRJPc/Hdx89BkV5IlA1mEGgGi3ir630ST5D/xYlJQaY3VE75YGADgpNW7HIw==
+  version "4.27.0"
+  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-4.27.0.tgz#b57eb69df273c88daa3dc1577177ea9bbdd0a67d"
+  integrity sha512-9dfVBf/9yquz5deUUCi9kA/JA4+2MTUxfKRv6IqizR0B26/28CxJedXb0kXtPD/cRKce8ecU1KhfJiDzUkOOaQ==
   dependencies:
     shell-quote "^1.6.1"
     ws "^7"
@@ -3345,9 +3345,9 @@ simple-get@^4.0.0:
     simple-concat "^1.0.0"
 
 simple-git@^3.5.0:
-  version "3.14.1"
-  resolved "https://registry.yarnpkg.com/simple-git/-/simple-git-3.14.1.tgz#68018a5f168f8a568862e30b692004b37c3b5ced"
-  integrity sha512-1ThF4PamK9wBORVGMK9HK5si4zoGS2GpRO7tkAFObA4FZv6dKaCVHLQT+8zlgiBm6K2h+wEU9yOaFCu/SR3OyA==
+  version "3.15.0"
+  resolved "https://registry.yarnpkg.com/simple-git/-/simple-git-3.15.0.tgz#301a95a943c4f9b0a21d051eb6e6d0ffe4c9754f"
+  integrity sha512-FiWoMPlcYHQ+ApRihUsGjC/ZmIlWj62S6MBCwOunczvXcLQt+9ZdrysDrR6QVepkRQfEAaBXrN2QtJKrN6zbtg==
   dependencies:
     "@kwsites/file-exists" "^1.1.1"
     "@kwsites/promise-deferred" "^1.1.1"
