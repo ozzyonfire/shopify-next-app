@@ -45,7 +45,7 @@ The first two variables are automatically populated by the Shopify CLI.
 - ✅ OAuth flow for online and offline tokens
 - ✅ GraphQl call using Apollo
 - ❌ ~~Remove getServerSideProps from index.tsx~~
-- ✅ New router config for Next.js and App Bridge (need to test)
+- ✅ New router config for Next.js and App Bridge
 - ✅ AppUninstalled webhook - cleanup and delete sessions
 - ⬜ Content-Security-Policy header (set in next.config.js? Currently this is set in getServerSideProps)
 - ⬜ Billing checks in `/api/auth/verify`
@@ -99,19 +99,13 @@ This template can be installed using your preferred package manager:
 Using yarn:
 
 ```shell
-yarn create @shopify/app
+yarn create @shopify/app --template https://github.com/ozzyonfire/shopify-app-next.git
 ```
 
 Using npx:
 
 ```shell
-npm init @shopify/app@latest
-```
-
-Using pnpm:
-
-```shell
-pnpm create @shopify/app@latest
+npx @shopify/create-app@latest --template https://github.com/ozzyonfire/shopify-app-next.git
 ```
 
 This will clone the template and install the required dependencies.

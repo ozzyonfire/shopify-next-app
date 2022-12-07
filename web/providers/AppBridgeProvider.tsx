@@ -43,11 +43,11 @@ export function AppBridgeProvider({ children }: { children: React.ReactNode }) {
   // See: https://stackoverflow.com/questions/60482318/version-of-usememo-for-caching-a-value-that-will-never-change
 
   const router = useRouter();
-  const { route: location } = router;
+  const { asPath: location } = router;
   const history = useMemo(() => {
     return {
       replace: (path: string) => {
-        router.replace(path);
+        router.push(path);
       },
     };
   }
