@@ -1,11 +1,14 @@
-import Shopify from "@shopify/shopify-api";
 import { NextApiRequest, NextApiResponse } from "next";
-import withShopifyContext from "../../api-helpers/withShopifyContext";
+import shopify from "../../utils/initialize-context";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   console.log('got a webhook', req.body);
   try {
-    await Shopify.Webhooks.Registry.process(req, res);
+    await shopify.webhooks.process({
+      rawBody: req.body,
+      rawRequest: req,
+      rawResponse: res,
+    });
     console.log(`Webhook processed, returned status code 200`);
   } catch (e) {
     const error = e as Error;
@@ -22,4 +25,4 @@ export const config = {
   },
 };
 
-export default withShopifyContext(handler);
+export default handler;

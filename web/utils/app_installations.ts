@@ -1,11 +1,8 @@
-import { Shopify } from "@shopify/shopify-api";
+import { deleteSessions, findSessionsByShop } from "./session-storage";
 
 export const AppInstallations = {
-  includes: async function (shopDomain: string) {
-    if (!Shopify.Context.SESSION_STORAGE.findSessionsByShop) {
-      throw new Error("Session storage does not support finding sessions by shop");
-    }
-    const shopSessions = await Shopify.Context.SESSION_STORAGE.findSessionsByShop(shopDomain);
+  includes: async function (shopDomain: string, apiKey: string) {
+    const shopSessions = await findSessionsByShop(shopDomain, apiKey);
 
     if (shopSessions.length > 0) {
       for (const session of shopSessions) {
@@ -16,16 +13,10 @@ export const AppInstallations = {
     return false;
   },
 
-  delete: async function (shopDomain: string) {
-    if (!Shopify.Context.SESSION_STORAGE.findSessionsByShop) {
-      throw new Error("Session storage does not support finding sessions by shop");
-    }
-    const shopSessions = await Shopify.Context.SESSION_STORAGE.findSessionsByShop(shopDomain);
-    if (!Shopify.Context.SESSION_STORAGE.deleteSessions) {
-      throw new Error("Session storage does not support deleting sessions");
-    }
+  delete: async function (shopDomain: string, apiKey: string) {
+    const shopSessions = await findSessionsByShop(shopDomain, apiKey);
     if (shopSessions.length > 0) {
-      await Shopify.Context.SESSION_STORAGE.deleteSessions(shopSessions.map((session) => session.id));
+      await deleteSessions(shopSessions.map((session) => session.id), apiKey);
     }
   },
 };

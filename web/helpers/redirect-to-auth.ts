@@ -1,6 +1,5 @@
-import { Shopify } from "@shopify/shopify-api";
 import { NextApiRequest, NextApiResponse } from "next";
-import config from '../config.json';
+import shopify from "../utils/initialize-context";
 
 export default async function redirectToAuth(req: NextApiRequest, res: NextApiResponse) {
   if (!req.query.shop) {
@@ -16,7 +15,7 @@ export default async function redirectToAuth(req: NextApiRequest, res: NextApiRe
 }
 
 function clientSideRedirect(req: NextApiRequest, res: NextApiResponse) {
-  const shop = Shopify.Utils.sanitizeShop(req.query.shop as string);
+  const shop = shopify.utils.sanitizeShop(req.query.shop as string);
 
   if (!shop) {
     res.status(500);
@@ -30,20 +29,18 @@ function clientSideRedirect(req: NextApiRequest, res: NextApiResponse) {
   const queryParams = new URLSearchParams({
     ...req.query,
     shop,
-    redirectUri: `https://${Shopify.Context.HOST_NAME}/api/auth?${redirectUriParams}`,
+    redirectUri: `https://${shopify.config.hostName}/api/auth?${redirectUriParams}`,
   }).toString();
 
   return res.redirect(`/exitiframe?${queryParams}`);
 }
 
 async function serverSideRedirect(req: NextApiRequest, res: NextApiResponse) {
-  const redirectUrl = await Shopify.Auth.beginAuth(
-    req,
-    res,
-    req.query.shop as string,
-    "/api/auth/callback",
-    config.onlineTokens
-  );
-
-  return res.redirect(redirectUrl);
+  await shopify.auth.begin({
+    callbackPath: "/api/auth/callback",
+    shop: req.query.shop as string,
+    isOnline: true,
+    rawRequest: req,
+    rawResponse: res,
+  });
 }

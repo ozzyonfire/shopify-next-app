@@ -1,10 +1,9 @@
-import Shopify from "@shopify/shopify-api";
-import { verify } from "crypto";
+import shopify from "../../../utils/initialize-context";
 import { NextApiRequest, NextApiResponse } from "next";
-import withShopifyContext from "../../../api-helpers/withShopifyContext";
 import { setupGDPRWebHooks } from "../../../helpers/gdpr";
 import verifyRequest from "../../../helpers/verify-request";
 import { AppInstallations } from "../../../utils/app_installations";
+import { DeliveryMethod } from "@shopify/shopify-api";
 
 const TEST_GRAPHQL_QUERY = `
 {
@@ -16,11 +15,11 @@ const TEST_GRAPHQL_QUERY = `
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     // check to see if the app is installed
-    const sanitizedShop = Shopify.Utils.sanitizeShop(req.query.shop as string);
+    const sanitizedShop = shopify.utils.sanitizeShop(req.query.shop as string);
     if (!sanitizedShop) {
       throw new Error('Invalid shop provided');
     }
-    const appInstalled = await AppInstallations.includes(sanitizedShop);
+    const appInstalled = await AppInstallations.includes(sanitizedShop, process.env.SHOPIFY_API_KEY || '');
     if (!appInstalled) {
       throw new Error('App not installed');
     }
@@ -31,28 +30,33 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const onlineSession = await verifyRequest(req, res, true);
 
     // check for scope mismatch
-    if (!Shopify.Context.SCOPES.equals(offlineSession.scope)) {
-      console.log('scope mismatch', Shopify.Context.SCOPES);
+    if (!shopify.config.scopes.equals(offlineSession.scope)) {
+      console.log('scope mismatch', shopify.config.scopes);
       throw new Error('Scope mismatch - offline token');
     }
 
-    if (!Shopify.Context.SCOPES.equals(onlineSession.scope)) {
-      console.log('scope mismatch', Shopify.Context.SCOPES);
+    if (!shopify.config.scopes.equals(onlineSession.scope)) {
+      console.log('scope mismatch', shopify.config.scopes);
       throw new Error('Scope mismatch - online token');
     }
 
     // do a test query to make sure the session is still active
-    const client = new Shopify.Clients.Graphql(onlineSession.shop, onlineSession.accessToken);
+    const client = new shopify.clients.Graphql({
+      session: onlineSession,
+    });
     await client.query({ data: TEST_GRAPHQL_QUERY });
 
     // register any webhooks here
     setupGDPRWebHooks('/api/webhooks');
-    Shopify.Webhooks.Registry.addHandler("APP_UNINSTALLED", {
-      path: "/api/webhooks",
-      webhookHandler: async (_topic, shop, _body) => {
-        console.log("Uninstalled app from shop: " + shop);
-        await AppInstallations.delete(shop);
-      },
+    shopify.webhooks.addHandlers({
+      "APP_UNINSTALLED": {
+        deliveryMethod: DeliveryMethod.Http,
+        callbackUrl: "/api/webhooks",
+        callback: async (_topic, shop, _body) => {
+          console.log("Uninstalled app from shop: " + shop);
+          await AppInstallations.delete(shop, process.env.SHOPIFY_API_KEY || '');
+        },
+      }
     });
 
     return res.json({
@@ -69,4 +73,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-export default withShopifyContext(handler);
+export default handler;

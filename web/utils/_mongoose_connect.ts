@@ -1,4 +1,5 @@
 import mongoose, { Connection } from 'mongoose';
+mongoose.set('strictQuery', true);
 
 interface ConnectionCache {
   [key: string]: Promise<Connection> | null;

@@ -1,19 +1,25 @@
-import { Shopify } from "@shopify/shopify-api";
-import config from '../config.json';
+import shopify from '../utils/initialize-context';
 import { NextApiRequest, NextApiResponse } from "next";
+import { loadSession } from '../utils/session-storage';
 
 export default async function verifyRequest(req: NextApiRequest, res: NextApiResponse, online: boolean) {
-  const session = await Shopify.Utils.loadCurrentSession(
-    req,
-    res,
-    online
-  );
+  const sessionId = await shopify.session.getCurrentId({
+    rawRequest: req,
+    rawResponse: res,
+    isOnline: online
+  });
+
+  if (!sessionId) {
+    throw new Error("No session id found.");
+  }
+
+  const session = await loadSession(sessionId, process.env.SHOPIFY_API_KEY || '');
 
   if (!session) {
     throw new Error("No sesssion found.");
   }
 
-  let shop = Shopify.Utils.sanitizeShop(req.query.shop as string);
+  let shop = shopify.utils.sanitizeShop(req.query.shop as string);
 
   if (session && shop && session.shop !== shop) {
     // The current request is for a different shop. Redirect gracefully.
@@ -25,9 +31,9 @@ export default async function verifyRequest(req: NextApiRequest, res: NextApiRes
     if (!shop) {
       if (session) {
         shop = session.shop;
-      } else if (Shopify.Context.IS_EMBEDDED_APP) {
+      } else if (shopify.config.isEmbeddedApp) {
         if (bearerPresent) {
-          const payload = Shopify.Utils.decodeSessionToken(bearerPresent[1]);
+          const payload = await shopify.session.decodeSessionToken(bearerPresent[1]);
           shop = payload.dest.replace("https://", "");
         }
       }

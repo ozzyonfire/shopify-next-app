@@ -1,7 +1,7 @@
-import Shopify from "@shopify/shopify-api";
 import { GetServerSidePropsContext } from "next";
 import { AppInstallations } from "./app_installations";
-import initializeContext from "./initialize-context";
+import shopify from "./initialize-context";
+import { loadSession } from "./session-storage";
 
 const TEST_GRAPHQL_QUERY = `
 {
@@ -18,7 +18,7 @@ export function embeddedAppRedirect(context: GetServerSidePropsContext, shop: st
   const queryParams = new URLSearchParams({
     ...context.query,
     shop,
-    redirectUri: `https://${Shopify.Context.HOST_NAME}/api/auth?${redirectUriParams}`,
+    redirectUri: `https://${shopify.config.hostName}/api/auth?${redirectUriParams}`,
   }).toString();
 
   return `/exitiframe?${queryParams}`;
@@ -26,9 +26,9 @@ export function embeddedAppRedirect(context: GetServerSidePropsContext, shop: st
 
 export function serverSideRedirect(context: GetServerSidePropsContext) {
   const { shop, embedded } = context.query;
-  console.log(shop, embedded);
+  console.log('shop', shop, 'embedded', embedded);
 
-  const sanitizedShop = Shopify.Utils.sanitizeShop(shop as string);
+  const sanitizedShop = shopify.utils.sanitizeShop(shop as string);
   if (!sanitizedShop) {
     throw new Error('Invalid shop provided');
   }
@@ -40,18 +40,19 @@ export function serverSideRedirect(context: GetServerSidePropsContext) {
 }
 
 export async function checkInstallation(shop: string) {
-  const sanitizedShop = Shopify.Utils.sanitizeShop(shop);
+  const sanitizedShop = shopify.utils.sanitizeShop(shop);
   if (!sanitizedShop) {
     return false;
   }
-  const appInstalled = await AppInstallations.includes(sanitizedShop);
+  const appInstalled = await AppInstallations.includes(sanitizedShop, process.env.SHOPIFY_API_KEY || '');
   return appInstalled;
 }
 
 export async function verify(context: GetServerSidePropsContext) {
   const { shop } = context.query;
+  console.log('shop', shop);
 
-  const sanitizedShop = Shopify.Utils.sanitizeShop(shop as string);
+  const sanitizedShop = shopify.utils.sanitizeShop(shop as string);
   if (!sanitizedShop) {
     console.log('Invalid shop provided');
     return false;
@@ -59,22 +60,21 @@ export async function verify(context: GetServerSidePropsContext) {
 
   // Check for active session
   console.log("Checking for offline token");
-  const session = await Shopify.Utils.loadOfflineSession(sanitizedShop);
+  const sessionId = shopify.session.getOfflineId(sanitizedShop);
+  const session = await loadSession(sessionId, process.env.SHOPIFY_API_KEY || '');
   if (!session) {
     return false;
   }
 
   // Check for scope mismatch
-  if (!Shopify.Context.SCOPES.equals(session.scope)) {
-    console.log('scope mismatch', Shopify.Context.SCOPES);
+  if (!shopify.config.scopes.equals(session.scope)) {
+    console.log('scope mismatch', shopify.config.scopes);
     return false;
   }
 
   // Make a request to ensure the access token is still valid.
-  const client = new Shopify.Clients.Graphql(
-    session.shop,
-    session.accessToken
-  );
+  const client = new shopify.clients.Graphql({ session });
+
   try {
     await client.query({ data: TEST_GRAPHQL_QUERY });
   } catch (err) {
@@ -95,7 +95,6 @@ export async function verify(context: GetServerSidePropsContext) {
  * 6. If the app is authorized, check to see if there is a subscription / billing
  */
 export async function performChecks(context: GetServerSidePropsContext) {
-  initializeContext();
   const { shop, host, session } = context.query;
   context.res.setHeader(
     "Content-Security-Policy",

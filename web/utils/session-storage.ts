@@ -1,12 +1,12 @@
-import { SessionInterface } from "@shopify/shopify-api";
+import { Session } from "@shopify/shopify-api";
 import clientPromise from "./_mongodb_connect";
 const DB_NAME = 'shopify-apps';
 
-export async function storeSession(session: SessionInterface) {
+export async function storeSession(session: Session, apiKey: string) {
   const mongoClient = await clientPromise;
   const db = mongoClient.db(DB_NAME);
   try {
-    await db.collection('sessions').updateOne({ id: session.id }, { $set: { ...session } }, {
+    await db.collection('sessions').updateOne({ id: session.id }, { $set: { ...session, apiKey } }, {
       upsert: true
     });
     return true;
@@ -16,10 +16,10 @@ export async function storeSession(session: SessionInterface) {
   }
 }
 
-export async function loadSession(id: string) {
+export async function loadSession(id: string, apiKey: string) {
   const mongoClient = await clientPromise;
   const db = mongoClient.db(DB_NAME);
-  const record = await db.collection('sessions').findOne<SessionInterface>({ id });
+  const record = await db.collection('sessions').findOne<Session>({ id, apiKey });
   if (record) {
     return record;
   } else {
@@ -27,11 +27,11 @@ export async function loadSession(id: string) {
   }
 }
 
-export async function deleteSession(id: string) {
+export async function deleteSession(id: string, apiKey: string) {
   const mongoClient = await clientPromise;
   const db = mongoClient.db(DB_NAME);
   try {
-    await db.collection('sessions').deleteOne({ id });
+    await db.collection('sessions').deleteOne({ id, apiKey });
     return true;
   } catch (err) {
     console.log(err);
@@ -39,11 +39,11 @@ export async function deleteSession(id: string) {
   }
 }
 
-export async function deleteSessions(ids: string[]) {
+export async function deleteSessions(ids: string[], apiKey: string) {
   const mongoClient = await clientPromise;
   const db = mongoClient.db(DB_NAME);
   try {
-    await db.collection('sessions').deleteMany({ id: { $in: ids } });
+    await db.collection('sessions').deleteMany({ id: { $in: ids }, apiKey });
     return true;
   } catch (err) {
     console.log(err);
@@ -63,10 +63,10 @@ export async function cleanUpSession(shop: string, accessToken: string) {
   }
 }
 
-export async function findSessionsByShop(shop: string) {
+export async function findSessionsByShop(shop: string, apiKey: string) {
   const mongoClient = await clientPromise;
   const db = mongoClient.db(DB_NAME);
-  const records = await db.collection('sessions').find<SessionInterface>({ shop }).toArray();
+  const records = await db.collection('sessions').find<Session>({ shop, apiKey }).toArray();
   if (records) {
     return records;
   }

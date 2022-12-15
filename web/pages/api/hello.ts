@@ -1,7 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { verify } from 'crypto';
 import type { NextApiRequest, NextApiResponse } from 'next'
-import withShopifyContext from '../../api-helpers/withShopifyContext';
 import verifyRequest from '../../helpers/verify-request';
 
 export type APIResponse<DataType> = {
@@ -37,4 +35,4 @@ async function handler(
   }
 }
 
-export default withShopifyContext(handler);
+export default handler;

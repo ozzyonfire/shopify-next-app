@@ -1,5 +1,6 @@
-import { Shopify, SessionInterface } from "@shopify/shopify-api";
-import { GraphqlClient } from "@shopify/shopify-api/dist/clients/graphql";
+import { Session } from "@shopify/shopify-api";
+import { GraphqlClient } from "@shopify/shopify-api/lib/clients/graphql/graphql_client";
+import shopify from "../utils/initialize-context";
 
 export const BillingInterval = {
   OneTime: "ONE_TIME",
@@ -31,7 +32,7 @@ export interface IBillingOptions {
  * Learn more about billing in our documentation: https://shopify.dev/apps/billing
  */
 export default async function ensureBilling(
-  session: SessionInterface,
+  session: Session,
   billingOptions: IBillingOptions,
   isProdOverride = process.env.NODE_ENV === "production"
 ) {
@@ -60,8 +61,8 @@ export default async function ensureBilling(
   return [hasPayment, confirmationUrl];
 }
 
-async function hasActivePayment(session: SessionInterface, { chargeName, interval }: IBillingOptions) {
-  const client = new Shopify.Clients.Graphql(session.shop, session.accessToken);
+async function hasActivePayment(session: Session, { chargeName, interval }: IBillingOptions) {
+  const client = new shopify.clients.Graphql({ session });
 
   if (isRecurring(interval)) {
     const currentInstallations = await client.query<any>({
@@ -110,11 +111,11 @@ async function hasActivePayment(session: SessionInterface, { chargeName, interva
 }
 
 async function requestPayment(
-  session: SessionInterface,
+  session: Session,
   { chargeName, amount, currencyCode, interval }: IBillingOptions
 ) {
-  const client = new Shopify.Clients.Graphql(session.shop, session.accessToken);
-  const returnUrl = `https://${Shopify.Context.HOST_NAME}?shop=${session.shop
+  const client = new shopify.clients.Graphql({ session });
+  const returnUrl = `https://${shopify.config.hostName}?shop=${session.shop
     }&host=${Buffer.from(`${session.shop}/admin`).toString('base64')}`;
 
   let data;

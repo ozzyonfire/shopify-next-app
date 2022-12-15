@@ -1,42 +1,36 @@
-import Shopify, { AuthQuery } from "@shopify/shopify-api";
-import { gdprTopics } from "@shopify/shopify-api/dist/webhooks/registry";
+import shopify from "../../../utils/initialize-context";
+import { AuthQuery, CookieNotFound, gdprTopics, InvalidOAuthError, Session, InvalidSession } from "@shopify/shopify-api";
 import { NextApiRequest, NextApiResponse } from "next";
-import withShopifyContext from "../../../api-helpers/withShopifyContext";
 import redirectToAuth from "../../../helpers/redirect-to-auth";
+import { storeSession } from "../../../utils/session-storage";
 
 const Callback = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const session = await Shopify.Auth.validateAuthCallback(
-      req,
-      res,
-      req.query as unknown as AuthQuery
-    );
+    const callbackResponse = await shopify.auth.callback<Session>({
+      rawRequest: req,
+      rawResponse: res,
+    });
+
+    const { session } = callbackResponse;
 
     if (!session || !session.accessToken) {
       return res.status(403).send("Could not validate auth callback");
     }
 
-    const responses = await Shopify.Webhooks.Registry.registerAll({
-      shop: session.shop,
-      accessToken: session.accessToken,
-    });
+    await storeSession(session, process.env.SHOPIFY_API_KEY || '');
+
+    const responses = await shopify.webhooks.register({ session });
 
     console.log('responses', responses);
 
-    Object.entries(responses).map(([topic, response]) => {
+    Object.entries(responses).map(([topic, results]) => {
       // The response from registerAll will include errors for the GDPR topics.  These can be safely ignored.
       // To register the GDPR topics, please set the appropriate webhook endpoint in the
       // 'GDPR mandatory webhooks' section of 'App setup' in the Partners Dashboard.
-      if (!response.success && !gdprTopics.includes(topic)) {
-        const responseResult = response.result as any;
-        if (responseResult.errors) {
+      for (const result of results) {
+        if (!result.success && !gdprTopics.includes(topic)) {
           console.log(
-            `Failed to register ${topic} webhook: ${responseResult.errors[0].message}`
-          );
-        } else {
-          console.log(
-            `Failed to register ${topic} webhook: ${JSON.stringify(responseResult.data, undefined, 2)
-            }`
+            `Failed to register ${topic} webhook: ${result}`
           );
         }
       }
@@ -55,25 +49,28 @@ const Callback = async (req: NextApiRequest, res: NextApiResponse) => {
     //   }
     // }
 
-    const host = Shopify.Utils.sanitizeHost(req.query.host as string);
+    const host = shopify.utils.sanitizeHost(req.query.host as string);
     if (!host) {
       return res.status(400).send("Missing host parameter");
     }
 
-    const redirectUrl = Shopify.Context.IS_EMBEDDED_APP
-      ? Shopify.Utils.getEmbeddedAppUrl(req)
-      : `/?shop=${session.shop}&host=${encodeURIComponent(host)}`;
-
+    let redirectUrl = `/?shop=${session.shop}&host=${encodeURIComponent(host)}`;
+    if (shopify.config.isEmbeddedApp) {
+      redirectUrl = await shopify.auth.getEmbeddedAppUrl({
+        rawRequest: req,
+        rawResponse: res,
+      });
+    }
     res.redirect(redirectUrl);
   } catch (e: any) {
     console.warn(e);
     switch (true) {
-      case e instanceof Shopify.Errors.InvalidOAuthError:
+      case e instanceof InvalidOAuthError:
         res.status(400);
         res.send(e.message);
         break;
-      case e instanceof Shopify.Errors.CookieNotFound:
-      case e instanceof Shopify.Errors.SessionNotFound:
+      case e instanceof CookieNotFound:
+      case e instanceof InvalidSession:
         // This is likely because the OAuth session cookie expired before the merchant approved the request
         return redirectToAuth(req, res);
         break;
@@ -85,4 +82,4 @@ const Callback = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-export default withShopifyContext(Callback);
+export default Callback;
