@@ -13,7 +13,7 @@ export default async function verifyRequest(req: NextApiRequest, res: NextApiRes
     throw new Error("No session id found.");
   }
 
-  const session = await loadSession(sessionId, process.env.SHOPIFY_API_KEY || '');
+  const session = await loadSession(sessionId);
 
   if (!session) {
     throw new Error("No sesssion found.");

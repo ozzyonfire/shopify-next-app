@@ -17,7 +17,7 @@ const Callback = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(403).send("Could not validate auth callback");
     }
 
-    await storeSession(session, process.env.SHOPIFY_API_KEY || '');
+    await storeSession(session);
 
     const responses = await shopify.webhooks.register({ session });
 

@@ -19,7 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!sanitizedShop) {
       throw new Error('Invalid shop provided');
     }
-    const appInstalled = await AppInstallations.includes(sanitizedShop, process.env.SHOPIFY_API_KEY || '');
+    const appInstalled = await AppInstallations.includes(sanitizedShop);
     if (!appInstalled) {
       throw new Error('App not installed');
     }
@@ -54,7 +54,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         callbackUrl: "/api/webhooks",
         callback: async (_topic, shop, _body) => {
           console.log("Uninstalled app from shop: " + shop);
-          await AppInstallations.delete(shop, process.env.SHOPIFY_API_KEY || '');
+          await AppInstallations.delete(shop);
         },
       }
     });

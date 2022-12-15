@@ -15,7 +15,7 @@ const Auth = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const offlineSessionId = shopify.session.getOfflineId(sanitizedShop);
-    const offlineSession = await loadSession(offlineSessionId, process.env.SHOPIFY_API_KEY || '');
+    const offlineSession = await loadSession(offlineSessionId);
 
     if (offlineSession) {
       // if offline session exists, get an online token

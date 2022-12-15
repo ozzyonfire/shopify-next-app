@@ -1,8 +1,9 @@
 import { Session } from "@shopify/shopify-api";
 import clientPromise from "./_mongodb_connect";
 const DB_NAME = 'shopify-apps';
+const apiKey = process.env.SHOPIFY_API_KEY || '';
 
-export async function storeSession(session: Session, apiKey: string) {
+export async function storeSession(session: Session) {
   const mongoClient = await clientPromise;
   const db = mongoClient.db(DB_NAME);
   try {
@@ -16,7 +17,7 @@ export async function storeSession(session: Session, apiKey: string) {
   }
 }
 
-export async function loadSession(id: string, apiKey: string) {
+export async function loadSession(id: string) {
   const mongoClient = await clientPromise;
   const db = mongoClient.db(DB_NAME);
   const record = await db.collection('sessions').findOne<Session>({ id, apiKey });
@@ -27,7 +28,7 @@ export async function loadSession(id: string, apiKey: string) {
   }
 }
 
-export async function deleteSession(id: string, apiKey: string) {
+export async function deleteSession(id: string) {
   const mongoClient = await clientPromise;
   const db = mongoClient.db(DB_NAME);
   try {
@@ -39,7 +40,7 @@ export async function deleteSession(id: string, apiKey: string) {
   }
 }
 
-export async function deleteSessions(ids: string[], apiKey: string) {
+export async function deleteSessions(ids: string[]) {
   const mongoClient = await clientPromise;
   const db = mongoClient.db(DB_NAME);
   try {
@@ -63,7 +64,7 @@ export async function cleanUpSession(shop: string, accessToken: string) {
   }
 }
 
-export async function findSessionsByShop(shop: string, apiKey: string) {
+export async function findSessionsByShop(shop: string) {
   const mongoClient = await clientPromise;
   const db = mongoClient.db(DB_NAME);
   const records = await db.collection('sessions').find<Session>({ shop, apiKey }).toArray();

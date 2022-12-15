@@ -44,7 +44,7 @@ export async function checkInstallation(shop: string) {
   if (!sanitizedShop) {
     return false;
   }
-  const appInstalled = await AppInstallations.includes(sanitizedShop, process.env.SHOPIFY_API_KEY || '');
+  const appInstalled = await AppInstallations.includes(sanitizedShop);
   return appInstalled;
 }
 
@@ -61,7 +61,7 @@ export async function verify(context: GetServerSidePropsContext) {
   // Check for active session
   console.log("Checking for offline token");
   const sessionId = shopify.session.getOfflineId(sanitizedShop);
-  const session = await loadSession(sessionId, process.env.SHOPIFY_API_KEY || '');
+  const session = await loadSession(sessionId);
   if (!session) {
     return false;
   }

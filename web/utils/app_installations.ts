@@ -1,8 +1,8 @@
 import { deleteSessions, findSessionsByShop } from "./session-storage";
 
 export const AppInstallations = {
-  includes: async function (shopDomain: string, apiKey: string) {
-    const shopSessions = await findSessionsByShop(shopDomain, apiKey);
+  includes: async function (shopDomain: string) {
+    const shopSessions = await findSessionsByShop(shopDomain);
 
     if (shopSessions.length > 0) {
       for (const session of shopSessions) {
@@ -13,10 +13,10 @@ export const AppInstallations = {
     return false;
   },
 
-  delete: async function (shopDomain: string, apiKey: string) {
-    const shopSessions = await findSessionsByShop(shopDomain, apiKey);
+  delete: async function (shopDomain: string) {
+    const shopSessions = await findSessionsByShop(shopDomain);
     if (shopSessions.length > 0) {
-      await deleteSessions(shopSessions.map((session) => session.id), apiKey);
+      await deleteSessions(shopSessions.map((session) => session.id));
     }
   },
 };
