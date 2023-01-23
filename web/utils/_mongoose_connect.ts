@@ -2,36 +2,31 @@ import mongoose, { Connection } from 'mongoose';
 mongoose.set('strictQuery', true);
 
 interface ConnectionCache {
-  [key: string]: Promise<Connection> | null;
+  [key: string]: Connection
 }
 const connectionCache: ConnectionCache = {};
 
-export async function connect(dbName: string) {
+export function connect(dbName: string) {
   const conn = mongoose.connections.find(c => c.name === dbName);
-  const cachedPromise = connectionCache[dbName];
+  const cachedConnection = connectionCache[dbName];
 
   if (conn) {
-    if (conn.readyState === 1) { // connected
-      console.log('👌 Reusing existing mongoose connection.');
-      return conn;
-    } else if (cachedPromise) {
-      await cachedPromise;
-      return conn;
-    }
+    console.log('👌 Reusing existing mongoose connection.', dbName);
+    return conn;
   }
 
-  const pendingConnection = mongoose.createConnection(process.env.MONGODB_URI || '', {
+  if (cachedConnection) {
+    console.log('👌 Reusing cached mongoose connection.', dbName);
+    return cachedConnection;
+  }
+
+  const connection = mongoose.createConnection(process.env.MONGODB_URI || '', {
     autoIndex: true,
-    dbName
+    dbName,
   });
 
-  connectionCache[dbName] = pendingConnection.asPromise();
+  console.log('🔥 Creating new mongoose connection.', dbName);
+  connectionCache[dbName] = connection;
 
-  try {
-    await connectionCache[dbName];
-    console.log('🔥 Creating new mongoose connection.');
-    return pendingConnection;
-  } finally {
-    connectionCache[dbName] = null;
-  }
+  return connection;
 }

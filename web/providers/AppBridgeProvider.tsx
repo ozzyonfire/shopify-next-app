@@ -43,16 +43,29 @@ export function AppBridgeProvider({ children }: { children: React.ReactNode }) {
   // See: https://stackoverflow.com/questions/60482318/version-of-usememo-for-caching-a-value-that-will-never-change
 
   const router = useRouter();
+  const [host, setHost] = useState(router.query.host as string);
+  const [shop, setShop] = useState(router.query.shop as string);
   const { asPath: location } = router;
   const history = useMemo(() => {
     return {
       replace: (path: string) => {
-        router.push(path);
+        const params = new URLSearchParams(path.split('?')[1]);
+        params.append('host', host);
+        params.append('shop', shop);
+        router.push(`${path}?${params.toString()}`);
       },
     };
-  }
-    , [router]);
-  const host = router.query.host as string;
+  }, [router, host, shop]);
+
+  // cache the query params in state for the router
+  useEffect(() => {
+    if (router.query.host) {
+      setHost(router.query.host as string);
+    }
+    if (router.query.shop) {
+      setShop(router.query.shop as string);
+    }
+  }, [router.query.host, router.query.shop]);
 
   console.log('host', host);
   console.log('apiKey', process.env.NEXT_PUBLIC_SHOPIFY_API_KEY);
