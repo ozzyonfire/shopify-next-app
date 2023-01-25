@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { Provider } from "@shopify/app-bridge-react";
-import { Banner, Layout, Loading, Page, Spinner, Text } from "@shopify/polaris";
-import createApp, { AppConfigV2 } from "@shopify/app-bridge";
+import { Banner, Layout, Page } from "@shopify/polaris";
+import { AppConfigV2 } from "@shopify/app-bridge";
 import { useRouter } from "next/router";
-import { useAuthRedirect, useVerifySession } from "../hooks/auth";
 declare global {
   interface Window {
     __SHOPIFY_DEV_HOST: string;
