@@ -20,22 +20,6 @@ declare global {
  * See: https://shopify.dev/apps/tools/app-bridge/react-components
  */
 export function AppBridgeProvider({ children }: { children: React.ReactNode }) {
-  // const location = useLocation();
-  // const navigate = useNavigate();
-  // const history = useMemo(
-  //   () => ({
-  //     replace: (path) => {
-  //       navigate(path, { replace: true });
-  //     },
-  //   }),
-  //   [navigate]
-  // );
-
-  // const routerConfig = useMemo(
-  //   () => ({ history, location }),
-  //   [history, location]
-  // );
-
   // The host may be present initially, but later removed by navigation.
   // By caching this in state, we ensure that the host is never lost.
   // During the lifecycle of an app, these values should never be updated anyway.
@@ -66,9 +50,6 @@ export function AppBridgeProvider({ children }: { children: React.ReactNode }) {
       setShop(router.query.shop as string);
     }
   }, [router.query.host, router.query.shop]);
-
-  console.log('host', host);
-  console.log('apiKey', process.env.NEXT_PUBLIC_SHOPIFY_API_KEY);
 
   const appBridgeConfig: AppConfigV2 = useMemo(
     () => ({
