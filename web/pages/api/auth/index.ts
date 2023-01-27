@@ -47,9 +47,9 @@ const Auth = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (offlineSession) {
       // if offline session exists, get an online token
-      getOnlineToken(sanitizedShop, req, res);
+      return getOnlineToken(sanitizedShop, req, res);
     } else {
-      getOfflineToken(sanitizedShop, req, res);
+      return getOfflineToken(sanitizedShop, req, res);
     }
   }
 }
