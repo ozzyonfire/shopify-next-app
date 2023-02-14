@@ -1,11 +1,13 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import shopify from "../../utils/initialize-context";
+import getRawBody from "raw-body";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  console.log('got a webhook', req.body);
   try {
+    const rawBody = await getRawBody(req);
+    console.log('got a webhook', rawBody.toString());
     await shopify.webhooks.process({
-      rawBody: req.body,
+      rawBody: rawBody.toString(),
       rawRequest: req,
       rawResponse: res,
     });
