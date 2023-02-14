@@ -1,9 +1,8 @@
 import shopify from "../../../utils/initialize-context";
 import { NextApiRequest, NextApiResponse } from "next";
-import { setupGDPRWebHooks } from "../../../helpers/gdpr";
 import verifyRequest from "../../../helpers/verify-request";
 import { AppInstallations } from "../../../utils/app_installations";
-import { DeliveryMethod } from "@shopify/shopify-api";
+import { registerWebhooks } from "../../../utils/register-webhooks";
 
 const TEST_GRAPHQL_QUERY = `
 {
@@ -46,18 +45,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
     await client.query({ data: TEST_GRAPHQL_QUERY });
 
-    // register any webhooks here
-    setupGDPRWebHooks('/api/webhooks');
-    shopify.webhooks.addHandlers({
-      "APP_UNINSTALLED": {
-        deliveryMethod: DeliveryMethod.Http,
-        callbackUrl: "/api/webhooks",
-        callback: async (_topic, shop, _body) => {
-          console.log("Uninstalled app from shop: " + shop);
-          await AppInstallations.delete(shop);
-        },
-      }
-    });
+    // setup webhooks
+    await registerWebhooks(offlineSession);
 
     return res.json({
       status: 'success',

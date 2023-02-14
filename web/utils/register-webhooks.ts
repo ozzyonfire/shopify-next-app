@@ -18,9 +18,9 @@ export async function registerWebhooks(session: Session) {
         },
       }
     });
-    console.log('Registered webhooks');
+    console.log('Setup webhooks');
     webhooksInitialized = true;
   }
   const responses = await shopify.webhooks.register({ session });
-  console.log('Webhook responses', responses);
+  console.log('Webhooks registered', responses);
 }

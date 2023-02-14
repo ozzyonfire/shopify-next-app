@@ -5,7 +5,6 @@ import getRawBody from "raw-body";
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const rawBody = await getRawBody(req);
-    console.log('got a webhook', rawBody.toString());
     await shopify.webhooks.process({
       rawBody: rawBody.toString(),
       rawRequest: req,
