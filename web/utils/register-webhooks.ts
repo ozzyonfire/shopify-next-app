@@ -5,11 +5,12 @@ import { AppInstallations } from "./app_installations";
 
 let webhooksInitialized = false;
 
-export async function registerWebhooks(session: Session) {
+export async function addHandlers() {
   if (!webhooksInitialized) {
+    webhooksInitialized = true;
     await setupGDPRWebHooks('/api/webhooks');
     await shopify.webhooks.addHandlers({
-      "APP_UNINSTALLED": {
+      ["APP_UNINSTALLED"]: {
         deliveryMethod: DeliveryMethod.Http,
         callbackUrl: "/api/webhooks",
         callback: async (_topic, shop, _body) => {
@@ -18,9 +19,14 @@ export async function registerWebhooks(session: Session) {
         },
       }
     });
-    console.log('Setup webhooks');
-    webhooksInitialized = true;
+    console.log('Added handlers');
+  } else {
+    console.log('Handlers already added');
   }
+}
+
+export async function registerWebhooks(session: Session) {
+  await addHandlers();
   const responses = await shopify.webhooks.register({ session });
-  console.log('Webhooks registered', responses);
+  console.log('Webhooks added', responses);
 }

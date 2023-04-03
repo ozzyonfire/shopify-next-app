@@ -1,10 +1,20 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import shopify from "../../utils/initialize-context";
 import getRawBody from "raw-body";
+import { addHandlers } from "../../utils/register-webhooks";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const rawBody = await getRawBody(req);
+    const topic = req.headers["x-shopify-topic"] as string;
+
+    // Seems like there is some weird behaviour where the shopify api doesn't have the handlers registered - possibly due to some serverless behaviour
+    const handlers = shopify.webhooks.getHandlers(topic);
+    if (handlers.length === 0) {
+      console.log(`No handlers found for topic: ${topic}`);
+      await addHandlers();
+    }
+
     await shopify.webhooks.process({
       rawBody: rawBody.toString(),
       rawRequest: req,
