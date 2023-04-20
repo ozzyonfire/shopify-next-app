@@ -1,9 +1,17 @@
-import { ClientApplication, createApp } from "@shopify/app-bridge";
+import { ClientApplication } from "@shopify/app-bridge";
+import { useAppBridge } from "@shopify/app-bridge-react";
 import { authenticatedFetch } from "@shopify/app-bridge-utils";
 import { Redirect } from "@shopify/app-bridge/actions";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
-import { useFetcher } from "../providers/APIProvider";
+import { useCallback, useEffect, useMemo, useState } from "react";
+
+interface VerifyResponse {
+  status: "success" | "error";
+  type: "token" | "scope";
+  sessionType: "offline" | "online";
+  message: string;
+  accountOwner?: boolean;
+}
 
 export function useAuthRedirect() {
   const router = useRouter();
@@ -45,43 +53,59 @@ export function useAuthRedirect() {
 export function useVerifySession() {
   const [verified, setVerified] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [accountOwner, setAccountOwner] = useState(false);
+  const [sessionType, setSessionType] = useState<"offline" | "online">("offline");
+  const [authErrorType, setAuthErrorType] = useState<"token" | "scope">("token");
   const router = useRouter();
+  const app = useAppBridge();
 
-  useEffect(() => {
-    if (!!router) {
+  const queryParams = useMemo(() => {
+    if (router) {
       const {
         shop,
         host,
       } = router.query;
-      if (!!shop && !!host) {
-        const app = createApp({
-          apiKey: process.env.NEXT_PUBLIC_SHOPIFY_API_KEY || '',
-          host: host as string,
-          forceRedirect: true,
-        });
+      if (shop && host) {
         const queryParams = new URLSearchParams({
           shop: shop as string,
           host: host as string,
         });
-        authenticatedFetch(app)(`/api/auth/verify?${queryParams.toString()}`).then(async (response) => {
-          const body = await response.json();
-          if (body.status == 'success') {
-            setVerified(true);
-          } else {
-            setVerified(false);
-          }
-          setLoading(false);
-        }).catch(err => {
-          console.log(err);
-          setLoading(false);
-          setVerified(false);
-        });
+        return queryParams;
       }
     }
+    return null;
   }, [router]);
+
+  useEffect(() => {
+    if (queryParams && app) {
+      console.log('verifying session');
+      authenticatedFetch(app)(`/api/auth/verify?${queryParams.toString()}`).then(async (response) => {
+        setLoading(true);
+        const body = await response.json() as VerifyResponse;
+        if (body.status == 'success') {
+          setVerified(true);
+        } else {
+          setVerified(false);
+          setAuthErrorType(body.type);
+          setSessionType(body.sessionType);
+          if (body.accountOwner) {
+            setAccountOwner(true);
+          }
+        }
+        setLoading(false);
+      }).catch(err => {
+        console.log(err);
+        setLoading(false);
+        setVerified(false);
+      });
+    }
+  }, [app, queryParams]);
 
   return {
     verified,
     loading,
+    accountOwner,
+    sessionType,
+    authErrorType,
   };
 }

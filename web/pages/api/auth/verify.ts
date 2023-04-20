@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import verifyRequest from "../../../helpers/verify-request";
 import { AppInstallations } from "../../../utils/app_installations";
 import { registerWebhooks } from "../../../utils/register-webhooks";
+import { GraphqlQueryError } from "@shopify/shopify-api";
 
 const TEST_GRAPHQL_QUERY = `
 {
@@ -20,7 +21,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
     const appInstalled = await AppInstallations.includes(sanitizedShop);
     if (!appInstalled) {
-      throw new Error('App not installed');
+      return res.json({
+        status: "error",
+        type: "token",
+        message: "App not installed",
+      });
     }
 
     // check for offline token
@@ -30,35 +35,69 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     // check for scope mismatch
     if (!shopify.config.scopes.equals(offlineSession.scope)) {
-      console.log('scope mismatch', shopify.config.scopes);
-      throw new Error('Scope mismatch - offline token');
+      console.log('scope mismatch - verify (offline)', offlineSession);
+      return res.json({
+        status: "error",
+        type: "scope",
+        sessionType: "offline",
+        message: "Scope mismatch - offline token",
+        accountOwner: onlineSession.onlineAccessInfo?.associated_user.account_owner,
+      });
     }
 
     if (!shopify.config.scopes.equals(onlineSession.scope)) {
-      console.log('scope mismatch', shopify.config.scopes);
-      throw new Error('Scope mismatch - online token');
+      console.log('scope mismatch - verify (online)', onlineSession);
+      return res.json({
+        status: "error",
+        type: "scope",
+        sessionType: "online",
+        message: "Scope mismatch - online token",
+        accountOwner: onlineSession.onlineAccessInfo?.associated_user.account_owner,
+      });
     }
 
     // do a test query to make sure the session is still active
     const client = new shopify.clients.Graphql({
       session: onlineSession,
     });
-    await client.query({ data: TEST_GRAPHQL_QUERY });
 
-    // setup webhooks
-    await registerWebhooks(offlineSession);
+    try {
+      await client.query({ data: TEST_GRAPHQL_QUERY });
+    } catch (err) {
+      return res.json({
+        status: "error",
+        type: "token",
+        message: "Access token is invalid",
+        accountOwner: onlineSession.onlineAccessInfo?.associated_user.account_owner,
+      });
+    }
+
+    // make sure the webhooks are registered
+    try {
+      await registerWebhooks(offlineSession);
+    } catch (err) {
+      console.log('Error registering webhooks - will be retried', err);
+    }
 
     return res.json({
       status: 'success',
     });
-
-  } catch (err) {
-    const error = err as Error;
-    console.log('Error in Verify', error);
-    return res.json({
-      status: "error",
-      message: error.message,
-    });
+  } catch (err: any) {
+    if (err instanceof GraphqlQueryError) {
+      const error = err as GraphqlQueryError;
+      console.log('Error in Verify', error.response?.errors);
+      return res.json({
+        status: "error",
+        message: error.response?.errors,
+        type: 'token'
+      });
+    } else {
+      return res.json({
+        status: "error",
+        message: err.message,
+        type: 'token'
+      });
+    }
   }
 }
 
