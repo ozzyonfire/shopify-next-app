@@ -2,6 +2,7 @@ import { GetServerSidePropsContext } from "next";
 import { AppInstallations } from "./app_installations";
 import shopify from "./initialize-context";
 import { loadSession } from "./session-storage";
+import { redirect } from "next/navigation";
 
 const TEST_GRAPHQL_QUERY = `
 {
@@ -48,11 +49,10 @@ export async function checkInstallation(shop: string) {
   return appInstalled;
 }
 
-export async function verify(context: GetServerSidePropsContext) {
-  const { shop } = context.query;
+export async function verify(shop: string) {
   console.log('shop', shop);
 
-  const sanitizedShop = shopify.utils.sanitizeShop(shop as string);
+  const sanitizedShop = shopify.utils.sanitizeShop(shop);
   if (!sanitizedShop) {
     console.log('Invalid shop provided');
     return false;
@@ -94,42 +94,26 @@ export async function verify(context: GetServerSidePropsContext) {
  * 5. If the app needs to be authorized, redirect to the OAuth page
  * 6. If the app is authorized, check to see if there is a subscription / billing
  */
-export async function performChecks(context: GetServerSidePropsContext) {
-  const { shop, host, session } = context.query;
-  context.res.setHeader(
-    "Content-Security-Policy",
-    `frame-ancestors https://${encodeURIComponent(
-      shop as string
-    )} https://admin.shopify.com;`
-  );
-  const isInstalled = await checkInstallation(shop as string);
-  console.log('isInstalled', isInstalled);
-
+export async function performChecks(shop: string, host: string) {
+  const isInstalled = await checkInstallation(shop);
   if (!isInstalled) {
-    return {
-      redirect: {
-        destination: serverSideRedirect(context),
-        permanent: false,
-      }
-    }
+    return exitIFrame(shop, host);
   }
 
-  // Don't even need to do this anymore since it happens in _app.tsx
-  // const verified = await verify(context);
-  // if (!verified) {
-  //   return {
-  //     redirect: {
-  //       destination: serverSideRedirect(context),
-  //       permanent: false,
-  //     }
-  //   }
-  // }
-
-  return {
-    props: {
-      shop: shop as string || null,
-      host: host as string || null,
-      session: session as string || null,
-    }
+  // verify the session
+  const isVerified = await verify(shop);
+  if (!isVerified) {
+    return exitIFrame(shop, host);
   }
+}
+
+export function exitIFrame(shop: string, host: string) {
+  const hostUrl = process.env.HOST;
+  const queryParams = new URLSearchParams({
+    shop,
+    host
+  });
+  const redirectUri = `${hostUrl}/api/auth?${queryParams.toString()}`;
+  queryParams.append('redirectUri', encodeURI(redirectUri));
+  redirect(`/exitiframe?${queryParams.toString()}`);
 }

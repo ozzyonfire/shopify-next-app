@@ -2,7 +2,7 @@ import { ClientApplication } from "@shopify/app-bridge";
 import { useAppBridge } from "@shopify/app-bridge-react";
 import { authenticatedFetch } from "@shopify/app-bridge-utils";
 import { Redirect } from "@shopify/app-bridge/actions";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 interface VerifyResponse {
@@ -15,22 +15,12 @@ interface VerifyResponse {
 
 export function useAuthRedirect() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const redirect = useCallback((app: ClientApplication<any>) => {
     if (!!app && !!router) {
-      const {
-        shop,
-        host,
-        embedded,
-        ...other
-      } = router.query;
-      const queryParams = new URLSearchParams({
-        shop: shop as string,
-        host: host as string,
-        embedded: embedded as string,
-        ...other
-      });
-      const authUrl = `${process.env.NEXT_PUBLIC_HOST}/api/auth?${queryParams.toString()}`;
+      const embedded = searchParams?.get('embedded');
+      const authUrl = `${process.env.NEXT_PUBLIC_HOST}/api/auth?${searchParams?.toString()}`;
       if (embedded === "1") {
         console.log('redirecting using app');
         const redirect = Redirect.create(app);
@@ -45,7 +35,7 @@ export function useAuthRedirect() {
     } else {
       console.log('app or router not defined');
     }
-  }, [router]);
+  }, [searchParams, router]);
 
   return redirect;
 }
@@ -57,14 +47,13 @@ export function useVerifySession() {
   const [sessionType, setSessionType] = useState<"offline" | "online">("offline");
   const [authErrorType, setAuthErrorType] = useState<"token" | "scope">("token");
   const router = useRouter();
+  const searchParams = useSearchParams();
   const app = useAppBridge();
 
   const queryParams = useMemo(() => {
     if (router) {
-      const {
-        shop,
-        host,
-      } = router.query;
+      const shop = searchParams?.get('shop');
+      const host = searchParams?.get('host');
       if (shop && host) {
         const queryParams = new URLSearchParams({
           shop: shop as string,
@@ -74,7 +63,7 @@ export function useVerifySession() {
       }
     }
     return null;
-  }, [router]);
+  }, [router, searchParams]);
 
   useEffect(() => {
     if (queryParams && app) {

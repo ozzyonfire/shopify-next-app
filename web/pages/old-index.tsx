@@ -1,9 +1,10 @@
-import { Card, Page, Text } from '@shopify/polaris'
+import { Button, LegacyCard as Card, Page, Text } from '@shopify/polaris'
 import { GetServerSidePropsContext } from 'next';
 import { useState } from 'react';
 import { useFetcher } from '../providers/APIProvider';
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { performChecks } from '../utils/shopify-oauth';
+import Link from 'next/link';
 
 interface Data {
   name: string;
@@ -86,6 +87,11 @@ export default function Home() {
           </Text>
         )}
       </Card>
+      <Button>
+        <Link href="/new">
+          New Page old
+        </Link>
+      </Button>
     </Page>
   )
 }

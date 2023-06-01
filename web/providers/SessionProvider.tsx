@@ -1,12 +1,8 @@
 import { Loading, useAppBridge } from "@shopify/app-bridge-react";
-import { Redirect } from "@shopify/app-bridge/actions";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAuthRedirect, useVerifySession } from "../hooks/auth";
-import { useFetcher } from "./APIProvider";
 
 export default function SessionProvider({ children }: { children: React.ReactNode }) {
-  // const fetcher = useFetcher();
   const app = useAppBridge();
   const {
     verified,

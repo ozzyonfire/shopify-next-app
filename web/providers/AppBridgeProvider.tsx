@@ -1,8 +1,10 @@
+'use client'
+
 import { useEffect, useMemo, useState } from "react";
 import { Provider } from "@shopify/app-bridge-react";
 import { Banner, Layout, Page } from "@shopify/polaris";
 import { AppConfigV2 } from "@shopify/app-bridge";
-import { useRouter } from "next/router";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 declare global {
   interface Window {
     __SHOPIFY_DEV_HOST: string;
@@ -25,10 +27,12 @@ export function AppBridgeProvider({ children }: { children: React.ReactNode }) {
   // Using state in this way is preferable to useMemo.
   // See: https://stackoverflow.com/questions/60482318/version-of-usememo-for-caching-a-value-that-will-never-change
 
+  const searchParams = useSearchParams();
   const router = useRouter();
-  const [host, setHost] = useState(router.query.host as string);
-  const [shop, setShop] = useState(router.query.shop as string);
-  const { asPath: location } = router;
+
+  const [host, setHost] = useState(searchParams?.get('host') || window.__SHOPIFY_DEV_HOST || '');
+  const [shop, setShop] = useState(searchParams?.get('shop') || '');
+  const location = usePathname() || '';
   const history = useMemo(() => {
     return {
       replace: (path: string) => {
@@ -38,17 +42,17 @@ export function AppBridgeProvider({ children }: { children: React.ReactNode }) {
         router.push(`${path}?${params.toString()}`);
       },
     };
-  }, [router, host, shop]);
+  }, [host, shop, router]);
 
   // cache the query params in state for the router
   useEffect(() => {
-    if (router.query.host) {
-      setHost(router.query.host as string);
+    if (searchParams?.get('host')) {
+      setHost(searchParams.get('host') as string);
     }
-    if (router.query.shop) {
-      setShop(router.query.shop as string);
+    if (searchParams?.get('shop')) {
+      setShop(searchParams.get('shop') as string);
     }
-  }, [router.query.host, router.query.shop]);
+  }, [searchParams]);
 
   const appBridgeConfig: AppConfigV2 = useMemo(
     () => ({
