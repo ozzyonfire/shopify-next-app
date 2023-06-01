@@ -1,4 +1,5 @@
 import '@shopify/shopify-api/adapters/node';
+// import '@shopify/shopify-api/adapters/cf-worker';
 import { shopifyApi, LATEST_API_VERSION } from "@shopify/shopify-api";
 
 const shopify = shopifyApi({

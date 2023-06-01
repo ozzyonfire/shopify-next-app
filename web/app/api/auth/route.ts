@@ -1,5 +1,5 @@
-import shopify from "@/utils/initialize-context";
-import { loadSession } from "@/utils/session-storage";
+import shopify from "@/lib/initialize-context";
+import { loadSession } from "@/lib/session-storage";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -25,12 +25,12 @@ export async function GET(req: Request) {
 	return beginAuth(sanitizedShop, req, true);
 }
 
-function beginAuth(shop: string, req: Request, isOnline: boolean) {
+export function beginAuth(shop: string, req: Request, isOnline: boolean) {
 	return shopify.auth.begin({
 		shop,
 		callbackPath: '/api/auth/callback',
 		isOnline,
 		rawRequest: req,
-		rawResponse: new NextResponse()
+		// rawResponse: new NextResponse()
 	});
 }

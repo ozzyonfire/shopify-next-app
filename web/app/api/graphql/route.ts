@@ -1,0 +1,24 @@
+import shopify from '@/lib/initialize-context';
+import { verifyRequest } from '@/lib/verify';
+import { GraphqlQueryError } from '@shopify/shopify-api';
+import { NextResponse } from 'next/server';
+
+export async function POST(req: Request) {
+	const session = await verifyRequest(req, true); // could use middleware for this
+	const rawBody = await req.text();
+
+	try {
+		const response = await shopify.clients.graphqlProxy({
+			rawBody,
+			session
+		});
+		return NextResponse.json(response.body);
+	} catch (error) {
+		if (error instanceof GraphqlQueryError) {
+			console.log(error.response);
+			return NextResponse.json({ error: error.response }, { status: 500 });
+		}
+		console.log(error);
+		return NextResponse.json(error, { status: 500 });
+	}
+}

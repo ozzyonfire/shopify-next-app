@@ -9,35 +9,35 @@ import ApolloProvider from './ApolloProvider';
 import SessionProvider from './SessionProvider';
 
 export default function Providers({
-  children
+	children
 }: {
-  children: React.ReactNode
+	children: React.ReactNode
 }) {
-  return (
-    <AppProvider i18n={translations}>
-      <AppBridgeProvider>
-        <APIProvider>
-          <ApolloProvider>
-            <SessionProvider>
-              {children}
-            </SessionProvider>
-          </ApolloProvider>
-        </APIProvider>
-      </AppBridgeProvider>
-    </AppProvider>
-  )
+	return (
+		<AppProvider i18n={translations}>
+			<AppBridgeProvider>
+				<APIProvider>
+					<ApolloProvider>
+						{/* <SessionProvider> */}
+						{children}
+						{/* </SessionProvider> */}
+					</ApolloProvider>
+				</APIProvider>
+			</AppBridgeProvider>
+		</AppProvider>
+	)
 }
 
 export function ExitProvider({
-  children
+	children
 }: {
-  children: React.ReactNode
+	children: React.ReactNode
 }) {
-  return (
-    <AppProvider i18n={translations}>
-      <AppBridgeProvider>
-        {children}
-      </AppBridgeProvider>
-    </AppProvider>
-  )
+	return (
+		<AppProvider i18n={translations}>
+			<AppBridgeProvider>
+				{children}
+			</AppBridgeProvider>
+		</AppProvider>
+	)
 }
