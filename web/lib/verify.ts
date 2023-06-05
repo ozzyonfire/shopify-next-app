@@ -63,6 +63,7 @@ export async function verifyAuth(shop: string) {
 	const onlineSession = sessions.find((session) => session.isOnline === true);
 
 	if (!offlineSession) {
+		console.log('No offline session found');
 		throw new SessionNotFoundError(false);
 	}
 

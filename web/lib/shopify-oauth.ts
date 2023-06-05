@@ -95,6 +95,7 @@ export async function verify(shop: string) {
  */
 export async function performChecks(shop: string, host: string) {
 	const isInstalled = await checkInstallation(shop);
+	console.log('isInstalled', isInstalled);
 	if (!isInstalled) {
 		return exitIFrame(shop, host);
 	}

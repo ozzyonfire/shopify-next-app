@@ -4,7 +4,7 @@ import { CookieNotFound, InvalidOAuthError, InvalidSession, Session } from "@sho
 import { NextResponse } from "next/server";
 import { beginAuth } from "../route";
 
-export async function POST(req: Request) {
+export async function GET(req: Request) {
 	const url = new URL(req.url);
 	const shop = url.searchParams.get('shop');
 	const host = url.searchParams.get('host');
@@ -45,7 +45,9 @@ export async function POST(req: Request) {
 				rawResponse: new NextResponse(),
 			});
 		}
-		NextResponse.redirect(redirectUrl);
+
+		console.log('redirecting back to app', redirectUrl);
+		return NextResponse.redirect(redirectUrl);
 	} catch (e: any) {
 		console.warn(e);
 		switch (true) {

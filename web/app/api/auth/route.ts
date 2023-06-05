@@ -15,13 +15,16 @@ export async function GET(req: Request) {
 	const offlineSession = await loadSession(offlineSessionId);
 
 	if (!offlineSession) {
+		console.log('no offline session');
 		return beginAuth(sanitizedShop, req, false);
 	}
 
 	if (!shopify.config.scopes.equals(offlineSession.scope)) {
+		console.log('scopes do not match');
 		return beginAuth(sanitizedShop, req, false);
 	}
 
+	console.log('online auth');
 	return beginAuth(sanitizedShop, req, true);
 }
 
@@ -31,6 +34,6 @@ export function beginAuth(shop: string, req: Request, isOnline: boolean) {
 		callbackPath: '/api/auth/callback',
 		isOnline,
 		rawRequest: req,
-		// rawResponse: new NextResponse()
+		rawResponse: new NextResponse()
 	});
 }
