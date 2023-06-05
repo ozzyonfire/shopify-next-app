@@ -9,8 +9,6 @@ export async function GET(req: Request) {
 	const shop = url.searchParams.get('shop');
 	const host = url.searchParams.get('host');
 
-	console.log('in the route callback', shop, host);
-
 	if (!shop) {
 		throw new Error("No shop provided");
 	}

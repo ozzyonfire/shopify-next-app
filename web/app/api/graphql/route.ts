@@ -7,9 +7,11 @@ export async function POST(req: Request) {
 	const session = await verifyRequest(req, true); // could use middleware for this
 	const rawBody = await req.text();
 
+	console.log('rawBody', rawBody);
+
 	try {
 		const response = await shopify.clients.graphqlProxy({
-			rawBody,
+			rawBody: JSON.stringify(rawBody),
 			session
 		});
 		return NextResponse.json(response.body);
