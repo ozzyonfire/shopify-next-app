@@ -30,7 +30,7 @@ export function AppBridgeProvider({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const [host, setHost] = useState(searchParams?.get('host') || window.__SHOPIFY_DEV_HOST || '');
+  const [host, setHost] = useState(searchParams?.get('host') || '');
   const [shop, setShop] = useState(searchParams?.get('shop') || '');
   const location = usePathname() || '';
   const history = useMemo(() => {

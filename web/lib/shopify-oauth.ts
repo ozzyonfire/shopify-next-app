@@ -12,32 +12,16 @@ const TEST_GRAPHQL_QUERY = `
   }
 }`;
 
-export function embeddedAppRedirect(context: GetServerSidePropsContext, shop: string) {
-	const redirectUriParams = new URLSearchParams({
-		shop,
-		host: context.query.host as string,
-	}).toString();
-	const queryParams = new URLSearchParams({
-		...context.query,
-		shop,
-		redirectUri: `https://${shopify.config.hostName}/api/auth?${redirectUriParams}`,
-	}).toString();
-
-	return `/exitiframe?${queryParams}`;
-}
-
-export function serverSideRedirect(context: GetServerSidePropsContext) {
-	const { shop, embedded } = context.query;
-	console.log('shop', shop, 'embedded', embedded);
-
+export function serverSideRedirect(shop: string, host: string, embedded: string) {
 	const sanitizedShop = shopify.utils.sanitizeShop(shop as string);
 	if (!sanitizedShop) {
 		throw new Error('Invalid shop provided');
 	}
 	if (embedded === "1") {
-		return embeddedAppRedirect(context, sanitizedShop);
+		return exitIFrame(shop, host);
 	} else {
-		return `/api/auth?shop=${shop}`;
+		const redirectUri = `${process.env.HOST}/api/auth?shop=${shop}&host=${host}`;
+		redirect(redirectUri);
 	}
 }
 
@@ -93,19 +77,18 @@ export async function verify(shop: string) {
  * 5. If the app needs to be authorized, redirect to the OAuth page
  * 6. If the app is authorized, check to see if there is a subscription / billing
  */
-export async function performChecks(shop: string, host: string) {
+export async function performChecks(shop: string, host: string, embedded: string) {
 	const isInstalled = await checkInstallation(shop);
 	console.log('isInstalled', isInstalled);
 	if (!isInstalled) {
-		return exitIFrame(shop, host);
+		return serverSideRedirect(shop, host, embedded);
 	}
 
 	// verify the session
 	try {
 		await verifyAuth(shop);
 	} catch (err) {
-		console.log('error', err);
-		return exitIFrame(shop, host);
+		return serverSideRedirect(shop, host, embedded);
 	}
 }
 
