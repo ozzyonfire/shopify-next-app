@@ -27,7 +27,9 @@ export default function Home() {
   const fetcher = useFetcher();
   const [data, setData] = useState<Data | null>(null);
   const [graphqlData, setGraphglData] = useState<ShopData | null>(null);
-  const [getShop] = useLazyQuery<ShopData>(GET_SHOP);
+  const [getShop] = useLazyQuery<ShopData>(GET_SHOP, {
+    fetchPolicy: 'network-only',
+  });
 
   const handleGetAPIRequest = async () => {
     try {
@@ -65,15 +67,19 @@ export default function Home() {
         primaryFooterAction={{
           content: 'GraphQL Query',
           onAction: async () => {
-            const {
-              data,
-              error
-            } = await getShop();
-            if (data) {
-              setGraphglData(data);
-            }
-            if (error) {
-              console.error(error);
+            try {
+              const {
+                data,
+                error
+              } = await getShop();
+              if (data) {
+                setGraphglData(data);
+              }
+              if (error) {
+                console.error(error);
+              }
+            } catch (err) {
+              console.error(err);
             }
           },
         }}

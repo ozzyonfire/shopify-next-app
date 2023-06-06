@@ -5,13 +5,13 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
 	const session = await verifyRequest(req, true); // could use middleware for this
-	const rawBody = await req.text();
+	const rawBody = await req.json();
 
 	console.log('rawBody', rawBody);
 
 	try {
 		const response = await shopify.clients.graphqlProxy({
-			rawBody: JSON.stringify(rawBody),
+			rawBody: rawBody,
 			session
 		});
 		return NextResponse.json(response.body);
