@@ -12,9 +12,13 @@ export async function POST(req: Request) {
 		addHandlers();
 	}
 
+	const rawBody = await req.text();
+
 	await shopify.webhooks.process({
-		rawBody: req.body?.toString() || '',
+		rawBody,
 		rawRequest: req,
 	});
+
 	console.log(`Webhook processed, returned status code 200`);
+	return new Response(null, { status: 200 });
 }
