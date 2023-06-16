@@ -99,13 +99,13 @@ This template can be installed using your preferred package manager:
 Using yarn:
 
 ```shell
-yarn create @shopify/app --template https://github.com/ozzyonfire/shopify-app-next.git
+yarn create @shopify/app --template https://github.com/ozzyonfire/shopify-next-app.git
 ```
 
 Using npx:
 
 ```shell
-npx @shopify/create-app@latest --template https://github.com/ozzyonfire/shopify-app-next.git
+npx @shopify/create-app@latest --template https://github.com/ozzyonfire/shopify-next-app.git
 ```
 
 This will clone the template and install the required dependencies.
