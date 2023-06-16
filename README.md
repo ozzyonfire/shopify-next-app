@@ -32,8 +32,6 @@ The install page, i.e. `/index.tsx`, must use getServerSideProps to handle the i
 There are a couple environment variables you need to set up in order for the app to run. Create a file called `.env.local` in the `/web` directory (or the root of your Next.js app) and add the following lines;
 
 ```bash
-NEXT_PUBLIC_HOST=$HOST
-NEXT_PUBLIC_SHOPIFY_API_KEY=$SHOPIFY_API_KEY
 MONGODB_URI= # mongoDB uri goes here
 ```
 

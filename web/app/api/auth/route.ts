@@ -15,7 +15,7 @@ export async function GET(req: Request) {
 	const offlineSession = await loadSession(offlineSessionId);
 
 	if (!offlineSession) {
-		console.log('no offline session');
+		console.log('offline session not found');
 		return beginAuth(sanitizedShop, req, false);
 	}
 

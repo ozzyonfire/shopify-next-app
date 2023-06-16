@@ -14,7 +14,6 @@ export async function GET(req: Request) {
 	}
 
 	try {
-
 		const callbackResponse = await shopify.auth.callback<Session>({
 			rawRequest: req,
 			rawResponse: new NextResponse()
@@ -52,6 +51,7 @@ export async function GET(req: Request) {
 			case e instanceof InvalidOAuthError:
 				return new NextResponse(e.message, { status: 403 });
 			case e instanceof CookieNotFound:
+				console.log('cookie not found');
 			case e instanceof InvalidSession:
 				// This is likely because the OAuth session cookie expired before the merchant approved the request
 				return beginAuth(shop!, req, false);
