@@ -3,7 +3,6 @@ import { storeSession } from "@/lib/session-storage";
 import { CookieNotFound, InvalidOAuthError, InvalidSession, Session } from "@shopify/shopify-api";
 import { NextResponse } from "next/server";
 import { beginAuth } from "../route";
-import { cookies } from "next/headers";
 
 export async function GET(req: Request) {
 	const url = new URL(req.url);
@@ -15,10 +14,6 @@ export async function GET(req: Request) {
 	}
 
 	try {
-		console.log('in callback', req.headers);
-		cookies().getAll().forEach((value, key) => {
-			console.log(key, value);
-		});
 		const callbackResponse = await shopify.auth.callback<Session>({
 			rawRequest: req,
 		});
@@ -31,8 +26,7 @@ export async function GET(req: Request) {
 
 		await storeSession(session);
 
-		const responses = await shopify.webhooks.register({ session });
-		console.log(responses);
+		await shopify.webhooks.register({ session });
 
 		const sanitizedHost = shopify.utils.sanitizeHost(host || '');
 		if (!host || host == null) {
@@ -47,7 +41,6 @@ export async function GET(req: Request) {
 			});
 		}
 
-		console.log('redirecting back to app', redirectUrl);
 		return NextResponse.redirect(redirectUrl);
 	} catch (e: any) {
 		console.warn(e);
@@ -55,7 +48,6 @@ export async function GET(req: Request) {
 			case e instanceof InvalidOAuthError:
 				return new NextResponse(e.message, { status: 403 });
 			case e instanceof CookieNotFound:
-				console.log('cookie not found');
 			case e instanceof InvalidSession:
 				// This is likely because the OAuth session cookie expired before the merchant approved the request
 				return beginAuth(shop!, req, false);
