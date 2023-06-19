@@ -9,7 +9,6 @@ import {
 } from '@shopify/shopify-api/runtime';
 import { headers as nextHeaders } from 'next/headers';
 import { ShopifyError } from '@shopify/shopify-api';
-import cookie from 'cookie';
 
 interface NextAdapterArgs extends AdapterArgs {
 	rawRequest: Request;
@@ -33,8 +32,6 @@ export async function nextConvertRequest(adapterArgs: NextAdapterArgs): Promise<
 
 export async function nextConvertResponse(response: NormalizedResponse, adapterArgs: NextAdapterArgs): Promise<Response> {
 	const newHeaders = await nextConvertHeaders(response.headers ?? {}, adapterArgs);
-	console.log('newHeaders', newHeaders);
-
 	return new Response(response.body, {
 		status: response.statusCode,
 		headers: newHeaders,
@@ -44,11 +41,9 @@ export async function nextConvertResponse(response: NormalizedResponse, adapterA
 export async function nextConvertHeaders(
 	headers: ShopifyHeaders,
 	_adapterArgs: NextAdapterArgs,
-): Promise<any> {
-	console.log('converting headers', headers);
-
+): Promise<Headers> {
+	// this may not actually be necessary, but it's here for now
 	const newHeaders = new Headers();
-
 	Object.entries(headers).forEach(([key, value]) => {
 		if (value instanceof Array) {
 			value.forEach((v) => {

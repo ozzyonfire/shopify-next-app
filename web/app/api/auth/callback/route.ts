@@ -3,6 +3,7 @@ import { storeSession } from "@/lib/session-storage";
 import { CookieNotFound, InvalidOAuthError, InvalidSession, Session } from "@shopify/shopify-api";
 import { NextResponse } from "next/server";
 import { beginAuth } from "../route";
+import { cookies } from "next/headers";
 
 export async function GET(req: Request) {
 	const url = new URL(req.url);
@@ -14,9 +15,12 @@ export async function GET(req: Request) {
 	}
 
 	try {
+		console.log('in callback', req.headers);
+		cookies().getAll().forEach((value, key) => {
+			console.log(key, value);
+		});
 		const callbackResponse = await shopify.auth.callback<Session>({
 			rawRequest: req,
-			rawResponse: new NextResponse()
 		});
 
 		const { session } = callbackResponse;

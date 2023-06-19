@@ -12,8 +12,8 @@
 		"deploy": "shopify app deploy"
 	},
 	"dependencies": {
-		"@shopify/app": "^3.46.1",
-		"@shopify/cli": "^3.46.1"
+		"@shopify/app": "^3.46.5",
+		"@shopify/cli": "^3.46.5"
 	},
 	"author": "ozzyonfire"
 }

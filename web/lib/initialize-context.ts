@@ -1,7 +1,7 @@
 // import '@shopify/shopify-api/adapters/node';
 // import '@shopify/shopify-api/adapters/cf-worker';
 import './adapter';
-import { shopifyApi, LATEST_API_VERSION } from "@shopify/shopify-api";
+import { shopifyApi, LATEST_API_VERSION, LogSeverity } from "@shopify/shopify-api";
 
 const shopify = shopifyApi({
 	apiKey: process.env.SHOPIFY_API_KEY || '',
@@ -11,6 +11,9 @@ const shopify = shopifyApi({
 	hostScheme: 'https',
 	isEmbeddedApp: true,
 	apiVersion: LATEST_API_VERSION,
+	logger: {
+		level: process.env.NODE_ENV === 'development' ? LogSeverity.Debug : LogSeverity.Error,
+	},
 });
 
 export default shopify;

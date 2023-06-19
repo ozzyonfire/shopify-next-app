@@ -5,11 +5,6 @@ import { Provider } from "@shopify/app-bridge-react";
 import { Banner, Layout, Page } from "@shopify/polaris";
 import { AppConfigV2 } from "@shopify/app-bridge";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-declare global {
-  interface Window {
-    __SHOPIFY_DEV_HOST: string;
-  }
-}
 
 /**
  * A component to configure App Bridge.

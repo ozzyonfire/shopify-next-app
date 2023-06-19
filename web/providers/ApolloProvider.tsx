@@ -1,5 +1,5 @@
 import { useAppBridge } from "@shopify/app-bridge-react";
-import { authenticatedFetch } from "@shopify/app-bridge-utils";
+import { authenticatedFetch } from "@shopify/app-bridge/utilities";
 import { HttpLink, ApolloClient, InMemoryCache, ApolloProvider as ApolloProviderClient } from '@apollo/client';
 
 export default function ApolloProvider({ children }: { children: React.ReactNode }) {

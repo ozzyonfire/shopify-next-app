@@ -1,6 +1,6 @@
 import React, { createContext, PropsWithChildren, useContext } from "react";
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { getSessionToken } from '@shopify/app-bridge-utils';
+import axios, { AxiosHeaders, AxiosInstance, AxiosRequestConfig } from 'axios';
+import { getSessionToken } from '@shopify/app-bridge/utilities';
 import { useMemo } from "react";
 import { useAppBridge } from "@shopify/app-bridge-react";
 
@@ -39,9 +39,9 @@ export default function APIProvider({ children }: { children: React.ReactNode })
     tempInstance.interceptors.request.use(async config => {
       const token = await getSessionToken(app);
       if (!config.headers) {
-        config.headers = {};
+        config.headers = new AxiosHeaders();
       }
-      config.headers['Authorization'] = `Bearer ${token}`;
+      config.headers.set('Authorization', `Bearer ${token}`);
       return config;
     });
     return tempInstance;

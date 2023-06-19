@@ -4,7 +4,6 @@ import { gql, useLazyQuery } from '@apollo/client';
 import { LegacyCard as Card, Page, Text } from '@shopify/polaris';
 import { useState } from 'react';
 import { useFetcher } from '../providers/APIProvider';
-import { useAuthenticatedFetch } from '@shopify/app-bridge-react';
 
 interface Data {
   name: string;
@@ -31,8 +30,6 @@ export default function Home() {
   const [getShop] = useLazyQuery<ShopData>(GET_SHOP, {
     fetchPolicy: 'network-only',
   });
-
-  const authenticatedFetch = useAuthenticatedFetch();
 
   const handleGetAPIRequest = async () => {
     try {

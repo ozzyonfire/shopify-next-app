@@ -9,29 +9,29 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@apollo/client": "^3.7.1",
+    "@apollo/client": "^3.7.15",
     "@shopify/app-bridge": "^3.7.7",
-    "@shopify/app-bridge-react": "^3.4.3",
-    "@shopify/app-bridge-utils": "^3.4.3",
-    "@shopify/polaris": "^11.0.1",
+    "@shopify/app-bridge-react": "^3.7.7",
+    "@shopify/app-bridge-utils": "^3.5.1",
+    "@shopify/polaris": "^11.1.3",
     "@shopify/shopify-api": "^7.3.1",
-    "axios": "^1.1.3",
+    "axios": "^1.4.0",
     "cookie": "^0.5.0",
     "mongodb": "^5.6.0",
-    "mongoose": "^7.2.2",
-    "next": "^13.4.4",
-    "raw-body": "^2.5.1",
+    "mongoose": "^7.3.0",
+    "next": "^13.4.6",
+    "raw-body": "^2.5.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/cookie": "^0.5.1",
-    "@types/node": "^20.2.5",
-    "@types/react": "^18.2.7",
-    "@types/react-dom": "^18.2.4",
+    "@types/node": "^20.3.1",
+    "@types/react": "^18.2.13",
+    "@types/react-dom": "^18.2.6",
     "cross-env": "^7.0.3",
-    "eslint": "^8.41.0",
-    "eslint-config-next": "^13.4.4",
-    "typescript": "^5.0.4"
+    "eslint": "^8.43.0",
+    "eslint-config-next": "^13.4.6",
+    "typescript": "^5.1.3"
   }
 }
