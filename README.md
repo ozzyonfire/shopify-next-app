@@ -1,12 +1,14 @@
 # Shopify App Template - Next.js
 
-This is a template for building a [Shopify app](https://shopify.dev/apps/getting-started) using Next.js and Typescript. It contains the basics for building a Shopify app. This template was modified from the original example node app to use a single Next.js native application.
+This is a template for building a [Shopify app](https://shopify.dev/apps/getting-started) using Next.js and Typescript. It contains the basics for building a Shopify app. This template was modified from the original example node app to use a single Next.js native application. 
+
+This template has been further altered to support the NextJS App Router. 
 
 Rather than cloning this repo, you can use your preferred package manager and the Shopify CLI with [these steps](#installing-the-template).
 
 ## Next.js and Shopify Embedded Apps
 
-The goal of this template is to provide a quick and easy way to spin up a Shopify Embedded App that uses the Next.js platform. There a couple key points to be aware of when diving into the project:
+The goal of this template is to provide a quick and easy way to spin up a Shopify Embedded App that uses the Next.js app router platform. Some of the following information was previusly necessary for the `pages` router, so I am working on migrating some of the legacy code.
 
 ### Providers
 
@@ -24,10 +26,6 @@ OAuth is handled using the `/api/auth` and `/api/auth/callback` routes. The app 
 
 *Note that in order to use the `/api/graphql` route out of the box, you need to use **online** tokens.*
 
-The install page, i.e. `/index.tsx`, must use getServerSideProps to handle the initial visit to the app and redirect users to OAuth from the server. 
-
-*For some reason, I couldn't get client side redirects to work... If someone can do this please submit a pull request!*
-
 ### Environment Variables
 There are a couple environment variables you need to set up in order for the app to run. Create a file called `.env.local` in the `/web` directory (or the root of your Next.js app) and add the following lines;
 
@@ -42,15 +40,9 @@ The first two variables are automatically populated by the Shopify CLI.
 - ✅ Session saving using MongoDB
 - ✅ OAuth flow for online and offline tokens
 - ✅ GraphQl call using Apollo
-- ❌ ~~Remove getServerSideProps from index.tsx~~
 - ✅ New router config for Next.js and App Bridge
 - ✅ AppUninstalled webhook - cleanup and delete sessions
-- ⬜ Content-Security-Policy header (set in next.config.js? Currently this is set in getServerSideProps)
-- ⬜ Billing checks in `/api/auth/verify`
-- ⬜ Add the Shopify types for Graphql and Typescript (using graphql-codegen)
 - ⬜ Prune excess leftover unused code
-- ⬜ Remove the exitiframe.tsx page (unused)
-- ⬜ Update project to use the new `/apps` directory from Next.js
 
 ## Benefits
 
