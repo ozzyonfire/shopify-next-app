@@ -2,27 +2,19 @@
 import { Redirect } from "@shopify/app-bridge/actions";
 import { useAppBridge, Loading } from "@shopify/app-bridge-react";
 import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 
-export default function ExitIframe({
-  searchParams
-}: {
-  searchParams: { [key: string]: string | string[] | undefined }
-}) {
+export default function ExitIframe() {
+  const searchParams = useSearchParams();
   const app = useAppBridge();
-  const {
-    redirectUri
-  } = searchParams;
-
   useEffect(() => {
-    if (!!app && !!redirectUri) {
+    const redirectUri = searchParams.get("redirectUri");
+    if (app && redirectUri) {
       const redirect = Redirect.create(app);
-      const decodedRedirectUri = decodeURIComponent(redirectUri as string);
-      redirect.dispatch(
-        Redirect.Action.REMOTE,
-        decodedRedirectUri
-      );
+      const decodedRedirectUri = decodeURIComponent(redirectUri);
+      redirect.dispatch(Redirect.Action.REMOTE, decodedRedirectUri);
     }
-  }, [app, redirectUri]);
+  }, [app, searchParams]);
 
   return <Loading />;
 }
