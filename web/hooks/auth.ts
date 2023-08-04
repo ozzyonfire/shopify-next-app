@@ -4,6 +4,7 @@ import { authenticatedFetch } from "@shopify/app-bridge/utilities";
 import { Redirect } from "@shopify/app-bridge/actions";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { checkSession } from "@/app/actions";
 
 interface VerifyResponse {
   status: "success" | "error";
@@ -96,5 +97,29 @@ export function useVerifySession() {
     accountOwner,
     sessionType,
     authErrorType,
+  };
+}
+
+export function useSessionCheck() {
+  const [verified, setVerified] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const searchParams = useSearchParams();
+
+  // todo: add the ability to check if the user is the owner and supply the authErrorType
+
+  useEffect(() => {
+    if (searchParams && searchParams.get('shop') !== null) {
+      console.log('verifying session');
+      setLoading(true);
+      checkSession(searchParams.get('shop')!).then(() => {
+        setVerified(true);
+        setLoading(false);
+      });
+    }
+  }, [searchParams]);
+
+  return {
+    verified,
+    loading,
   };
 }

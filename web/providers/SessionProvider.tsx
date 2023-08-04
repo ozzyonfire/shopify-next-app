@@ -1,13 +1,18 @@
+'use client';
 import { Loading, useAppBridge } from "@shopify/app-bridge-react";
 import { useEffect } from "react";
-import { useAuthRedirect, useVerifySession } from "../hooks/auth";
+import { useAuthRedirect, useSessionCheck } from "../hooks/auth";
 
 export default function SessionProvider({ children }: { children: React.ReactNode }) {
   const app = useAppBridge();
+  // const {
+  //   verified,
+  //   loading
+  // } = useVerifySession();
   const {
     verified,
     loading
-  } = useVerifySession();
+  } = useSessionCheck();
   const authRedirect = useAuthRedirect();
 
   useEffect(() => {

@@ -18,9 +18,9 @@ export default function Providers({
 			<AppBridgeProvider>
 				<APIProvider>
 					<ApolloProvider>
-						{/* <SessionProvider> */}
-						{children}
-						{/* </SessionProvider> */}
+						<SessionProvider>
+							{children}
+						</SessionProvider>
 					</ApolloProvider>
 				</APIProvider>
 			</AppBridgeProvider>
