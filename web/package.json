@@ -14,9 +14,9 @@
     "@shopify/app-bridge-react": "^3.7.9",
     "@shopify/polaris": "^11.19.0",
     "@shopify/shopify-api": "^7.6.0",
-    "axios": "^1.4.0",
+    "axios": "^1.5.0",
     "cookie": "^0.5.0",
-    "mongodb": "^5.6.0",
+    "mongodb": "^5.9.0",
     "mongoose": "^7.5.2",
     "next": "^13.4.19",
     "raw-body": "^2.5.2",
@@ -29,8 +29,8 @@
     "@types/react": "^18.2.13",
     "@types/react-dom": "^18.2.6",
     "cross-env": "^7.0.3",
-    "eslint": "^8.43.0",
-    "eslint-config-next": "^13.4.6",
+    "eslint": "^8.49.0",
+    "eslint-config-next": "^13.4.19",
     "typescript": "^5.1.3"
   }
 }
