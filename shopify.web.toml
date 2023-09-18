@@ -1,0 +1,10 @@
+name = "next app"
+# type = "frontend"
+roles = ["frontend", "backend"]
+webhooks_path = "/webhooks"
+
+# auth_callback_path = ["/api/auth/callback", "/api/auth/callback/main", "/api/auth/callback/aux"]
+
+[commands]
+dev = "next dev"
+build = "next build"
