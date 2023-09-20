@@ -93,6 +93,10 @@ export async function verifyAuth(shop: string) {
 	} catch (err) {
 		throw new ExpiredTokenError(true);
 	}
+
+	if (onlineSession.expires && onlineSession.expires.getTime() < Date.now()) {
+		throw new ExpiredTokenError(true);
+	}
 }
 
 export async function verifyRequest(req: Request, isOnline: boolean) {
@@ -122,6 +126,10 @@ export async function verifyRequest(req: Request, isOnline: boolean) {
 		if (shop !== session.shop) {
 			throw new Error('The current request is for a different shop. Redirect gracefully.');
 		}
+	}
+
+	if (session.isOnline && session.expires && session.expires.getTime() < Date.now()) {
+		throw new ExpiredTokenError(true);
 	}
 
 	return session;
