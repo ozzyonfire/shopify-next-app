@@ -4,6 +4,8 @@ import { gql, useLazyQuery } from '@apollo/client';
 import { LegacyCard as Card, Page, Text } from '@shopify/polaris';
 import { useState } from 'react';
 import { useFetcher } from '../providers/APIProvider';
+import { doServerAction } from './actions';
+import { set } from 'mongoose';
 
 interface Data {
   name: string;
@@ -23,9 +25,12 @@ interface ShopData {
   }
 }
 
-export default function Home() {
+export default function Home({ shop }: { shop: string }) {
   const fetcher = useFetcher();
   const [data, setData] = useState<Data | null>(null);
+  const [serverActionResult, setServerActionResult] = useState<{
+    status: 'success' | 'error';
+  }>();
   const [graphqlData, setGraphglData] = useState<ShopData | null>(null);
   const [getShop] = useLazyQuery<ShopData>(GET_SHOP, {
     fetchPolicy: 'network-only',
@@ -59,6 +64,30 @@ export default function Home() {
             {data.name} is {data.height} tall.
           </Text>
         )}
+      </Card>
+
+      <Card
+        sectioned
+        title="React server actions"
+        primaryFooterAction={{
+          content: 'Server action',
+          onAction: async () => {
+            const response = await doServerAction(shop);
+            setServerActionResult(response);
+          },
+        }}
+      >
+        <Text as='p' variant='bodyMd'>Call a server action from within your app. The request is verified using session tokens.</Text>
+        {serverActionResult && serverActionResult.status === 'success' &&
+          <Text as="h1" variant="headingSm">
+            Server action was successful.
+          </Text>
+        }
+        {serverActionResult && serverActionResult.status === 'error' &&
+          <Text as="h1" variant="headingSm">
+            Server action failed.
+          </Text>
+        }
       </Card>
 
       <Card

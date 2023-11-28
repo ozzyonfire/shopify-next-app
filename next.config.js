@@ -6,9 +6,6 @@ const nextConfig = {
     NEXT_PUBLIC_HOST: process.env.HOST,
     NEXT_PUBLIC_SHOPIFY_API_KEY: process.env.SHOPIFY_API_KEY,
   },
-  experimental: {
-    serverActions: true,
-  }
 }
 
 module.exports = nextConfig

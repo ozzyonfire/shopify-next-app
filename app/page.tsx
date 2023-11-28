@@ -22,7 +22,7 @@ export default async function Page({
 
 	return (
 		<Providers>
-			<Home />
+			<Home shop={shop as string} />
 		</Providers>
 	)
 }
