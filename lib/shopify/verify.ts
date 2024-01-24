@@ -96,7 +96,7 @@ export async function verifyAuth(shop: string) {
   });
 
   try {
-    await client.query({ data: TEST_GRAPHQL_QUERY });
+    await client.request(TEST_GRAPHQL_QUERY);
   } catch (err) {
     throw new ExpiredTokenError(true);
   }

@@ -1,6 +1,4 @@
-// import '@shopify/shopify-api/adapters/node';
-// import '@shopify/shopify-api/adapters/cf-worker';
-import "./adapter";
+import "@shopify/shopify-api/adapters/web-api";
 import {
   shopifyApi,
   LATEST_API_VERSION,

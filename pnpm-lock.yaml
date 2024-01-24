@@ -27,8 +27,8 @@ dependencies:
     specifier: ^12.10.0
     version: 12.10.0(react-dom@18.2.0)(react@18.2.0)
   '@shopify/shopify-api':
-    specifier: ^7.7.0
-    version: 7.7.0
+    specifier: ^9.0.2
+    version: 9.0.2
   axios:
     specifier: ^1.6.5
     version: 1.6.5
@@ -996,6 +996,12 @@ packages:
     resolution: {integrity: sha512-irBNt5094vHloql4QzY8RdeI8Tns2kGsaiJ/m6jENWx9xCz/m/F4gKQ1dAailFmpL0Id9tgWLqZbTUO4SINM/Q==}
     dev: true
 
+  /@shopify/admin-api-client@0.2.2:
+    resolution: {integrity: sha512-7x79Ras5gbf7U3oVBjFIPF70WUUit3kLF93IMhtTaC9OJ/b9NIeW1w4/+RSJq3FM/7MGQGUkyrrnuNI3nl3Eig==}
+    dependencies:
+      '@shopify/graphql-client': 0.9.2
+    dev: false
+
   /@shopify/app-bridge-core@1.1.1:
     resolution: {integrity: sha512-kEnJUpkC9vDdmGMN3Mezq/FlDBqP+DFg/A1PFzqTW8FILu0wzFmz1aFk4Hxy6Y6ilceMmn8QXsyLA9DfaeH4jQ==}
     dev: false
@@ -1181,6 +1187,10 @@ packages:
       node-fetch: 3.3.2
     dev: false
 
+  /@shopify/graphql-client@0.9.2:
+    resolution: {integrity: sha512-Xk7bPA3UsLXFHV6F39t5g8dTVxqPagwJoR+MLYUvCuhlWpDeZW3f/OcgShXPPben5NcnOVV38kj5GVlkvrWqiQ==}
+    dev: false
+
   /@shopify/network@3.2.1:
     resolution: {integrity: sha512-Ih/6Oe80dynlUsRfEqptWBfsySCqI0rjQvPAjS8HuWeK9nZ+TvmYScfxjucKXZ2deXwAClnU6SMdh3/B1lMMog==}
     engines: {node: ^14.17.0 || >=16.0.0}
@@ -1283,10 +1293,12 @@ packages:
       react-transition-group: 4.4.5(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
-  /@shopify/shopify-api@7.7.0:
-    resolution: {integrity: sha512-VrOty3470GpGcf2nZDCUQGCHU5lz9X91RwAoHqlutKueBsS5d8d7P6wv667zCxh+DHoV+8BBcNwQr/esW5TsAg==}
+  /@shopify/shopify-api@9.0.2:
+    resolution: {integrity: sha512-ZOnzDein63JMatQAYshg2RyBXcseBUTP8stbrwG/FwDhWqNafxMC2O8AcoIGoaNc1SoRYbWpxCbwkeO/CrW7Vg==}
     dependencies:
+      '@shopify/admin-api-client': 0.2.2
       '@shopify/network': 3.2.1
+      '@shopify/storefront-api-client': 0.2.2
       compare-versions: 5.0.3
       isbot: 3.8.0
       jose: 4.15.4
@@ -1295,6 +1307,12 @@ packages:
       uuid: 9.0.1
     transitivePeerDependencies:
       - encoding
+    dev: false
+
+  /@shopify/storefront-api-client@0.2.2:
+    resolution: {integrity: sha512-sPpbXEGYbCRQ1jvwdEMtrutUTLmwtrZ30nHBLuKLIgtezFmhuvF5/FD/hgPQCxWxEukZt8518gAVgE6p+9D8ig==}
+    dependencies:
+      '@shopify/graphql-client': 0.9.2
     dev: false
 
   /@sindresorhus/is@5.6.0:

@@ -1,5 +1,5 @@
-import shopify from "@/lib/shopify/initialize-context";
 import { storeSession } from "@/lib/db/session-storage";
+import shopify from "@/lib/shopify/initialize-context";
 import {
   CookieNotFound,
   InvalidOAuthError,
@@ -7,7 +7,7 @@ import {
   Session,
 } from "@shopify/shopify-api";
 import { NextResponse } from "next/server";
-import { beginAuth } from "../route";
+import { beginAuth } from "../auth";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);

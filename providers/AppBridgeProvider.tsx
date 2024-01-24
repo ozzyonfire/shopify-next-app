@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useEffect, useMemo, useState } from "react";
 import { Provider } from "@shopify/app-bridge-react";
@@ -25,15 +25,15 @@ export function AppBridgeProvider({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const [host, setHost] = useState(searchParams?.get('host') || '');
-  const [shop, setShop] = useState(searchParams?.get('shop') || '');
-  const location = usePathname() || '';
+  const [host, setHost] = useState(searchParams?.get("host") || "");
+  const [shop, setShop] = useState(searchParams?.get("shop") || "");
+  const location = usePathname() || "";
   const history = useMemo(() => {
     return {
       replace: (path: string) => {
-        const params = new URLSearchParams(path.split('?')[1]);
-        params.append('host', host);
-        params.append('shop', shop);
+        const params = new URLSearchParams(path.split("?")[1]);
+        params.append("host", host);
+        params.append("shop", shop);
         router.push(`${path}?${params.toString()}`);
       },
     };
@@ -41,52 +41,52 @@ export function AppBridgeProvider({ children }: { children: React.ReactNode }) {
 
   // cache the query params in state for the router
   useEffect(() => {
-    if (searchParams?.get('host')) {
-      setHost(searchParams.get('host') as string);
+    if (searchParams?.get("host")) {
+      setHost(searchParams.get("host") as string);
     }
-    if (searchParams?.get('shop')) {
-      setShop(searchParams.get('shop') as string);
+    if (searchParams?.get("shop")) {
+      setShop(searchParams.get("shop") as string);
     }
   }, [searchParams]);
 
   const appBridgeConfig: AppConfigV2 = useMemo(
     () => ({
-      apiKey: process.env.NEXT_PUBLIC_SHOPIFY_API_KEY || '',
+      apiKey: process.env.NEXT_PUBLIC_SHOPIFY_API_KEY || "",
       host,
       forceRedirect: true,
     }),
-    [host]
+    [host],
   );
 
   if (!process.env.NEXT_PUBLIC_SHOPIFY_API_KEY || !appBridgeConfig.host) {
     const bannerProps = !process.env.NEXT_PUBLIC_SHOPIFY_API_KEY
       ? {
-        title: "Missing Shopify API Key",
-        children: (
-          <>
-            Your app is running without the SHOPIFY_API_KEY environment
-            variable. Please ensure that it is set when running or building
-            your React app.
-          </>
-        ),
-      }
+          title: "Missing Shopify API Key",
+          children: (
+            <>
+              Your app is running without the SHOPIFY_API_KEY environment
+              variable. Please ensure that it is set when running or building
+              your React app.
+            </>
+          ),
+        }
       : {
-        title: "Missing host query argument",
-        children: (
-          <>
-            Your app can only load if the URL has a <b>host</b> argument.
-            Please ensure that it is set, or access your app using the
-            Partners Dashboard <b>Test your app</b> feature
-          </>
-        ),
-      };
+          title: "Missing host query argument",
+          children: (
+            <>
+              Your app can only load if the URL has a <b>host</b> argument.
+              Please ensure that it is set, or access your app using the
+              Partners Dashboard <b>Test your app</b> feature
+            </>
+          ),
+        };
 
     return (
       <Page narrowWidth>
         <Layout>
           <Layout.Section>
             <div style={{ marginTop: "100px" }}>
-              <Banner {...bannerProps} status="critical" />
+              <Banner {...bannerProps} tone="critical" />
             </div>
           </Layout.Section>
         </Layout>
@@ -95,10 +95,13 @@ export function AppBridgeProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <Provider config={appBridgeConfig} router={{
-      history,
-      location,
-    }}>
+    <Provider
+      config={appBridgeConfig}
+      router={{
+        history,
+        location,
+      }}
+    >
       {children}
     </Provider>
   );

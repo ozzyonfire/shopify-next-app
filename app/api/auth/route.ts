@@ -1,7 +1,6 @@
+import { SessionNotFoundError, loadSession } from "@/lib/db/session-storage";
 import shopify from "@/lib/shopify/initialize-context";
-import { loadSession } from "@/lib/db/session-storage";
-import { NextResponse } from "next/server";
-import { SessionNotFoundError } from "@/lib/db/session-storage";
+import { beginAuth } from "./auth";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
@@ -26,14 +25,4 @@ export async function GET(req: Request) {
   }
 
   return beginAuth(sanitizedShop, req, true);
-}
-
-export function beginAuth(shop: string, req: Request, isOnline: boolean) {
-  return shopify.auth.begin({
-    shop,
-    callbackPath: "/api/auth/callback",
-    isOnline,
-    rawRequest: req,
-    rawResponse: new NextResponse(),
-  });
 }

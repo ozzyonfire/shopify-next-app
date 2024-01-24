@@ -19,7 +19,7 @@
 		"@shopify/app-bridge-react": "^3.7.10",
 		"@shopify/cli": "^3.53.1",
 		"@shopify/polaris": "^12.10.0",
-		"@shopify/shopify-api": "^7.7.0",
+		"@shopify/shopify-api": "^9.0.2",
 		"axios": "^1.6.5",
 		"cookie": "^0.5.0",
 		"mongodb": "^5.9.2",

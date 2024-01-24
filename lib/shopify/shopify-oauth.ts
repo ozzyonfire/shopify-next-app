@@ -57,7 +57,7 @@ export async function verify(shop: string) {
 
     // Make a request to ensure the access token is still valid.
     const client = new shopify.clients.Graphql({ session });
-    await client.query({ data: TEST_GRAPHQL_QUERY });
+    client.request(TEST_GRAPHQL_QUERY);
   } catch (err) {
     return false;
   }
