@@ -51,7 +51,7 @@ _Note that in order to use the `/api/graphql` route out of the box, you need to 
 
 ### Environment Variables
 
-There are a couple environment variables you need to set up in order for the app to run. Create a file called `.env` directory (or the root of your Next.js app) and add the following lines;
+There are a couple environment variables you need to set up in order for the app to run. Create a file called `.env` in the root directory (or the root of your Next.js app) and add the following lines;
 
 ```bash
 DATABASE_URL= # database connection string - for connecting to prisma
