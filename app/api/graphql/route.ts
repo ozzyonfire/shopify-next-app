@@ -3,24 +3,50 @@ import { verifyRequest } from "@/lib/shopify/verify";
 import { GraphqlQueryError } from "@shopify/shopify-api";
 import { NextResponse } from "next/server";
 
-export async function POST(req: Request) {
-  const session = await verifyRequest(req, true); // could use middleware for this
-  const rawBody = await req.json();
+// export const runtime = "edge";
+// export const dynamic = "force-dynamic";
 
-  console.log("rawBody", rawBody);
+export async function POST(req: Request) {
+  const session = await verifyRequest(req, true);
+  const text = await req.json();
+  if (!session) {
+    throw new Error("No sesssion found.");
+  }
 
   try {
     const response = await shopify.clients.graphqlProxy({
-      rawBody: rawBody,
+      rawBody: text,
       session,
     });
-    return NextResponse.json(response.body);
+
+    return Response.json(response.body as any, {
+      headers: response.headers as any,
+    });
   } catch (error) {
     if (error instanceof GraphqlQueryError) {
-      console.log(error.response);
-      return NextResponse.json({ error: error.response }, { status: 500 });
+      console.log(JSON.stringify(error.response));
+      return new NextResponse(
+        JSON.stringify({ errors: error.body?.errors.graphQLErrors }),
+        {
+          status: 200,
+          headers: error.headers as any,
+        },
+      );
+    } else if (error instanceof Error) {
+      return new Response(JSON.stringify(error.message), {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } else {
+      console.error("Unknown error", error);
+      return new Response(JSON.stringify("Unknown error"), {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
     }
-    console.log(error);
-    return NextResponse.json(error, { status: 500 });
   }
 }
