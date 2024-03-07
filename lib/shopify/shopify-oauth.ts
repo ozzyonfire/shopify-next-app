@@ -1,8 +1,7 @@
-import { GetServerSidePropsContext } from "next";
-import { AppInstallations } from "../db/app-installations";
-import shopify from "./initialize-context";
-import { loadSession } from "../db/session-storage";
 import { redirect } from "next/navigation";
+import { AppInstallations } from "../db/app-installations";
+import { loadSession } from "../db/session-storage";
+import shopify from "./initialize-context";
 import { verifyAuth } from "./verify";
 
 const TEST_GRAPHQL_QUERY = `
@@ -21,6 +20,7 @@ export function serverSideRedirect(
   if (!sanitizedShop) {
     throw new Error("Invalid shop provided");
   }
+
   if (embedded === "1") {
     return exitIFrame(shop, host);
   } else {
@@ -80,7 +80,6 @@ export async function performChecks(
   embedded: string,
 ) {
   const isInstalled = await checkInstallation(shop);
-  console.log("isInstalled", isInstalled);
   if (!isInstalled) {
     return serverSideRedirect(shop, host, embedded);
   }
