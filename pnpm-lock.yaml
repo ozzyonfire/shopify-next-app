@@ -7,25 +7,25 @@ settings:
 dependencies:
   '@apollo/client':
     specifier: ^3.9.6
-    version: 3.9.6(@types/react@18.2.64)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0)
+    version: 3.9.6(@types/react@18.2.67)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0)
   '@prisma/client':
     specifier: 5.10.2
     version: 5.10.2(prisma@5.10.2)
   '@shopify/app':
     specifier: ^3.57.0
-    version: 3.57.0(@types/react@18.2.64)(graphql-tag@2.12.6)(graphql@16.8.1)(ink@4.4.1)(react@18.2.0)
+    version: 3.57.0(@types/react@18.2.67)(graphql-tag@2.12.6)(graphql@16.8.1)(ink@4.4.1)(react@18.2.0)
   '@shopify/app-bridge':
     specifier: ^3.7.10
     version: 3.7.10
   '@shopify/app-bridge-react':
-    specifier: ^3.7.10
-    version: 3.7.10(react@18.2.0)
+    specifier: ^4.0.0
+    version: 4.0.0(react-dom@18.2.0)(react@18.2.0)
   '@shopify/cli':
     specifier: ^3.57.0
-    version: 3.57.0(@types/node@20.11.25)(@types/react@18.2.64)(typescript@5.4.2)(zod@3.22.4)
+    version: 3.57.0(@types/node@20.11.25)(@types/react@18.2.67)(typescript@5.4.2)(zod@3.22.4)
   '@shopify/polaris':
-    specifier: ^12.20.0
-    version: 12.20.0(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^12.21.0
+    version: 12.21.0(react-dom@18.2.0)(react@18.2.0)
   '@shopify/shopify-api':
     specifier: ^9.5.0
     version: 9.5.0
@@ -42,7 +42,7 @@ dependencies:
     specifier: ^7.6.9
     version: 7.6.9
   next:
-    specifier: ^14.1.3
+    specifier: 14.1.3
     version: 14.1.3(@opentelemetry/api@1.6.0)(react-dom@18.2.0)(react@18.2.0)
   raw-body:
     specifier: ^2.5.2
@@ -53,6 +53,9 @@ dependencies:
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
+  utilities@latest:
+    specifier: link:@shopify/app-bridge/utilities@latest
+    version: link:@shopify/app-bridge/utilities@latest
 
 devDependencies:
   '@types/cookie':
@@ -62,11 +65,11 @@ devDependencies:
     specifier: ^20.11.25
     version: 20.11.25
   '@types/react':
-    specifier: ^18.2.64
-    version: 18.2.64
+    specifier: ^18.2.67
+    version: 18.2.67
   '@types/react-dom':
-    specifier: ^18.2.21
-    version: 18.2.21
+    specifier: ^18.2.22
+    version: 18.2.22
   cross-env:
     specifier: ^7.0.3
     version: 7.0.3
@@ -104,7 +107,7 @@ packages:
       is-fullwidth-code-point: 4.0.0
     dev: false
 
-  /@apollo/client@3.9.6(@types/react@18.2.64)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0):
+  /@apollo/client@3.9.6(@types/react@18.2.67)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-+zpddcnZ4G2VZ0xIEnvIHFsLqeopNOnWuE2ZVbRuetLLpj/biLPNN719B/iofdd1/iHRclKfv0XaAmX6PBhYKA==}
     peerDependencies:
       graphql: ^15.0.0 || ^16.0.0
@@ -133,7 +136,7 @@ packages:
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      rehackt: 0.0.6(@types/react@18.2.64)(react@18.2.0)
+      rehackt: 0.0.6(@types/react@18.2.67)(react@18.2.0)
       response-iterator: 0.2.6
       symbol-observable: 4.0.0
       ts-invariant: 0.10.3
@@ -989,13 +992,19 @@ packages:
     resolution: {integrity: sha512-kEnJUpkC9vDdmGMN3Mezq/FlDBqP+DFg/A1PFzqTW8FILu0wzFmz1aFk4Hxy6Y6ilceMmn8QXsyLA9DfaeH4jQ==}
     dev: false
 
-  /@shopify/app-bridge-react@3.7.10(react@18.2.0):
-    resolution: {integrity: sha512-MIvsSnJ/YNd8iOdfUiPJK5hPSHhQRO8PKmjfwvNqpduQiBVrN5Y29AAYth9NFwP20QMxC92MIkyYWtENYXRoVA==}
+  /@shopify/app-bridge-react@4.0.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-a300DQIyYmNl5jNFHXsAICMfafY6LizXnaG5ElaAumfoIt28owgM8daDm9BwBkHSroHArvJuZS96kpDzTVg1+Q==}
     peerDependencies:
-      react: ^16.0.0 || ^17.0.0 || ^18.0.0
+      react: ^18.0.0
+      react-dom: ^18.0.0
     dependencies:
-      '@shopify/app-bridge': 3.7.10
+      '@shopify/app-bridge-types': 0.0.7
       react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@shopify/app-bridge-types@0.0.7:
+    resolution: {integrity: sha512-x2A86xSjBPaB4rDufkY+pGH2UK8gR/rvjeXGwttIjir1l70ELHnZj+eGzHShmBitCbVoN3fkBrDnFLZdjWqyLg==}
     dev: false
 
   /@shopify/app-bridge@3.7.10:
@@ -1006,7 +1015,7 @@ packages:
       web-vitals: 3.5.2
     dev: false
 
-  /@shopify/app@3.57.0(@types/react@18.2.64)(graphql-tag@2.12.6)(graphql@16.8.1)(ink@4.4.1)(react@18.2.0):
+  /@shopify/app@3.57.0(@types/react@18.2.67)(graphql-tag@2.12.6)(graphql@16.8.1)(ink@4.4.1)(react@18.2.0):
     resolution: {integrity: sha512-BhuWRIhVYmR+Lx01kq4EOCATDtpkpDNNnpSgu7HFoXjjsALdn59rXtF1TCxfo6Ec2mu6471kr7SkLOV15F/3xw==}
     engines: {node: '>=18.12.0'}
     os: [darwin, linux, win32]
@@ -1016,9 +1025,9 @@ packages:
     dependencies:
       '@luckycatfactory/esbuild-graphql-loader': 3.8.1(esbuild@0.19.8)(graphql-tag@2.12.6)(graphql@16.8.1)
       '@oclif/core': 3.19.6
-      '@shopify/cli-kit': 3.57.0(@types/react@18.2.64)
+      '@shopify/cli-kit': 3.57.0(@types/react@18.2.67)
       '@shopify/function-runner': 4.1.1
-      '@shopify/plugin-cloudflare': 3.57.0(@types/react@18.2.64)
+      '@shopify/plugin-cloudflare': 3.57.0(@types/react@18.2.67)
       '@shopify/polaris': 12.10.0(react-dom@18.2.0)(react@18.2.0)
       '@shopify/polaris-icons': 8.0.0
       '@shopify/theme-check-node': 2.2.1
@@ -1031,7 +1040,7 @@ packages:
       graphql-request: 5.2.0(graphql@16.8.1)
       h3: 0.7.21
       http-proxy: 1.18.1
-      ink: 4.4.1(@types/react@18.2.64)(react@18.2.0)
+      ink: 4.4.1(@types/react@18.2.67)(react@18.2.0)
       micromatch: 4.0.5
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -1049,7 +1058,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@shopify/cli-kit@3.57.0(@types/react@18.2.64):
+  /@shopify/cli-kit@3.57.0(@types/react@18.2.67):
     resolution: {integrity: sha512-MluzFkSChidezvm0WNZWS6vSGY8j5paE1WDZpRHJaEjFV/8BYDt8VcekjS7/E8cT46yD6IibvchY//dOg6biww==}
     engines: {node: '>=18.12.0'}
     os: [darwin, linux, win32]
@@ -1091,7 +1100,7 @@ packages:
       gradient-string: 2.0.2
       graphql: 16.8.1
       graphql-request: 5.2.0(graphql@16.8.1)
-      ink: 4.4.1(@types/react@18.2.64)(react@18.2.0)
+      ink: 4.4.1(@types/react@18.2.67)(react@18.2.0)
       is-interactive: 2.0.0
       js-yaml: 4.1.0
       kill-port-process: 3.1.0
@@ -1126,7 +1135,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@shopify/cli@3.57.0(@types/node@20.11.25)(@types/react@18.2.64)(typescript@5.4.2)(zod@3.22.4):
+  /@shopify/cli@3.57.0(@types/node@20.11.25)(@types/react@18.2.67)(typescript@5.4.2)(zod@3.22.4):
     resolution: {integrity: sha512-rLGMX9KmXT5QyckyrPGo04moALmexHwK9eH3o15MalUBaegt8bep9kWydrgqVX/uRbcvLiehlVpUsU6riREXSw==}
     engines: {node: '>=18.12.0'}
     os: [darwin, linux, win32]
@@ -1136,8 +1145,8 @@ packages:
       '@oclif/plugin-commands': 2.2.28(@types/node@20.11.25)(typescript@5.4.2)
       '@oclif/plugin-help': 5.2.20(@types/node@20.11.25)(typescript@5.4.2)
       '@oclif/plugin-plugins': 3.9.4(@types/node@20.11.25)(typescript@5.4.2)
-      '@shopify/cli-kit': 3.57.0(@types/react@18.2.64)
-      '@shopify/plugin-did-you-mean': 3.57.0(@types/react@18.2.64)
+      '@shopify/cli-kit': 3.57.0(@types/react@18.2.67)
+      '@shopify/plugin-did-you-mean': 3.57.0(@types/react@18.2.67)
       zod-to-json-schema: 3.21.4(zod@3.22.4)
     transitivePeerDependencies:
       - '@swc/core'
@@ -1177,14 +1186,14 @@ packages:
     engines: {node: ^14.17.0 || >=16.0.0}
     dev: false
 
-  /@shopify/plugin-cloudflare@3.57.0(@types/react@18.2.64):
+  /@shopify/plugin-cloudflare@3.57.0(@types/react@18.2.67):
     resolution: {integrity: sha512-aSNW3ArAhq2OAca01P4Z0jzBPaBFV3oJ4i5we21vNSIu7B8Cc/wn1RevXPZ6/f8nmyO+ArTUCpPsynJ0MCV1Qw==}
     engines: {node: '>=18.12.0'}
     os: [darwin, linux, win32]
     requiresBuild: true
     dependencies:
       '@oclif/core': 3.19.6
-      '@shopify/cli-kit': 3.57.0(@types/react@18.2.64)
+      '@shopify/cli-kit': 3.57.0(@types/react@18.2.67)
     transitivePeerDependencies:
       - '@types/react'
       - bufferutil
@@ -1194,13 +1203,13 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@shopify/plugin-did-you-mean@3.57.0(@types/react@18.2.64):
+  /@shopify/plugin-did-you-mean@3.57.0(@types/react@18.2.67):
     resolution: {integrity: sha512-6GG/zBriwlT8rFf8D8cV9Lg4xACrSmuEw4cfPs6il6q8HIW8bTwlavM5K9OZ3LAuR9cxQCuxWuNdJbUtSW3IiQ==}
     engines: {node: '>=18.12.0'}
     os: [darwin, linux, win32]
     dependencies:
       '@oclif/core': 3.19.6
-      '@shopify/cli-kit': 3.57.0(@types/react@18.2.64)
+      '@shopify/cli-kit': 3.57.0(@types/react@18.2.67)
       n-gram: 2.0.2
     transitivePeerDependencies:
       - '@types/react'
@@ -1216,8 +1225,8 @@ packages:
     engines: {node: ^16.17.0 || >=18.12.0}
     dev: false
 
-  /@shopify/polaris-icons@8.7.0:
-    resolution: {integrity: sha512-cNq47ombWh+XqF2ql6cnDcVcfOQ/lUEBkrNSQFVdy4p8CFW/b4xVMhy7/wsyc6uDsAnsAvZq0b3WkP/nIUqx9Q==}
+  /@shopify/polaris-icons@8.8.0:
+    resolution: {integrity: sha512-B4kym/sWAif0pSClysCeOMxfKBPhCZaAdoR+7J50SAoI6gg47jBAUS+PRexj+gXAmxLOystcCCibwyL1QZDW+A==}
     engines: {node: ^16.17.0 || >=18.12.0}
     dev: false
 
@@ -1237,8 +1246,8 @@ packages:
     dependencies:
       '@shopify/polaris-icons': 8.0.0
       '@shopify/polaris-tokens': 8.8.0
-      '@types/react': 18.2.64
-      '@types/react-dom': 18.2.21
+      '@types/react': 18.2.67
+      '@types/react-dom': 18.2.22
       '@types/react-transition-group': 4.4.10
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -1246,17 +1255,17 @@ packages:
       react-transition-group: 4.4.5(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
-  /@shopify/polaris@12.20.0(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-CC3M3eJtZvRSH0GSn749hLtATWCdt9sfNdOjP2oVu39strgIqck7Zc0V4Ak66toLSVoIrICDFHUK0Fm5lzTmYA==}
+  /@shopify/polaris@12.21.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-QnNgJN+NAvRMKb5JcKSpNGUyCo+vzR+eNraBts2Y3KWKqjqrHCRCMGJLsTHSEHckw/9ZvkG3dJcN40sH9eI+sg==}
     engines: {node: ^16.17.0 || >=18.12.0}
     peerDependencies:
       react: ^18.0.0
       react-dom: ^18.0.0
     dependencies:
-      '@shopify/polaris-icons': 8.7.0
+      '@shopify/polaris-icons': 8.8.0
       '@shopify/polaris-tokens': 8.8.0
-      '@types/react': 18.2.64
-      '@types/react-dom': 18.2.21
+      '@types/react': 18.2.67
+      '@types/react-dom': 18.2.22
       '@types/react-transition-group': 4.4.10
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -1388,19 +1397,19 @@ packages:
   /@types/prop-types@15.7.11:
     resolution: {integrity: sha512-ga8y9v9uyeiLdpKddhxYQkxNDrfvuPrlFb0N1qnZZByvcElJaXthF1UhvCh9TLWJBEHeNtdnbysW7Y6Uq8CVng==}
 
-  /@types/react-dom@18.2.21:
-    resolution: {integrity: sha512-gnvBA/21SA4xxqNXEwNiVcP0xSGHh/gi1VhWv9Bl46a0ItbTT5nFY+G9VSQpaG/8N/qdJpJ+vftQ4zflTtnjLw==}
+  /@types/react-dom@18.2.22:
+    resolution: {integrity: sha512-fHkBXPeNtfvri6gdsMYyW+dW7RXFo6Ad09nLFK0VQWR7yGLai/Cyvyj696gbwYvBnhGtevUG9cET0pmUbMtoPQ==}
     dependencies:
-      '@types/react': 18.2.64
+      '@types/react': 18.2.67
 
   /@types/react-transition-group@4.4.10:
     resolution: {integrity: sha512-hT/+s0VQs2ojCX823m60m5f0sL5idt9SO6Tj6Dg+rdphGPIeJbJ6CxvBYkgkGKrYeDjvIpKTR38UzmtHJOGW3Q==}
     dependencies:
-      '@types/react': 18.2.64
+      '@types/react': 18.2.67
     dev: false
 
-  /@types/react@18.2.64:
-    resolution: {integrity: sha512-MlmPvHgjj2p3vZaxbQgFUQFvD8QiZwACfGqEdDSWou5yISWxDQ4/74nCAwsUiX7UFLKZz3BbVSPj+YxeoGGCfg==}
+  /@types/react@18.2.67:
+    resolution: {integrity: sha512-vkIE2vTIMHQ/xL0rgmuoECBCkZFZeHr49HeWSc24AptMbNRo7pwSBvj73rlJJs9fGKj0koS+V7kQB1jHS0uCgw==}
     dependencies:
       '@types/prop-types': 15.7.11
       '@types/scheduler': 0.16.8
@@ -3801,7 +3810,7 @@ packages:
     resolution: {integrity: sha512-JV/yugV2uzW5iMRSiZAyDtQd+nxtUnjeLt0acNdw98kKLrvuRVyB80tsREOE7yvGVgalhZ6RNXCmEHkUKBKxew==}
     dev: false
 
-  /ink@4.4.1(@types/react@18.2.64)(react@18.2.0):
+  /ink@4.4.1(@types/react@18.2.67)(react@18.2.0):
     resolution: {integrity: sha512-rXckvqPBB0Krifk5rn/5LvQGmyXwCUpBfmTwbkQNBY9JY8RSl3b8OftBNEYxg4+SWUhEKcPifgope28uL9inlA==}
     engines: {node: '>=14.16'}
     peerDependencies:
@@ -3815,7 +3824,7 @@ packages:
         optional: true
     dependencies:
       '@alcalzone/ansi-tokenize': 0.1.3
-      '@types/react': 18.2.64
+      '@types/react': 18.2.67
       ansi-escapes: 6.2.0
       auto-bind: 5.0.1
       chalk: 5.3.0
@@ -5415,7 +5424,7 @@ packages:
       rc: 1.2.8
     dev: false
 
-  /rehackt@0.0.6(@types/react@18.2.64)(react@18.2.0):
+  /rehackt@0.0.6(@types/react@18.2.67)(react@18.2.0):
     resolution: {integrity: sha512-l3WEzkt4ntlEc/IB3/mF6SRgNHA6zfQR7BlGOgBTOmx7IJJXojDASav+NsgXHFjHn+6RmwqsGPFgZpabWpeOdw==}
     peerDependencies:
       '@types/react': '*'
@@ -5426,7 +5435,7 @@ packages:
       react:
         optional: true
     dependencies:
-      '@types/react': 18.2.64
+      '@types/react': 18.2.67
       react: 18.2.0
     dev: false
 

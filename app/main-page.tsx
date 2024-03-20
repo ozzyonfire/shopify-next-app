@@ -1,9 +1,10 @@
 "use client";
 
 import { gql, useLazyQuery } from "@apollo/client";
-import { LegacyCard as Card, Page, Text } from "@shopify/polaris";
-import { useState } from "react";
-import { useFetcher } from "../providers/APIProvider";
+import { useAppBridge } from "@shopify/app-bridge-react";
+import { Button, LegacyCard as Card, Page, Text } from "@shopify/polaris";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { doServerAction } from "./actions";
 
 interface Data {
@@ -26,7 +27,6 @@ interface ShopData {
 }
 
 export default function Home({ shop }: { shop: string }) {
-  const fetcher = useFetcher();
   const [data, setData] = useState<Data | null>(null);
   const [serverActionResult, setServerActionResult] = useState<{
     status: "success" | "error";
@@ -36,11 +36,22 @@ export default function Home({ shop }: { shop: string }) {
     fetchPolicy: "network-only",
   });
 
+  const app = useAppBridge();
+
+  useEffect(() => {
+    app.idToken().then((token) => {
+      console.log("Token: ", token);
+    });
+  }, [app]);
+
   const handleGetAPIRequest = async () => {
     try {
-      const data = await fetcher<Data>("/api/hello");
-      console.log(data);
-      setData(data);
+      console.log("Calling API");
+      // global fetch has tokens automatically added
+      // https://shopify.dev/docs/api/app-bridge-library/apis/resource-fetching
+      const response = await fetch("/api/hello");
+      const result = (await response.json()) as { data: Data };
+      setData(result.data);
     } catch (err) {
       console.log(err);
     }
@@ -126,6 +137,42 @@ export default function Home({ shop }: { shop: string }) {
             {graphqlData.shop.name}
           </Text>
         )}
+      </Card>
+
+      <Card sectioned title="Shopify App Bridge">
+        <Text as="p" variant="bodyMd">
+          Use the direct graphql api provided by Shopify App Bridge. This
+          automatically uses an authenticated graphql route, no need to add
+          tokens.
+        </Text>
+        <Button
+          onClick={async () => {
+            const res = await fetch("shopify:admin/api/graphql.json", {
+              method: "POST",
+              body: JSON.stringify({
+                query: `
+                query {
+                  shop {
+                    name
+                  }
+                }
+              `,
+              }),
+            });
+            const { data } = await res.json();
+            console.log(data);
+          }}
+        >
+          GraphQL Query
+        </Button>
+      </Card>
+
+      <Card sectioned title="Shopify App Bridge">
+        <Text as="p" variant="bodyMd">
+          Use Shopify App Bridge to interact with the Shopify admin. The request
+          uses online session tokens. This uses Shopify App Bridge v4.
+        </Text>
+        <Link href="/new">New page using next/link</Link>
       </Card>
     </Page>
   );

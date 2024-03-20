@@ -2,7 +2,7 @@
 
 client_id = "add7504331733e92252623482056ef16"
 name = "app next template"
-application_url = "https://legislative-hdtv-faces-forty.trycloudflare.com"
+application_url = "https://linux-assisted-unauthorized-restored.trycloudflare.com"
 embedded = true
 
 [build]
@@ -10,11 +10,15 @@ automatically_update_urls_on_dev = true
 dev_store_url = "matts-tech-test.myshopify.com"
 include_config_on_deploy = true
 
+[access.admin]
+direct_api_mode = "offline"
+embedded_app_direct_api_access = true
+
 [auth]
 redirect_urls = [
-  "https://legislative-hdtv-faces-forty.trycloudflare.com/auth/callback",
-  "https://legislative-hdtv-faces-forty.trycloudflare.com/auth/shopify/callback",
-  "https://legislative-hdtv-faces-forty.trycloudflare.com/api/auth/callback"
+  "https://linux-assisted-unauthorized-restored.trycloudflare.com/auth/callback",
+  "https://linux-assisted-unauthorized-restored.trycloudflare.com/auth/shopify/callback",
+  "https://linux-assisted-unauthorized-restored.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

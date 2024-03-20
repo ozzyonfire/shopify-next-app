@@ -1,3 +1,5 @@
+// don't think this is used anymore
+
 import { NextApiRequest, NextApiResponse } from "next";
 import shopify from "../lib/shopify/initialize-context";
 

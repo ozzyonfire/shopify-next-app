@@ -1,20 +1,19 @@
-'use client';
-import { Redirect } from "@shopify/app-bridge/actions";
-import { useAppBridge, Loading } from "@shopify/app-bridge-react";
-import { useEffect } from "react";
+"use client";
 import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 export default function ExitIframe() {
   const searchParams = useSearchParams();
-  const app = useAppBridge();
   useEffect(() => {
     const redirectUri = searchParams.get("redirectUri");
-    if (app && redirectUri) {
-      const redirect = Redirect.create(app);
+    if (redirectUri) {
       const decodedRedirectUri = decodeURIComponent(redirectUri);
-      redirect.dispatch(Redirect.Action.REMOTE, decodedRedirectUri);
+      console.log("decodedRedirectUri: ", decodedRedirectUri);
+      window.open(decodedRedirectUri, "_top");
     }
-  }, [app, searchParams]);
+  }, [searchParams]);
 
-  return <Loading />;
+  shopify.loading(true);
+
+  return <div></div>;
 }

@@ -107,6 +107,7 @@ export async function verifyAuth(shop: string) {
 }
 
 export async function verifyRequest(req: Request, isOnline: boolean) {
+  console.log("auth header", req.headers.get("authorization"));
   const sessionId = await shopify.session.getCurrentId({
     rawRequest: req,
     isOnline,

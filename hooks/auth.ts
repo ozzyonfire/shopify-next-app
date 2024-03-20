@@ -1,10 +1,7 @@
-import { ClientApplication } from "@shopify/app-bridge";
+import { checkSession } from "@/app/actions";
 import { useAppBridge } from "@shopify/app-bridge-react";
-import { authenticatedFetch } from "@shopify/app-bridge/utilities";
-import { Redirect } from "@shopify/app-bridge/actions";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { checkSession } from "@/app/actions";
 
 interface VerifyResponse {
   status: "success" | "error";
@@ -18,23 +15,19 @@ export function useAuthRedirect() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const redirect = useCallback((app: ClientApplication<any>) => {
-    if (!!app && !!router) {
-      const embedded = searchParams?.get('embedded');
+  const redirect = useCallback(() => {
+    if (!!router) {
+      const embedded = searchParams?.get("embedded");
       const authUrl = `${process.env.NEXT_PUBLIC_HOST}/api/auth?${searchParams?.toString()}`;
       if (embedded === "1") {
-        console.log('redirecting using app');
-        const redirect = Redirect.create(app);
-        redirect.dispatch(
-          Redirect.Action.REMOTE,
-          authUrl
-        );
+        console.log("redirecting using app");
+        window.open(authUrl, "_top");
       } else {
-        console.log('redirecting using window');
+        console.log("redirecting using window");
         window.location.href = authUrl;
       }
     } else {
-      console.log('app or router not defined');
+      console.log("app or router not defined");
     }
   }, [searchParams, router]);
 
@@ -45,16 +38,20 @@ export function useVerifySession() {
   const [verified, setVerified] = useState(false);
   const [loading, setLoading] = useState(true);
   const [accountOwner, setAccountOwner] = useState(false);
-  const [sessionType, setSessionType] = useState<"offline" | "online">("offline");
-  const [authErrorType, setAuthErrorType] = useState<"token" | "scope">("token");
+  const [sessionType, setSessionType] = useState<"offline" | "online">(
+    "offline",
+  );
+  const [authErrorType, setAuthErrorType] = useState<"token" | "scope">(
+    "token",
+  );
   const router = useRouter();
   const searchParams = useSearchParams();
   const app = useAppBridge();
 
   const queryParams = useMemo(() => {
     if (router) {
-      const shop = searchParams?.get('shop');
-      const host = searchParams?.get('host');
+      const shop = searchParams?.get("shop");
+      const host = searchParams?.get("host");
       if (shop && host) {
         const queryParams = new URLSearchParams({
           shop: shop as string,
@@ -68,26 +65,28 @@ export function useVerifySession() {
 
   useEffect(() => {
     if (queryParams && app) {
-      console.log('verifying session');
-      authenticatedFetch(app)(`/api/auth/verify?${queryParams.toString()}`).then(async (response) => {
-        setLoading(true);
-        const body = await response.json() as VerifyResponse;
-        if (body.status == 'success') {
-          setVerified(true);
-        } else {
-          setVerified(false);
-          setAuthErrorType(body.type);
-          setSessionType(body.sessionType);
-          if (body.accountOwner) {
-            setAccountOwner(true);
+      console.log("verifying session");
+      fetch(`/api/auth/verify?${queryParams.toString()}`)
+        .then(async (response) => {
+          setLoading(true);
+          const body = (await response.json()) as VerifyResponse;
+          if (body.status == "success") {
+            setVerified(true);
+          } else {
+            setVerified(false);
+            setAuthErrorType(body.type);
+            setSessionType(body.sessionType);
+            if (body.accountOwner) {
+              setAccountOwner(true);
+            }
           }
-        }
-        setLoading(false);
-      }).catch(err => {
-        console.log(err);
-        setLoading(false);
-        setVerified(false);
-      });
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+          setVerified(false);
+        });
     }
   }, [app, queryParams]);
 
@@ -108,10 +107,10 @@ export function useSessionCheck() {
   // todo: add the ability to check if the user is the owner and supply the authErrorType
 
   useEffect(() => {
-    if (searchParams && searchParams.get('shop') !== null) {
-      console.log('verifying session');
+    if (searchParams && searchParams.get("shop") !== null) {
+      console.log("verifying session");
       setLoading(true);
-      checkSession(searchParams.get('shop')!).then(() => {
+      checkSession(searchParams.get("shop")!).then(() => {
         setVerified(true);
         setLoading(false);
       });

@@ -1,14 +1,23 @@
 import { useAppBridge } from "@shopify/app-bridge-react";
-import { authenticatedFetch } from "@shopify/app-bridge/utilities";
-import { HttpLink, ApolloClient, InMemoryCache, ApolloProvider as ApolloProviderClient } from '@apollo/client';
+import {
+  HttpLink,
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider as ApolloProviderClient,
+} from "@apollo/client";
 
-export default function ApolloProvider({ children }: { children: React.ReactNode }) {
-
-  const app = useAppBridge();
+export default function ApolloProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  // const app = useAppBridge();
+  // const token = app.idToken();
+  // console.log("Token: ", token);
   const http = new HttpLink({
-    credentials: 'same-origin',
+    credentials: "same-origin",
     uri: `/api/graphql`,
-    fetch: authenticatedFetch(app),
+    fetch: fetch,
   });
 
   const client = new ApolloClient({
@@ -17,8 +26,6 @@ export default function ApolloProvider({ children }: { children: React.ReactNode
   });
 
   return (
-    <ApolloProviderClient client={client}>
-      {children}
-    </ApolloProviderClient>
-  )
+    <ApolloProviderClient client={client}>{children}</ApolloProviderClient>
+  );
 }
