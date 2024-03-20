@@ -16,7 +16,6 @@
     "@apollo/client": "^3.9.6",
     "@prisma/client": "5.10.2",
     "@shopify/app": "^3.57.0",
-    "@shopify/app-bridge": "^3.7.10",
     "@shopify/app-bridge-react": "^4.0.0",
     "@shopify/cli": "^3.57.0",
     "@shopify/polaris": "^12.21.0",

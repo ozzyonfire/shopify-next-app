@@ -1,8 +1,6 @@
-import React, { createContext, useContext } from "react";
-import axios, { AxiosHeaders, AxiosInstance, AxiosRequestConfig } from "axios";
-import { getSessionToken } from "@shopify/app-bridge/utilities";
-import { useMemo } from "react";
 import { useAppBridge } from "@shopify/app-bridge-react";
+import axios, { AxiosHeaders, AxiosInstance, AxiosRequestConfig } from "axios";
+import React, { createContext, useContext, useMemo } from "react";
 
 interface APIResponse<DataType> {
   status: string | "success" | "error";

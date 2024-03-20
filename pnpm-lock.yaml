@@ -14,9 +14,6 @@ dependencies:
   '@shopify/app':
     specifier: ^3.57.0
     version: 3.57.0(@types/react@18.2.67)(graphql-tag@2.12.6)(graphql@16.8.1)(ink@4.4.1)(react@18.2.0)
-  '@shopify/app-bridge':
-    specifier: ^3.7.10
-    version: 3.7.10
   '@shopify/app-bridge-react':
     specifier: ^4.0.0
     version: 4.0.0(react-dom@18.2.0)(react@18.2.0)
@@ -988,10 +985,6 @@ packages:
       '@shopify/graphql-client': 0.10.3
     dev: false
 
-  /@shopify/app-bridge-core@1.1.1:
-    resolution: {integrity: sha512-kEnJUpkC9vDdmGMN3Mezq/FlDBqP+DFg/A1PFzqTW8FILu0wzFmz1aFk4Hxy6Y6ilceMmn8QXsyLA9DfaeH4jQ==}
-    dev: false
-
   /@shopify/app-bridge-react@4.0.0(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-a300DQIyYmNl5jNFHXsAICMfafY6LizXnaG5ElaAumfoIt28owgM8daDm9BwBkHSroHArvJuZS96kpDzTVg1+Q==}
     peerDependencies:
@@ -1005,14 +998,6 @@ packages:
 
   /@shopify/app-bridge-types@0.0.7:
     resolution: {integrity: sha512-x2A86xSjBPaB4rDufkY+pGH2UK8gR/rvjeXGwttIjir1l70ELHnZj+eGzHShmBitCbVoN3fkBrDnFLZdjWqyLg==}
-    dev: false
-
-  /@shopify/app-bridge@3.7.10:
-    resolution: {integrity: sha512-zy4c05DEOkYXm1yWIe0FrI0lq6hzffIT4JWzb9XKqY5OPRNHRHg+ihDt0ZnR8eMVmYV03yStpGAITIfqOgn4TQ==}
-    dependencies:
-      '@shopify/app-bridge-core': 1.1.1
-      base64url: 3.0.1
-      web-vitals: 3.5.2
     dev: false
 
   /@shopify/app@3.57.0(@types/react@18.2.67)(graphql-tag@2.12.6)(graphql@16.8.1)(ink@4.4.1)(react@18.2.0):
@@ -1914,11 +1899,6 @@ packages:
 
   /base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
-    dev: false
-
-  /base64url@3.0.1:
-    resolution: {integrity: sha512-ir1UPr3dkwexU7FdV8qBBbNDRUhMmIekYMFZfi+C/sLNnRESKPl23nB9b2pltqfOQNnGzsDdId90AEtG5tCx4A==}
-    engines: {node: '>=6.0.0'}
     dev: false
 
   /binary-extensions@2.2.0:
@@ -6321,10 +6301,6 @@ packages:
   /web-streams-polyfill@3.3.3:
     resolution: {integrity: sha512-d2JWLCivmZYTSIoge9MsgFCZrt571BikcWGYkjC1khllbTeDlGqZ2D8vD8E/lJa8WGWbb7Plm8/XJYV7IJHZZw==}
     engines: {node: '>= 8'}
-    dev: false
-
-  /web-vitals@3.5.2:
-    resolution: {integrity: sha512-c0rhqNcHXRkY/ogGDJQxZ9Im9D19hDihbzSQJrsioex+KnFgmMzBiy57Z1EjkhX/+OjyBpclDCzz2ITtjokFmg==}
     dev: false
 
   /webidl-conversions@3.0.1:
