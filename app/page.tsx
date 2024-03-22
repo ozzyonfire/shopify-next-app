@@ -20,6 +20,7 @@ export default async function Page({
 
   if (redirectUri) {
     console.log("Redirecting to: ", redirectUri);
+    console.log("host", process.env.HOST);
     return <ExitClient redirectUri={redirectUri} />;
   }
 
