@@ -34,14 +34,9 @@ The goal of this template is to provide a quick and easy way to spin up a Shopif
 
 ### Providers
 
-- in \_app.tsx there are a number of Providers which are needed to get everything established for an Embedded App
-  - **AppBridgeProvider**: This sets up AppBridge and resolves the host (from next/router) and API Key (from environment variables).
-  - **APIProvider**: This is just an optional helper for accessing the API routes with session tokens from Shopify.
-    - I am planning on removing this in the future and migrating to a native fetch implementation.
-  - **ApolloProvider**: Sets up the Apollo context for running Graphql queries and mutations. This runs through the `/api/graphql` Next.js route and is handled by the Shopify API library.
-  - **SessionProvider**: This ensures that the user always has an active session and that the app is installed correctly. It basically redirects the user to authenticate when it needs to.
-    - In order to accomplish this, a request is sent to `/api/auth/verify` on every page load (client side). This was done client side to preserve the [Automatic Static Optimization](https://nextjs.org/docs/advanced-features/automatic-static-optimization) features in Next.js (only for pages that aren't the install page)
-    - This route checks for online and offline tokens existing, validating online tokens and scope mismatches.
+- in `layout.tsx` we setup some providers that are necessary for the app to run.
+  - **ApolloProvider**: (Optional) Sets up the Apollo context for running Graphql queries and mutations. This runs through the `/api/graphql` Next.js route and is handled by the Shopify API library.
+  - **SessionProvider**: (Optional) This ensures that the user always has an active session and that the app is installed correctly. It basically redirects the user to authenticate when it needs to.
 
 ### OAuth
 
@@ -67,7 +62,7 @@ The first two variables are automatically populated by the Shopify CLI.
 - ✅ New router config for Next.js and App Bridge
 - ✅ AppUninstalled webhook - cleanup and delete sessions
 - ✅ Database sessions managed through Prisma
-- ⬜ Remove the APIProvider and use fetch instead
+- ✅ Remove the APIProvider and use fetch instead
 - ⬜ Prune excess leftover unused code
 
 ## Tech Stack
@@ -80,11 +75,8 @@ The following Shopify tools complement these third-party tools to ease app devel
 
 - [Shopify API library](https://github.com/Shopify/shopify-api-js?tab=readme-ov-file) manages OAuth on the serverless backend. This lets users install the app and grant scope permissions.
 - [App Bridge React](https://shopify.dev/apps/tools/app-bridge/getting-started/using-react) adds authentication to API requests in the frontend and renders components outside of the App’s iFrame.
-- [Axios](https://axios-http.com/) for simple http requests for interacting with the API (Shopify or Custom API routes through Next API Pages).
-  - Removing this in the future.
-- [Apollo](https://www.apollographql.com/) for interacting with the Shopify GraphQL API.
+- [Apollo](https://www.apollographql.com/) for interacting with the Shopify GraphQL API (Optional).
 - [Polaris React](https://polaris.shopify.com/) is a powerful design system and component library that helps developers build high quality, consistent experiences for Shopify merchants.
-- [Custom hooks](https://github.com/Shopify/shopify-frontend-template-react/tree/main/hooks) make authenticated requests to the Admin API.
 - [Prisma](https://www.prisma.io/) for managing database connections and migrations.
 
 ## Getting started
