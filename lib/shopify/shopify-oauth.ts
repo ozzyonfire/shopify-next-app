@@ -34,6 +34,7 @@ export function serverSideRedirect(
   if (embedded === "1") {
     return `${process.env.HOST}/api/auth?${queryParams.toString()}`;
   } else {
+    // maybe we should try this: https://github.com/Shopify/shopify-api-js/blob/main/packages/shopify-api/docs/reference/auth/getEmbeddedAppUrl.md
     redirect(`${process.env.HOST}/api/auth?${queryParams.toString()}`);
   }
 }
@@ -93,11 +94,11 @@ export async function performChecks(
     return serverSideRedirect(shop, host, embedded);
   }
 
-  // verify the session
-  try {
-    await verifyAuth(shop);
-    return false;
-  } catch (err) {
-    return serverSideRedirect(shop, host, embedded);
-  }
+  // // verify the session
+  // try {
+  //   await verifyAuth(shop);
+  //   return false;
+  // } catch (err) {
+  //   return serverSideRedirect(shop, host, embedded);
+  // }
 }

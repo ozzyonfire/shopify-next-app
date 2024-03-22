@@ -5,7 +5,7 @@ import { useAppBridge } from "@shopify/app-bridge-react";
 import { Button, LegacyCard as Card, Page, Text } from "@shopify/polaris";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { doServerAction } from "../actions";
+import { doServerAction, doTokenExchange } from "../actions";
 
 interface Data {
   name: string;
@@ -40,9 +40,12 @@ export default function Home({ shop }: { shop: string }) {
 
   useEffect(() => {
     app.idToken().then((token) => {
-      console.log("Token: ", token);
+      // store the token in our database automatically
+      doTokenExchange(shop, token, false).then(() => {
+        console.log("Token stored");
+      });
     });
-  }, [app]);
+  }, [app, shop]);
 
   const handleGetAPIRequest = async () => {
     try {
@@ -84,7 +87,9 @@ export default function Home({ shop }: { shop: string }) {
         primaryFooterAction={{
           content: "Server action",
           onAction: async () => {
-            const response = await doServerAction(shop);
+            const token = await app.idToken();
+            console.log("token", token);
+            const response = await doServerAction(shop, token);
             setServerActionResult(response);
           },
         }}

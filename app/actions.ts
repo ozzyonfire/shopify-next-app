@@ -1,5 +1,9 @@
 "use server";
-import { verifyAuth } from "@/lib/shopify/verify";
+import {
+  handleSessionToken,
+  tokenExchange,
+  verifyAuth,
+} from "@/lib/shopify/verify";
 
 export async function checkSession(shop: string) {
   try {
@@ -11,12 +15,14 @@ export async function checkSession(shop: string) {
   }
 }
 
-export async function doServerAction(shop: string): Promise<{
+export async function doServerAction(
+  shop: string,
+  sessionIdToken: string,
+): Promise<{
   status: "success" | "error";
 }> {
   try {
-    console.log("shop", shop);
-    await verifyAuth(shop);
+    await handleSessionToken(shop, sessionIdToken);
     return {
       status: "success",
     };
@@ -26,4 +32,12 @@ export async function doServerAction(shop: string): Promise<{
       status: "error",
     };
   }
+}
+
+export async function doTokenExchange(
+  shop: string,
+  sessionToken: string,
+  online?: boolean,
+) {
+  return tokenExchange(shop, sessionToken, online);
 }

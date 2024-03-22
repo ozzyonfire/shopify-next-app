@@ -40,6 +40,14 @@ The goal of this template is to provide a quick and easy way to spin up a Shopif
 
 ### OAuth
 
+### Token exchange
+
+The app template uses token exchange by default. The user gets the ID Token from the initial page load and sends it to the server where it is stored. This happens using a server action.
+
+Also, all server actions should have the session token sent along with them, the server can then verify and exchange the token if needed.
+
+### OAuth (old way - to be deprecated)
+
 OAuth is handled using the `/api/auth` and `/api/auth/callback` routes. The app is setup to use both online and offline tokens, by default.
 
 _Note that in order to use the `/api/graphql` route out of the box, you need to use **online** tokens._

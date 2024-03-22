@@ -1,9 +1,14 @@
 import { AppInstallations } from "@/lib/db/app-installations";
 import shopify from "@/lib/shopify/initialize-context";
 import { registerWebhooks } from "@/lib/shopify/register-webhooks";
-import { findSessionsByShop, loadSession } from "@/lib/db/session-storage";
+import {
+  findSessionsByShop,
+  loadSession,
+  storeSession,
+} from "@/lib/db/session-storage";
 import { headers } from "next/headers";
 import { SessionNotFoundError as NotFoundDBError } from "@/lib/db/session-storage";
+import { RequestedTokenType } from "@shopify/shopify-api";
 
 const TEST_GRAPHQL_QUERY = `
 {
@@ -42,13 +47,13 @@ export class ScopeMismatchError extends Error {
 export class ExpiredTokenError extends Error {
   isOnline: boolean;
   constructor(isOnline: boolean) {
-    super("Token expired");
+    super(`Token expired - ${isOnline ? "online" : "offline"}`);
     this.name = "ExpiredTokenError";
     this.isOnline = isOnline;
   }
 }
 
-export async function verifyAuth(shop: string) {
+export async function verifyAuth(shop: string, online?: boolean) {
   // check to see if the app is installed
   const sanitizedShop = shopify.utils.sanitizeShop(shop);
   if (!sanitizedShop) {
@@ -60,8 +65,40 @@ export async function verifyAuth(shop: string) {
   }
 
   const sessions = await findSessionsByShop(sanitizedShop);
+
+  if (online) {
+    const onlineSession = sessions.find((session) => session.isOnline === true);
+
+    if (!onlineSession) {
+      throw new SessionNotFoundError(true);
+    }
+
+    if (!shopify.config.scopes.equals(onlineSession?.scope)) {
+      throw new ScopeMismatchError(
+        true,
+        onlineSession?.onlineAccessInfo?.associated_user.account_owner ?? false,
+      );
+    }
+
+    // do a test query to make sure the session is still active
+    const client = new shopify.clients.Graphql({
+      session: onlineSession,
+    });
+
+    try {
+      await client.request(TEST_GRAPHQL_QUERY);
+    } catch (err) {
+      throw new ExpiredTokenError(true);
+    }
+
+    if (onlineSession.expires && onlineSession.expires.getTime() < Date.now()) {
+      throw new ExpiredTokenError(true);
+    }
+
+    return onlineSession;
+  }
+
   const offlineSession = sessions.find((session) => session.isOnline === false);
-  const onlineSession = sessions.find((session) => session.isOnline === true);
 
   if (!offlineSession) {
     console.log("No offline session found");
@@ -75,39 +112,14 @@ export async function verifyAuth(shop: string) {
   if (!shopify.config.scopes.equals(offlineSession.scope)) {
     throw new ScopeMismatchError(
       false,
-      onlineSession?.onlineAccessInfo?.associated_user.account_owner ?? false,
+      offlineSession.onlineAccessInfo?.associated_user.account_owner ?? false,
     );
   }
 
-  if (!onlineSession) {
-    throw new SessionNotFoundError(true);
-  }
-
-  if (!shopify.config.scopes.equals(onlineSession?.scope)) {
-    throw new ScopeMismatchError(
-      true,
-      onlineSession?.onlineAccessInfo?.associated_user.account_owner ?? false,
-    );
-  }
-
-  // do a test query to make sure the session is still active
-  const client = new shopify.clients.Graphql({
-    session: onlineSession,
-  });
-
-  try {
-    await client.request(TEST_GRAPHQL_QUERY);
-  } catch (err) {
-    throw new ExpiredTokenError(true);
-  }
-
-  if (onlineSession.expires && onlineSession.expires.getTime() < Date.now()) {
-    throw new ExpiredTokenError(true);
-  }
+  return offlineSession;
 }
 
 export async function verifyRequest(req: Request, isOnline: boolean) {
-  console.log("auth header", req.headers.get("authorization"));
   const sessionId = await shopify.session.getCurrentId({
     rawRequest: req,
     isOnline,
@@ -125,13 +137,7 @@ export async function verifyRequest(req: Request, isOnline: boolean) {
       if (!token) {
         throw new Error("No token present");
       }
-      const payload = await shopify.session.decodeSessionToken(token);
-      const shop = payload.dest.replace("https://", "");
-      if (shop !== session.shop) {
-        throw new Error(
-          "The current request is for a different shop. Redirect gracefully.",
-        );
-      }
+      return handleSessionToken(session.shop, token, isOnline);
     }
 
     if (
@@ -147,5 +153,48 @@ export async function verifyRequest(req: Request, isOnline: boolean) {
       throw new SessionNotFoundError(isOnline);
     }
     throw err;
+  }
+}
+
+export async function tokenExchange(
+  shop: string,
+  sessionToken: string,
+  online?: boolean,
+) {
+  const response = await shopify.auth.tokenExchange({
+    shop,
+    sessionToken,
+    requestedTokenType: online
+      ? RequestedTokenType.OnlineAccessToken
+      : RequestedTokenType.OfflineAccessToken,
+  });
+
+  const { session } = response;
+  await storeSession(session);
+}
+
+/**
+ * @description Do all the necessary steps, to validate the session token and refresh it if it needs to.
+ * @param shop The shop name
+ * @param sessionToken The session token from the request headers or directly sent by the client
+ * @param online
+ * @returns The session object
+ */
+export async function handleSessionToken(
+  shop: string,
+  sessionToken: string,
+  online?: boolean,
+) {
+  try {
+    await shopify.session.decodeSessionToken(sessionToken);
+    const validSession = await verifyAuth(shop, online);
+    return validSession;
+  } catch (error) {
+    if (error instanceof ExpiredTokenError) {
+      await tokenExchange(shop, sessionToken, online);
+      return verifyAuth(shop, online);
+    } else {
+      throw error;
+    }
   }
 }

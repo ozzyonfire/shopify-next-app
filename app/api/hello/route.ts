@@ -13,6 +13,7 @@ type Data = {
 };
 
 export async function GET(req: Request) {
+  // session token is located in the request headers
   const validSession = await verifyRequest(req, true); // could use middleware for this
   console.log("validSession", validSession);
 
