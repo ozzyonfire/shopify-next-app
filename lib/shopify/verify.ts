@@ -123,20 +123,13 @@ export async function verifyRequest(req: Request, isOnline: boolean) {
       }
       return handleSessionToken(token, isOnline);
     } else {
+      console.log("No session id found and no bearerPresent");
       throw new SessionNotFoundError(isOnline);
     }
   }
 
   try {
     const session = await loadSession(sessionId);
-    if (bearerPresent && shopify.config.isEmbeddedApp) {
-      const token = headers().get("authorization")?.replace("Bearer ", "");
-      if (!token) {
-        throw new Error("No token present");
-      }
-      return handleSessionToken(token, isOnline);
-    }
-
     if (
       session.isOnline &&
       session.expires &&
@@ -146,8 +139,17 @@ export async function verifyRequest(req: Request, isOnline: boolean) {
     }
     return session;
   } catch (err) {
-    if (err instanceof NotFoundDBError) {
-      throw new SessionNotFoundError(isOnline);
+    if (err instanceof NotFoundDBError || err instanceof ExpiredTokenError) {
+      if (bearerPresent && shopify.config.isEmbeddedApp) {
+        const token = headers().get("authorization")?.replace("Bearer ", "");
+        if (!token) {
+          throw new Error("No token present");
+        }
+        return handleSessionToken(token, isOnline);
+      } else {
+        console.log("Session not found and no bearerPresent");
+        throw new SessionNotFoundError(isOnline);
+      }
     }
     throw err;
   }
@@ -193,6 +195,7 @@ export async function handleSessionToken(
       await tokenExchange(shop, sessionToken, online);
       return verifyAuth(shop, online);
     } else {
+      console.log("Can't do anything about this error:");
       throw error;
     }
   }
