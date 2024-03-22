@@ -89,7 +89,7 @@ export default function Home({ shop }: { shop: string }) {
           onAction: async () => {
             const token = await app.idToken();
             console.log("token", token);
-            const response = await doServerAction(shop, token);
+            const response = await doServerAction(token);
             setServerActionResult(response);
           },
         }}

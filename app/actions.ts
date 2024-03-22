@@ -15,14 +15,11 @@ export async function checkSession(shop: string) {
   }
 }
 
-export async function doServerAction(
-  shop: string,
-  sessionIdToken: string,
-): Promise<{
+export async function doServerAction(sessionIdToken: string): Promise<{
   status: "success" | "error";
 }> {
   try {
-    await handleSessionToken(shop, sessionIdToken);
+    await handleSessionToken(sessionIdToken);
     return {
       status: "success",
     };

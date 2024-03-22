@@ -120,13 +120,22 @@ export async function verifyAuth(shop: string, online?: boolean) {
 }
 
 export async function verifyRequest(req: Request, isOnline: boolean) {
+  const bearerPresent = headers().get("authorization")?.startsWith("Bearer ");
   const sessionId = await shopify.session.getCurrentId({
     rawRequest: req,
     isOnline,
   });
 
   if (!sessionId) {
-    throw new SessionNotFoundError(isOnline);
+    if (bearerPresent) {
+      const token = headers().get("authorization")?.replace("Bearer ", "");
+      if (!token) {
+        throw new Error("No token present");
+      }
+      return handleSessionToken(token, isOnline);
+    } else {
+      throw new SessionNotFoundError(isOnline);
+    }
   }
 
   try {
@@ -137,7 +146,7 @@ export async function verifyRequest(req: Request, isOnline: boolean) {
       if (!token) {
         throw new Error("No token present");
       }
-      return handleSessionToken(session.shop, token, isOnline);
+      return handleSessionToken(token, isOnline);
     }
 
     if (
@@ -145,7 +154,7 @@ export async function verifyRequest(req: Request, isOnline: boolean) {
       session.expires &&
       session.expires.getTime() < Date.now()
     ) {
-      throw new ExpiredTokenError(true);
+      throw new ExpiredTokenError(isOnline);
     }
     return session;
   } catch (err) {
@@ -175,18 +184,18 @@ export async function tokenExchange(
 
 /**
  * @description Do all the necessary steps, to validate the session token and refresh it if it needs to.
- * @param shop The shop name
  * @param sessionToken The session token from the request headers or directly sent by the client
  * @param online
  * @returns The session object
  */
 export async function handleSessionToken(
-  shop: string,
   sessionToken: string,
   online?: boolean,
 ) {
+  const payload = await shopify.session.decodeSessionToken(sessionToken);
+  const shop = payload.dest.replace("https://", "");
+  console.log("shop", shop);
   try {
-    await shopify.session.decodeSessionToken(sessionToken);
     const validSession = await verifyAuth(shop, online);
     return validSession;
   } catch (error) {
