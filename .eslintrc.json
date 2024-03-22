@@ -1,6 +1,4 @@
 {
   "extends": ["next/core-web-vitals", "prettier"],
-  "rules": {
-    "@next/next/no-sync-scripts": "off"
-  }
+  "rules": {}
 }

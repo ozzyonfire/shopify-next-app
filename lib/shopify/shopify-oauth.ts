@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation";
 import { AppInstallations } from "../db/app-installations";
 import { loadSession } from "../db/session-storage";
 import shopify from "./initialize-context";
@@ -11,22 +10,23 @@ const TEST_GRAPHQL_QUERY = `
   }
 }`;
 
-export function serverSideRedirect(
-  shop: string,
-  host: string,
-  embedded: string,
-) {
+/**
+ * @description Redirects the user to the OAuth page. We used to check if the shop was embedded here, but I don't think it matters anymore. Redirect to this page if the app is not installed.
+ * @param shop
+ * @param host
+ * @returns
+ */
+export function serverSideRedirect(shop: string, host: string) {
   const sanitizedShop = shopify.utils.sanitizeShop(shop as string);
   if (!sanitizedShop) {
     throw new Error("Invalid shop provided");
   }
 
-  if (embedded === "1") {
-    return exitIFrame(shop, host);
-  } else {
-    const redirectUri = `${process.env.HOST}/api/auth?shop=${shop}&host=${host}`;
-    redirect(redirectUri);
-  }
+  const queryParams = new URLSearchParams({
+    shop: sanitizedShop,
+    host,
+  });
+  return `${process.env.HOST}/api/auth?${queryParams.toString()}`;
 }
 
 export async function checkInstallation(shop: string) {
@@ -74,31 +74,17 @@ export async function verify(shop: string) {
  * 5. If the app needs to be authorized, redirect to the OAuth page
  * 6. If the app is authorized, check to see if there is a subscription / billing
  */
-export async function performChecks(
-  shop: string,
-  host: string,
-  embedded: string,
-) {
+export async function performChecks(shop: string, host: string) {
   const isInstalled = await checkInstallation(shop);
   if (!isInstalled) {
-    return serverSideRedirect(shop, host, embedded);
+    return serverSideRedirect(shop, host);
   }
 
   // verify the session
   try {
     await verifyAuth(shop);
+    return false;
   } catch (err) {
-    return serverSideRedirect(shop, host, embedded);
+    return serverSideRedirect(shop, host);
   }
-}
-
-export function exitIFrame(shop: string, host: string) {
-  const hostUrl = process.env.HOST;
-  const queryParams = new URLSearchParams({
-    shop,
-    host,
-  });
-  const redirectUri = `${hostUrl}/api/auth?${queryParams.toString()}`;
-  queryParams.append("redirectUri", encodeURI(redirectUri));
-  redirect(`/exitiframe?${queryParams.toString()}`);
 }

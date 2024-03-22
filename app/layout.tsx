@@ -1,5 +1,6 @@
 import Providers from "@/providers/providers";
 import { Metadata } from "next";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Next.js Shopify App",
@@ -17,15 +18,17 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
+        <meta name="test" content="test" />
+        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
         <script src="https://cdn.shopify.com/shopifycloud/app-bridge.js" />
       </head>
       <body>
         <Providers>{children}</Providers>
         {/* This is the recommended way to load script, but it doesn't work */}
-        {/* <Script
+        <Script
           src="https://cdn.shopify.com/shopifycloud/app-bridge.js"
           strategy="beforeInteractive"
-        /> */}
+        />
       </body>
     </html>
   );
