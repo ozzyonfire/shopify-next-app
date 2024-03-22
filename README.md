@@ -118,7 +118,9 @@ You can deploy this app to a hosting service of your choice. Here is the basic s
   - `SCOPES`
   - `HOST`
   - Any database connection strings
-- Setup your Shopify App to have the same `/auth/callback` and `/auth` routes as your Vercel deployment (with your hostname)
+- Setup your Shopify App to have the same `/api/auth/callback` and `/api/auth` routes as your Vercel deployment (with your hostname)
+
+Vercel should be setup to build using the default Next.js build settings.
 
 ### Application Storage
 

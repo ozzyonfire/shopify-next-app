@@ -14,6 +14,8 @@ export async function GET(req: Request) {
   const shop = url.searchParams.get("shop");
   const host = url.searchParams.get("host");
 
+  // todo: validate hmac
+
   if (!shop) {
     throw new Error("No shop provided");
   }
