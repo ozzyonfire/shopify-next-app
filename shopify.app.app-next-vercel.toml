@@ -10,9 +10,13 @@ automatically_update_urls_on_dev = false
 dev_store_url = "matts-tech-test.myshopify.com"
 include_config_on_deploy = true
 
+[access.admin]
+direct_api_mode = "offline"
+embedded_app_direct_api_access = true
+
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = ""
+scopes = "write_products"
 
 [auth]
 redirect_urls = [

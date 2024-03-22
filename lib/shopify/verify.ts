@@ -129,7 +129,6 @@ export async function verifyRequest(req: Request, isOnline: boolean) {
 
   try {
     const session = await loadSession(sessionId);
-    const bearerPresent = headers().get("authorization")?.startsWith("Bearer ");
     if (bearerPresent && shopify.config.isEmbeddedApp) {
       const token = headers().get("authorization")?.replace("Bearer ", "");
       if (!token) {
@@ -183,12 +182,14 @@ export async function handleSessionToken(
 ) {
   const payload = await shopify.session.decodeSessionToken(sessionToken);
   const shop = payload.dest.replace("https://", "");
-  console.log("shop", shop);
   try {
     const validSession = await verifyAuth(shop, online);
     return validSession;
   } catch (error) {
-    if (error instanceof ExpiredTokenError) {
+    if (
+      error instanceof ExpiredTokenError ||
+      error instanceof SessionNotFoundError
+    ) {
       await tokenExchange(shop, sessionToken, online);
       return verifyAuth(shop, online);
     } else {
