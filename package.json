@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "shopify": "shopify",
-    "build": "shopify app build",
+    "build": "next build",
     "dev": "shopify app dev",
     "info": "shopify app info",
     "generate": "shopify app generate",

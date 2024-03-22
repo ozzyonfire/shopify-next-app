@@ -19,6 +19,7 @@ export function middleware(request: NextRequest) {
   const {
     nextUrl: { search },
   } = request;
+
   const urlSearchParams = new URLSearchParams(search);
   const params = Object.fromEntries(urlSearchParams.entries());
 
