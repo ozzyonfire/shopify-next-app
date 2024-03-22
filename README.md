@@ -109,6 +109,17 @@ Open the URL generated in your console. Once you grant permission to the app, yo
 
 ## Deployment
 
+You can deploy this app to a hosting service of your choice. Here is the basic setup for deploying to Vercel:
+
+- Create you Shopify App in the Shopify Partners Dashboard
+- Create your project on Vercel and add the environment variables from your Shopify App
+  - `SHOPIFY_API_KEY`
+  - `SHOPIFY_API_SECRET`
+  - `SCOPES`
+  - `HOST`
+  - Any database connection strings
+- Setup your Shopify App to have the same `/auth/callback` and `/auth` routes as your Vercel deployment (with your hostname)
+
 ### Application Storage
 
 This template uses Prisma to store and manage sessions. For more information on how to set up Prisma, see the [Prisma documentation](https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch-typescript-postgres).

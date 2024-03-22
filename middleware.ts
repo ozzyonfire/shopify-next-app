@@ -25,10 +25,10 @@ export function middleware(request: NextRequest) {
   const shop = params.shop || "*.myshopify.com";
 
   const res = NextResponse.next();
-  // res.headers.set(
-  // 	"Content-Security-Policy",
-  // 	`frame-ancestors https://${shop} https://admin.shopify.com;`
-  // );
+  res.headers.set(
+    "Content-Security-Policy",
+    `frame-ancestors https://${shop} https://admin.shopify.com;`,
+  );
 
   // You can also set request headers in NextResponse.rewrite
   return res;
