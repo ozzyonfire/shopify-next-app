@@ -5,7 +5,7 @@ import { useAppBridge } from "@shopify/app-bridge-react";
 import { Button, LegacyCard as Card, Page, Text } from "@shopify/polaris";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { doServerAction } from "./actions";
+import { doServerAction } from "../actions";
 
 interface Data {
   name: string;
