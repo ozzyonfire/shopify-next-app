@@ -1,0 +1,27 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "5030b0d85db9f9e35cb92eb98a25122f"
+name = "app-next-template-vercel"
+application_url = "https://shopify-next-app-six.vercel.app/"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = false
+dev_store_url = "matts-tech-test.myshopify.com"
+include_config_on_deploy = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = ""
+
+[auth]
+redirect_urls = [
+  "https://shopify-next-app-six.vercel.app/api/auth",
+  "https://shopify-next-app-six.vercel.app/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2024-01"
+
+[pos]
+embedded = false

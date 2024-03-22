@@ -73,12 +73,7 @@ export async function verifyAuth(shop: string, online?: boolean) {
       throw new SessionNotFoundError(true);
     }
 
-    if (!shopify.config.scopes.equals(onlineSession?.scope)) {
-      throw new ScopeMismatchError(
-        true,
-        onlineSession?.onlineAccessInfo?.associated_user.account_owner ?? false,
-      );
-    }
+    // we used to check for a scope mismatch here, but if we deploy our app with shopify it will take care of this for us
 
     // do a test query to make sure the session is still active
     const client = new shopify.clients.Graphql({
@@ -108,13 +103,7 @@ export async function verifyAuth(shop: string, online?: boolean) {
   // register webhooks
   await registerWebhooks(offlineSession);
 
-  // check for scope mismatch
-  if (!shopify.config.scopes.equals(offlineSession.scope)) {
-    throw new ScopeMismatchError(
-      false,
-      offlineSession.onlineAccessInfo?.associated_user.account_owner ?? false,
-    );
-  }
+  // don't need to check for scope mismatch - see above
 
   return offlineSession;
 }
