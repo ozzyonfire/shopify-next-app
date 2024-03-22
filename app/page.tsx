@@ -16,7 +16,11 @@ export default async function Page({
   }
 
   // verify hmac if we are doing an install
-  const redirectUri = await performChecks(shop as string, host as string);
+  const redirectUri = await performChecks(
+    shop as string,
+    host as string,
+    embedded as string,
+  );
 
   if (redirectUri) {
     console.log("Redirecting to: ", redirectUri);
