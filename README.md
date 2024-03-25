@@ -58,6 +58,7 @@ There are a couple environment variables you need to set up in order for the app
 
 ```bash
 DATABASE_URL= # database connection string - for connecting to prisma
+POSTGRES_PASSWORD= # optional database password - when running postgres db locally through docker
 ```
 
 The first two variables are automatically populated by the Shopify CLI.
@@ -93,24 +94,19 @@ The following Shopify tools complement these third-party tools to ease app devel
 
 [The Shopify CLI](https://shopify.dev/apps/tools/cli) connects to an app in your Partners dashboard. It provides environment variables, runs commands in parallel, and updates application URLs for easier development.
 
-You can develop locally using your preferred package manager. Run one of the following commands from the root of your app.
-
-Using yarn:
-
-```shell
-yarn dev
-```
-
-Using npm:
-
-```shell
-npm run dev
-```
+You can develop locally using your preferred package manager.
 
 Using pnpm:
 
 ```shell
 pnpm run dev
+```
+
+You can also get up and running with Docker. This will setup and initialize the postgres database for you.
+
+```shell
+docker-compose up
+pnpm run migrate
 ```
 
 Open the URL generated in your console. Once you grant permission to the app, you can start development.
@@ -129,6 +125,12 @@ You can deploy this app to a hosting service of your choice. Here is the basic s
 - Setup your Shopify App to have the same `/api/auth/callback` and `/api/auth` routes as your Vercel deployment (with your hostname)
 
 Vercel should be setup to build using the default Next.js build settings.
+
+You should also be using a managed Shopify deployment. This will handle scope changes on your app.
+
+```shell
+pnpm run deploy
+```
 
 ### Application Storage
 

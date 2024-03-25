@@ -10,6 +10,8 @@
     "info": "shopify app info",
     "generate": "shopify app generate",
     "deploy": "shopify app deploy",
+    "docker-dev": "docker compose up -d",
+    "migrate": "prisma migrate dev",
     "postinstall": "prisma generate"
   },
   "dependencies": {
