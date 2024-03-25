@@ -1,6 +1,7 @@
 import Providers from "@/providers/providers";
 import { Metadata } from "next";
 import Script from "next/script";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Next.js Shopify App",
