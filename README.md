@@ -2,7 +2,17 @@
 
 This is a template for building a [Shopify app](https://shopify.dev/apps/getting-started) using Next.js and Typescript. It contains the basics for building a Shopify app on Next.js using the app router and server components.
 
-Rather than cloning this repo, you can use your preferred package manager and the Shopify CLI with [these steps](#installing-the-template).
+## Features
+
+- **Next.js**: Using the latest app router and server components.
+- **Prisma**: For managing database connections and migrations.
+- **Apollo**: For interacting with the Shopify GraphQL API.
+- **App Bridge v4**: For authenticating API requests in the frontend.
+- **Shopify API library**: For managing OAuth on the serverless backend.
+- **Polaris React**: For building high quality, consistent experiences for Shopify merchants.
+- **Tailwind CSS**: For fast, flexible styling and design.
+- **Docker**: For setting up the postgres database for local development.
+- **Graphql-Codegen**: For generating types for graphql queries and mutations.
 
 ### Installing the template
 
