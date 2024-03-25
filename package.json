@@ -12,11 +12,15 @@
     "deploy": "shopify app deploy",
     "docker-dev": "docker compose up -d",
     "migrate": "prisma migrate dev",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "graphql-codegen": "graphql-codegen --config .graphqlrc.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.9.6",
+    "@graphql-codegen/cli": "^5.0.2",
+    "@graphql-codegen/client-preset": "^4.2.4",
     "@prisma/client": "5.10.2",
+    "@shopify/api-codegen-preset": "^0.0.6",
     "@shopify/app": "^3.57.0",
     "@shopify/app-bridge-react": "^4.0.0",
     "@shopify/cli": "^3.57.0",

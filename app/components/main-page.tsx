@@ -1,6 +1,7 @@
 "use client";
 
-import { gql, useLazyQuery } from "@apollo/client";
+import { graphql } from "@/lib/gql";
+import { useLazyQuery } from "@apollo/client";
 import { useAppBridge } from "@shopify/app-bridge-react";
 import { Button, LegacyCard as Card, Page, Text } from "@shopify/polaris";
 import Link from "next/link";
@@ -12,13 +13,14 @@ interface Data {
   height: string;
 }
 
-const GET_SHOP = gql`
-  query {
+const GET_SHOP = graphql(`
+  #graphql
+  query getShop {
     shop {
       name
     }
   }
-`;
+`);
 
 interface ShopData {
   shop: {
@@ -32,7 +34,7 @@ export default function Home({ shop }: { shop: string }) {
     status: "success" | "error";
   }>();
   const [graphqlData, setGraphglData] = useState<ShopData | null>(null);
-  const [getShop] = useLazyQuery<ShopData>(GET_SHOP, {
+  const [getShop] = useLazyQuery(GET_SHOP, {
     fetchPolicy: "network-only",
   });
 

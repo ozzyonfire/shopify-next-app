@@ -90,7 +90,7 @@ The following Shopify tools complement these third-party tools to ease app devel
 
 ## Getting started
 
-#### Local Development
+### Local Development
 
 [The Shopify CLI](https://shopify.dev/apps/tools/cli) connects to an app in your Partners dashboard. It provides environment variables, runs commands in parallel, and updates application URLs for easier development.
 
@@ -102,6 +102,8 @@ Using pnpm:
 pnpm run dev
 ```
 
+#### Docker for local development
+
 You can also get up and running with Docker. This will setup and initialize the postgres database for you.
 
 ```shell
@@ -109,7 +111,15 @@ docker-compose up
 pnpm run migrate
 ```
 
-Open the URL generated in your console. Once you grant permission to the app, you can start development.
+#### Graphql-Codegen
+
+If you run the following command, it will generate the types for the graphql queries and mutations.
+
+```shell
+pnpm run graphql-codegen
+```
+
+This sets up your types when using Apollo client and gives your intellisense in your IDE.
 
 ## Deployment
 
