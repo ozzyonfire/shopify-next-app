@@ -1,4 +1,0 @@
--- AlterTable
-ALTER TABLE "Session" ALTER COLUMN "accessToken" DROP NOT NULL,
-ALTER COLUMN "expires" DROP NOT NULL,
-ALTER COLUMN "scope" DROP NOT NULL;

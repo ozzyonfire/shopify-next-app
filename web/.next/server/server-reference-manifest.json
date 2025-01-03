@@ -1,0 +1,30 @@
+{
+  "node": {
+    "0170bdd3264ff5f43b04f0308642396506b09578": {
+      "workers": {
+        "app/page": "(action-browser)/./node_modules/.pnpm/next@14.1.3_@babel+core@7.26.0_react-dom@18.3.1_react@18.3.1/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fozzyonfire%2FDevelopment%2Fprojects%2Fshopify%2Fshopify-next-app%2Fweb%2Fapp%2Factions.ts%22%2C%5B%22doWebhookRegistration%22%2C%22doServerAction%22%2C%22storeToken%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/page": "action-browser"
+      }
+    },
+    "b6d66397a4f1477e2ba6e3dd16bd95356b046ebb": {
+      "workers": {
+        "app/page": "(action-browser)/./node_modules/.pnpm/next@14.1.3_@babel+core@7.26.0_react-dom@18.3.1_react@18.3.1/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fozzyonfire%2FDevelopment%2Fprojects%2Fshopify%2Fshopify-next-app%2Fweb%2Fapp%2Factions.ts%22%2C%5B%22doWebhookRegistration%22%2C%22doServerAction%22%2C%22storeToken%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/page": "action-browser"
+      }
+    },
+    "eecc45b045c9ee58992adb2d1874587292271523": {
+      "workers": {
+        "app/page": "(action-browser)/./node_modules/.pnpm/next@14.1.3_@babel+core@7.26.0_react-dom@18.3.1_react@18.3.1/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fozzyonfire%2FDevelopment%2Fprojects%2Fshopify%2Fshopify-next-app%2Fweb%2Fapp%2Factions.ts%22%2C%5B%22doWebhookRegistration%22%2C%22doServerAction%22%2C%22storeToken%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/page": "action-browser"
+      }
+    }
+  },
+  "edge": {},
+  "encryptionKey": "tblnazHwlNwvno1xGv9bsDo+IuyT59mRiq/DlGhzG4Y="
+}
