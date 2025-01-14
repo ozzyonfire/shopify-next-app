@@ -8,12 +8,19 @@ const config: CodegenConfig = {
     "./components/**/*.{js,ts,jsx,tsx}",
     "./hooks/**/*.{js,ts,jsx,tsx}",
     "./providers/**/*.{js,ts,jsx,tsx}",
+    "./lib/**/*.{js,ts,jsx,tsx}",
     "!./lib/gql/**/*.{js,ts,jsx,tsx}",
   ],
   generates: {
     "./lib/gql/": {
       preset: "client",
       plugins: [],
+    },
+    "./types/admin.generated.d.ts": {
+      preset,
+      presetConfig: {
+        apiType: ApiType.Admin,
+      },
     },
   },
 };

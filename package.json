@@ -11,7 +11,6 @@
     "deploy": "shopify app deploy",
     "docker-dev": "docker compose up -d"
   },
-  "prettier": "^3.2.5",
   "author": "ozzyonfire",
   "keywords": [
     "shopify",
@@ -19,5 +18,8 @@
     "polaris",
     "prisma",
     "template"
-  ]
+  ],
+  "dependencies": {
+    "prettier": "^3.2.5"
+  }
 }

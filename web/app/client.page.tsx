@@ -21,15 +21,6 @@ const GET_SHOP = graphql(`
   }
 `);
 
-const GET_ORDER = graphql(`
-  query getOrder($id: ID!) {
-    order(id: $id) {
-      id
-      name
-    }
-  }
-`);
-
 export default function Home() {
   const [data, setData] = useState<Data | null>(null);
   const [serverActionResult, setServerActionResult] = useState<{
@@ -90,7 +81,6 @@ export default function Home() {
           content: "Server action",
           onAction: async () => {
             const token = await app.idToken();
-            console.log("token", token);
             const response = await doServerAction(token);
             setServerActionResult(response);
           },

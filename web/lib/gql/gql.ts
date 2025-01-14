@@ -11,10 +11,11 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * 3. It does not support dead code elimination, so it will add unused operations.
  *
  * Therefore it is highly recommended to use the babel or swc plugin for production.
+ * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 const documents = {
     "\n  query getShop {\n    shop {\n      name\n    }\n  }\n": types.GetShopDocument,
-    "\n  query getOrder($id: ID!) {\n    order(id: $id) {\n      id\n      name\n    }\n  }\n": types.GetOrderDocument,
+    "\n  query getProducts($first: Int!) {\n    products(first: $first) {\n      nodes {\n        id\n        title\n        tags\n      }\n    }\n  }\n": types.GetProductsDocument,
 };
 
 /**
@@ -38,7 +39,7 @@ export function graphql(source: "\n  query getShop {\n    shop {\n      name\n  
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query getOrder($id: ID!) {\n    order(id: $id) {\n      id\n      name\n    }\n  }\n"): (typeof documents)["\n  query getOrder($id: ID!) {\n    order(id: $id) {\n      id\n      name\n    }\n  }\n"];
+export function graphql(source: "\n  query getProducts($first: Int!) {\n    products(first: $first) {\n      nodes {\n        id\n        title\n        tags\n      }\n    }\n  }\n"): (typeof documents)["\n  query getProducts($first: Int!) {\n    products(first: $first) {\n      nodes {\n        id\n        title\n        tags\n      }\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

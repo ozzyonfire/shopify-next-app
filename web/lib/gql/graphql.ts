@@ -17084,7 +17084,7 @@ export type DraftOrderInput = {
   appliedDiscount?: InputMaybe<DraftOrderAppliedDiscountInput>;
   /** The mailing address associated with the payment method. */
   billingAddress?: InputMaybe<MailingAddressInput>;
-  /** The extra information added to the customer. */
+  /** The extra information added to the draft order on behalf of the customer. */
   customAttributes?: InputMaybe<Array<AttributeInput>>;
   /**
    * The list of discount codes that will be attempted to be applied to the draft order.
@@ -22015,7 +22015,7 @@ export enum GiftCardSortKeys {
   UpdatedAt = 'UPDATED_AT'
 }
 
-/** Represents information about the metafields associated to the specified resource. */
+/** Interface for a gift card transaction. */
 export type GiftCardTransaction = {
   /** The amount of the transaction. */
   amount: MoneyV2;
@@ -22055,14 +22055,14 @@ export type GiftCardTransaction = {
 };
 
 
-/** Represents information about the metafields associated to the specified resource. */
+/** Interface for a gift card transaction. */
 export type GiftCardTransactionMetafieldArgs = {
   key: Scalars['String']['input'];
   namespace?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-/** Represents information about the metafields associated to the specified resource. */
+/** Interface for a gift card transaction. */
 export type GiftCardTransactionMetafieldsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
@@ -22074,14 +22074,14 @@ export type GiftCardTransactionMetafieldsArgs = {
 };
 
 
-/** Represents information about the metafields associated to the specified resource. */
+/** Interface for a gift card transaction. */
 export type GiftCardTransactionPrivateMetafieldArgs = {
   key: Scalars['String']['input'];
   namespace: Scalars['String']['input'];
 };
 
 
-/** Represents information about the metafields associated to the specified resource. */
+/** Interface for a gift card transaction. */
 export type GiftCardTransactionPrivateMetafieldsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
@@ -23380,6 +23380,8 @@ export enum InventorySetQuantitiesUserErrorCode {
   InvalidReferenceDocument = 'INVALID_REFERENCE_DOCUMENT',
   /** The specified inventory item is not stocked at the location. */
   ItemNotStockedAtLocation = 'ITEM_NOT_STOCKED_AT_LOCATION',
+  /** The specified inventory item is not allowed to be adjusted via API. Example: if the inventory item is a parent bundle. */
+  NonMutableInventoryItem = 'NON_MUTABLE_INVENTORY_ITEM',
   /** The combination of inventoryItemId and locationId must be unique. */
   NoDuplicateInventoryItemIdGroupIdPair = 'NO_DUPLICATE_INVENTORY_ITEM_ID_GROUP_ID_PAIR'
 }
@@ -25093,7 +25095,10 @@ export type Market = HasMetafieldDefinitions & HasMetafields & Node & {
    * @deprecated Use `catalogs` instead.
    */
   priceList?: Maybe<PriceList>;
-  /** Whether the market is the shop’s primary market. */
+  /**
+   * Whether the market is the shop’s primary market.
+   * @deprecated This field is deprecated and will be removed in the future.
+   */
   primary: Scalars['Boolean']['output'];
   /**
    * Returns a private metafield by namespace and key that belongs to the resource.
@@ -25109,7 +25114,10 @@ export type Market = HasMetafieldDefinitions & HasMetafields & Node & {
    *
    */
   privateMetafields: PrivateMetafieldConnection;
-  /** The regions that comprise the market. */
+  /**
+   * The regions that comprise the market.
+   * @deprecated This field is deprecated and will be removed in the future. Use `conditions.regionConditions` instead.
+   */
   regions: MarketRegionConnection;
   /**
    * The market’s web presence, which defines its SEO strategy. This can be a different domain,
@@ -26451,7 +26459,7 @@ export type MarketingEngagement = {
   isCumulative: Scalars['Boolean']['output'];
   /** The marketing activity object related to this engagement. This corresponds to the marketingActivityId passed in on creation of the engagement. */
   marketingActivity?: Maybe<MarketingActivity>;
-  /** The date for which the metrics are being reported, from 0:00:00 to 23:59:59 in the time zone specified by `timeZone`. */
+  /** The calendar date (in the time zone offset specified by the utcOffset field) for which the metrics are being reported. For example, a shop in UTC-5 would set utcOffset="-05:00" and aggregate all engagements from 05:00:00Z up to 29:00:00Z (5am UTC next day) for each call. */
   occurredOn: Scalars['Date']['output'];
   /** The number of orders generated from the marketing content. */
   orders?: Maybe<Scalars['Decimal']['output']>;
@@ -26471,7 +26479,7 @@ export type MarketingEngagement = {
   uniqueViewsCount?: Maybe<Scalars['Int']['output']>;
   /** The total number of unsubscribes on the marketing content. For social media platforms, this represents the number of unfollows. */
   unsubscribesCount?: Maybe<Scalars['Int']['output']>;
-  /** The time difference, in hours, between UTC and the time zone used to aggregate these metrics. */
+  /** The UTC offset for the time zone in which the metrics are being reported, in the format `"+HH:MM"` or `"-HH:MM"`. Used in combination with occurredOn when aggregating daily metrics. Must match the account settings for the shop to minimize eventual discrepancies in reporting. */
   utcOffset: Scalars['UtcOffset']['output'];
   /** The total number of views on the marketing content. For message-based platforms such as email or SMS, this represents the number of times marketing emails or messages were opened. For video-based content, this represents the number of times videos were played. */
   viewsCount?: Maybe<Scalars['Int']['output']>;
@@ -26506,7 +26514,7 @@ export type MarketingEngagementInput = {
   impressionsCount?: InputMaybe<Scalars['Int']['input']>;
   /** Specifies how the provided metrics have been aggregated. Cumulative metrics are aggregated from the first day of reporting up to and including `occuredOn`. Non-cumulative metrics are aggregated over the single day indicated in `occuredOn`. Cumulative metrics will monotonically increase in time as each record includes the previous day's values, and so on. Non-cumulative is strongly preferred, and support for cumulative metrics may be deprecated in the future. */
   isCumulative: Scalars['Boolean']['input'];
-  /** The date for which the metrics are being reported, from 0:00:00 to 23:59:59 in the time zone specified by `timeZone`. */
+  /** The calendar date (in the time zone offset specified by the utcOffset field) for which the metrics are being reported. For example, a shop in UTC-5 would set utcOffset="-05:00" and aggregate all engagements from 05:00:00Z up to 29:00:00Z (5am UTC next day) for each call. */
   occurredOn: Scalars['Date']['input'];
   /** The number of orders generated from the marketing content. */
   orders?: InputMaybe<Scalars['Decimal']['input']>;
@@ -26526,7 +26534,7 @@ export type MarketingEngagementInput = {
   uniqueViewsCount?: InputMaybe<Scalars['Int']['input']>;
   /** The total number of unsubscribes on the marketing content. For social media platforms, this represents the number of unfollows. */
   unsubscribesCount?: InputMaybe<Scalars['Int']['input']>;
-  /** The time difference, in hours, between UTC and the time zone used to aggregate these metrics. */
+  /** The UTC offset for the time zone in which the metrics are being reported, in the format `"+HH:MM"` or `"-HH:MM"`. Used in combination with occurredOn when aggregating daily metrics. Must match the account settings for the shop to minimize eventual discrepancies in reporting. */
   utcOffset: Scalars['UtcOffset']['input'];
   /** The total number of views on the marketing content. For message-based platforms such as email or SMS, this represents the number of times marketing emails or messages were opened. For video-based content, this represents the number of times videos were played. */
   viewsCount?: InputMaybe<Scalars['Int']['input']>;
@@ -28547,6 +28555,8 @@ export enum MetafieldsSetUserErrorCode {
   Present = 'PRESENT',
   /** The metafield has been modified since it was loaded. */
   StaleObject = 'STALE_OBJECT',
+  /** The input value is already taken. */
+  Taken = 'TAKEN',
   /** The input value is too long. */
   TooLong = 'TOO_LONG',
   /** The input value is too short. */
@@ -30228,7 +30238,24 @@ export type Mutation = {
   fulfillmentOrderAcceptFulfillmentRequest?: Maybe<FulfillmentOrderAcceptFulfillmentRequestPayload>;
   /** Marks a fulfillment order as canceled. */
   fulfillmentOrderCancel?: Maybe<FulfillmentOrderCancelPayload>;
-  /** Marks an in-progress fulfillment order as incomplete, indicating the fulfillment service is unable to ship any remaining items and intends to close the fulfillment order. */
+  /**
+   * Marks an in-progress fulfillment order as incomplete,
+   * indicating the fulfillment service is unable to ship any remaining items,
+   * and closes the fulfillment request.
+   *
+   * This mutation can only be called for fulfillment orders that meet the following criteria:
+   *   - Assigned to a fulfillment service location,
+   *   - The fulfillment request has been accepted,
+   *   - The fulfillment order status is `IN_PROGRESS`.
+   *
+   * This mutation can only be called by the fulfillment service app that accepted the fulfillment request.
+   * Calling this mutation returns the control of the fulfillment order to the merchant, allowing them to
+   * move the fulfillment order line items to another location and fulfill from there,
+   * remove and refund the line items, or to request fulfillment from the same fulfillment service again.
+   *
+   * Closing a fulfillment order is explained in
+   * [the fulfillment service guide](https://shopify.dev/apps/build/orders-fulfillment/fulfillment-service-apps/build-for-fulfillment-services#step-7-optional-close-a-fulfillment-order).
+   */
   fulfillmentOrderClose?: Maybe<FulfillmentOrderClosePayload>;
   /**
    * Applies a fulfillment hold on a fulfillment order.
@@ -30440,19 +30467,37 @@ export type Mutation = {
   marketLocalizationsRegister?: Maybe<MarketLocalizationsRegisterPayload>;
   /** Deletes market localizations. */
   marketLocalizationsRemove?: Maybe<MarketLocalizationsRemovePayload>;
-  /** Deletes a market region. */
+  /**
+   * Deletes a market region.
+   * @deprecated Use `marketUpdate` instead.
+   */
   marketRegionDelete?: Maybe<MarketRegionDeletePayload>;
-  /** Creates regions that belong to an existing market. */
+  /**
+   * Creates regions that belong to an existing market.
+   * @deprecated This mutation is deprecated and will be removed in the future. Use `marketCreate or `marketUpdate` instead.
+   */
   marketRegionsCreate?: Maybe<MarketRegionsCreatePayload>;
-  /** Deletes a list of market regions. */
+  /**
+   * Deletes a list of market regions.
+   * @deprecated Use `marketUpdate` instead.
+   */
   marketRegionsDelete?: Maybe<MarketRegionsDeletePayload>;
   /** Updates the properties of a market. */
   marketUpdate?: Maybe<MarketUpdatePayload>;
-  /** Creates a web presence for a market. */
+  /**
+   * Creates a web presence for a market.
+   * @deprecated Use `webPresenceCreate` instead.
+   */
   marketWebPresenceCreate?: Maybe<MarketWebPresenceCreatePayload>;
-  /** Deletes a market web presence. */
+  /**
+   * Deletes a market web presence.
+   * @deprecated Use `webPresenceDelete` instead.
+   */
   marketWebPresenceDelete?: Maybe<MarketWebPresenceDeletePayload>;
-  /** Updates a market web presence. */
+  /**
+   * Updates a market web presence.
+   * @deprecated Use `webPresenceUpdate` instead.
+   */
   marketWebPresenceUpdate?: Maybe<MarketWebPresenceUpdatePayload>;
   /** Deletes all external marketing activities. Deletion is performed by a background job, as it may take a bit of time to complete if a large number of activities are to be deleted. Attempting to create or modify external activities before the job has completed will result in the create/update/upsert mutation returning an error. */
   marketingActivitiesDeleteAllExternal?: Maybe<MarketingActivitiesDeleteAllExternalPayload>;
@@ -31058,6 +31103,8 @@ export type Mutation = {
    * Sending feedback replaces previously sent feedback for the shop. Send a new `shopResourceFeedbackCreate` mutation to push the latest state of a shop or its resources to Shopify.
    */
   shopResourceFeedbackCreate?: Maybe<ShopResourceFeedbackCreatePayload>;
+  /** Creates an alternate currency payout for a Shopify Payments account. */
+  shopifyPaymentsPayoutAlternateCurrencyCreate?: Maybe<ShopifyPaymentsPayoutAlternateCurrencyCreatePayload>;
   /**
    * Generates the URL and signed paramaters needed to upload an asset to Shopify.
    * @deprecated Use `stagedUploadsCreate` instead.
@@ -33903,6 +33950,13 @@ export type MutationShopPolicyUpdateArgs = {
 /** The schema's entry point for all mutation operations. */
 export type MutationShopResourceFeedbackCreateArgs = {
   input: ResourceFeedbackCreateInput;
+};
+
+
+/** The schema's entry point for all mutation operations. */
+export type MutationShopifyPaymentsPayoutAlternateCurrencyCreateArgs = {
+  accountId?: InputMaybe<Scalars['ID']['input']>;
+  currency: CurrencyCode;
 };
 
 
@@ -44192,7 +44246,10 @@ export type QueryRoot = {
   priceList?: Maybe<PriceList>;
   /** All price lists for a shop. */
   priceLists: PriceListConnection;
-  /** The primary market of the shop. */
+  /**
+   * The primary market of the shop.
+   * @deprecated Use `backupRegion` instead.
+   */
   primaryMarket: Market;
   /**
    * Returns a private metafield by ID.
@@ -44253,7 +44310,7 @@ export type QueryRoot = {
   productVariantsCount?: Maybe<Count>;
   /** Returns a list of products. */
   products: ProductConnection;
-  /** Count of products. Limited to a maximum of 10000. */
+  /** Count of products. */
   productsCount?: Maybe<Count>;
   /** The list of publicly-accessible Admin API versions, including supported versions, the release candidate, and unstable versions. */
   publicApiVersions: Array<ApiVersion>;
@@ -47074,8 +47131,6 @@ export enum ReturnErrorCode {
 export type ReturnInput = {
   /** The new line items to be added to the order. */
   exchangeLineItems?: InputMaybe<Array<ExchangeLineItemInput>>;
-  /** When `true` the customer will receive a notification if there's an `Order.email` present. */
-  notifyCustomer?: InputMaybe<Scalars['Boolean']['input']>;
   /** The ID of the order to be returned. */
   orderId: Scalars['ID']['input'];
   /** The UTC date and time when the return was first solicited by the customer. */
@@ -51783,6 +51838,40 @@ export type ShopifyPaymentsPayout = LegacyInteroperability & Node & {
   transactionType: ShopifyPaymentsPayoutTransactionType;
 };
 
+/** Return type for `shopifyPaymentsPayoutAlternateCurrencyCreate` mutation. */
+export type ShopifyPaymentsPayoutAlternateCurrencyCreatePayload = {
+  __typename?: 'ShopifyPaymentsPayoutAlternateCurrencyCreatePayload';
+  /** The resulting alternate currency payout created. */
+  payout?: Maybe<ShopifyPaymentsToolingProviderPayout>;
+  /** Whether the alternate currency payout was created successfully. */
+  success?: Maybe<Scalars['Boolean']['output']>;
+  /** The list of errors that occurred from executing the mutation. */
+  userErrors: Array<ShopifyPaymentsPayoutAlternateCurrencyCreateUserError>;
+};
+
+/** An error that occurs during the execution of `ShopifyPaymentsPayoutAlternateCurrencyCreate`. */
+export type ShopifyPaymentsPayoutAlternateCurrencyCreateUserError = DisplayableError & {
+  __typename?: 'ShopifyPaymentsPayoutAlternateCurrencyCreateUserError';
+  /** The error code. */
+  code?: Maybe<ShopifyPaymentsPayoutAlternateCurrencyCreateUserErrorCode>;
+  /** The path to the input field that caused the error. */
+  field?: Maybe<Array<Scalars['String']['output']>>;
+  /** The error message. */
+  message: Scalars['String']['output'];
+};
+
+/** Possible error codes that can be returned by `ShopifyPaymentsPayoutAlternateCurrencyCreateUserError`. */
+export enum ShopifyPaymentsPayoutAlternateCurrencyCreateUserErrorCode {
+  /** Failed to create payout, there is no eligible balance in this currency. */
+  AlternateCurrencyPayoutFailedNoEligibleBalance = 'ALTERNATE_CURRENCY_PAYOUT_FAILED_NO_ELIGIBLE_BALANCE',
+  /** Failed to create payout due to an error from Stripe. */
+  AlternateCurrencyPayoutFailedStripeError = 'ALTERNATE_CURRENCY_PAYOUT_FAILED_STRIPE_ERROR',
+  /** No Stripe provider account was found. */
+  MissingProviderAccount = 'MISSING_PROVIDER_ACCOUNT',
+  /** Failed to create payout due to an error from Shopify Core. */
+  UnknownCoreError = 'UNKNOWN_CORE_ERROR'
+}
+
 /** An auto-generated type for paginating through multiple ShopifyPaymentsPayouts. */
 export type ShopifyPaymentsPayoutConnection = {
   __typename?: 'ShopifyPaymentsPayoutConnection';
@@ -51918,6 +52007,21 @@ export enum ShopifyPaymentsSourceType {
   /** The transfer source type. */
   Transfer = 'TRANSFER'
 }
+
+/** Relevant reference information for an alternate currency payout. */
+export type ShopifyPaymentsToolingProviderPayout = {
+  __typename?: 'ShopifyPaymentsToolingProviderPayout';
+  /** The balance amount the alternate currency payout was created for. */
+  amount: MoneyV2;
+  /** A timestamp for the arrival of the alternate currency payout. */
+  arrivalDate?: Maybe<Scalars['DateTime']['output']>;
+  /** A timestamp for the creation of the alternate currency payout. */
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  /** The currency alternate currency payout was created in. */
+  currency: Scalars['String']['output'];
+  /** The remote ID for the alternate currency payout. */
+  remoteId: Scalars['String']['output'];
+};
 
 /** Presents all Shopify Payments specific information related to an order transaction. */
 export type ShopifyPaymentsTransactionSet = {
@@ -57777,13 +57881,13 @@ export type GetShopQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetShopQuery = { __typename?: 'QueryRoot', shop: { __typename?: 'Shop', name: string } };
 
-export type GetOrderQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
+export type GetProductsQueryVariables = Exact<{
+  first: Scalars['Int']['input'];
 }>;
 
 
-export type GetOrderQuery = { __typename?: 'QueryRoot', order?: { __typename?: 'Order', id: string, name: string } | null };
+export type GetProductsQuery = { __typename?: 'QueryRoot', products: { __typename?: 'ProductConnection', nodes: Array<{ __typename?: 'Product', id: string, title: string, tags: Array<string> }> } };
 
 
 export const GetShopDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getShop"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"shop"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<GetShopQuery, GetShopQueryVariables>;
-export const GetOrderDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getOrder"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"order"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<GetOrderQuery, GetOrderQueryVariables>;
+export const GetProductsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getProducts"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"first"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"products"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"Variable","name":{"kind":"Name","value":"first"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"tags"}}]}}]}}]}}]} as unknown as DocumentNode<GetProductsQuery, GetProductsQueryVariables>;
