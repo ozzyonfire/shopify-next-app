@@ -2,7 +2,7 @@
 
 client_id = "add7504331733e92252623482056ef16"
 name = "app next template"
-application_url = "https://able-gore-imposed-buffer.trycloudflare.com"
+application_url = "https://federal-aside-admissions-festival.trycloudflare.com"
 embedded = true
 
 [build]
@@ -21,9 +21,9 @@ use_legacy_install_flow = false
 
 [auth]
 redirect_urls = [
-  "https://able-gore-imposed-buffer.trycloudflare.com/auth/callback",
-  "https://able-gore-imposed-buffer.trycloudflare.com/auth/shopify/callback",
-  "https://able-gore-imposed-buffer.trycloudflare.com/api/auth/callback"
+  "https://federal-aside-admissions-festival.trycloudflare.com/auth/callback",
+  "https://federal-aside-admissions-festival.trycloudflare.com/auth/shopify/callback",
+  "https://federal-aside-admissions-festival.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
