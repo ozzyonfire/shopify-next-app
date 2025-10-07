@@ -8,8 +8,7 @@
     "info": "shopify app info",
     "build": "shopify app build",
     "generate": "shopify app generate",
-    "deploy": "shopify app deploy",
-    "docker-dev": "docker compose up -d"
+    "deploy": "shopify app deploy"
   },
   "author": "ozzyonfire",
   "keywords": [
@@ -20,6 +19,7 @@
     "template"
   ],
   "dependencies": {
-    "prettier": "^3.2.5"
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.3"
   }
 }
