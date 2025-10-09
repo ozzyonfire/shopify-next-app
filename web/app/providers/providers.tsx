@@ -15,7 +15,3 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     </AppProvider>
   );
 }
-
-export function ExitProvider({ children }: { children: React.ReactNode }) {
-  return <AppProvider i18n={translations}>{children}</AppProvider>;
-}
