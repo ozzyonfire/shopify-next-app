@@ -1,13 +1,13 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "add7504331733e92252623482056ef16"
+client_id = "a8499d3319580be9333bab6c06464c80"
 name = "app next template"
 application_url = "https://federal-aside-admissions-festival.trycloudflare.com"
 embedded = true
 
 [build]
 automatically_update_urls_on_dev = true
-dev_store_url = "matts-tech-test.myshopify.com"
+dev_store_url = "teststoredev-2.myshopify.com"
 
 [access.admin]
 direct_api_mode = "offline"

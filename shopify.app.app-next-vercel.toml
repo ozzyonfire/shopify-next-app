@@ -7,7 +7,7 @@ embedded = true
 
 [build]
 automatically_update_urls_on_dev = false
-dev_store_url = "matts-tech-test.myshopify.com"
+dev_store_url = "teststoredev-2.myshopify.com"
 include_config_on_deploy = true
 
 [access.admin]
