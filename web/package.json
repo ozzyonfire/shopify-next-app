@@ -20,7 +20,7 @@
     "@shopify/shopify-api": "^12.0.0",
     "@tanstack/react-query": "^5.90.2",
     "graphql-request": "^7.2.0",
-    "next": "15.5.9",
+    "next": "^15.5.9",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
