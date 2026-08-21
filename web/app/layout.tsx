@@ -1,4 +1,5 @@
 import Providers from "@/app/providers/providers";
+import NavMenuAppRouter from "@/components/layout/NavMenuAppRouter";
 import { Metadata } from "next";
 import "./globals.css";
 
@@ -24,7 +25,10 @@ export default async function RootLayout({
         <script src="https://cdn.shopify.com/shopifycloud/polaris.js"></script>
       </head>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <NavMenuAppRouter />
+          {children}
+        </Providers>
       </body>
     </html>
   );
