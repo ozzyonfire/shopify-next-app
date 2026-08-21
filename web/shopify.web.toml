@@ -1,3 +1,5 @@
+name = "nextjs-shopify-app"
+
 roles = ["frontend", "backend"]
 
 [commands]

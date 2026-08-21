@@ -76,7 +76,8 @@ export async function tokenExchange({
   });
   const { session } = response;
   if (store) {
-    await storeSession(session);
+    // uncomment this to store the session in the database
+    // await storeSession(session);
   }
   return session;
 }
