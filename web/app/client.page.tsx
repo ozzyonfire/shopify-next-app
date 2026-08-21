@@ -1,6 +1,6 @@
 "use client";
 
-import { graphql } from "@/lib/gql";
+import { graphql } from "@/__generated__/gql";
 import { useAppBridge } from "@shopify/app-bridge-react";
 import { Button, LegacyCard as Card, Page, Text } from "@shopify/polaris";
 import Link from "next/link";

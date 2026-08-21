@@ -6,7 +6,7 @@
     "build": "next build",
     "dev": "next dev",
     "migrate": "prisma migrate dev",
-    "postinstall": "prisma generate",
+    "postinstall": "prisma generate && graphql-codegen --config codegen.ts",
     "graphql-codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
@@ -19,8 +19,9 @@
     "@shopify/polaris": "^13.9.5",
     "@shopify/shopify-api": "^12.0.0",
     "@tanstack/react-query": "^5.90.2",
+    "graphql": "^16.12.0",
     "graphql-request": "^7.2.0",
-    "next": "^15.5.9",
+    "next": "^16.3.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
@@ -30,7 +31,7 @@
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.1",
     "eslint": "^9.37.0",
-    "eslint-config-next": "^15.5.4",
+    "eslint-config-next": "^16.3.2",
     "eslint-config-prettier": "^9.1.2",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
