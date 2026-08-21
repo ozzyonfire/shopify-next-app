@@ -1,9 +1,10 @@
 import type { HTMLAttributes } from "react";
 
 type AppNavProps = HTMLAttributes<HTMLElement>;
-type AppNavLinkProps = HTMLAttributes<HTMLElement> & {
+type AppNavLinkProps = Omit<HTMLAttributes<HTMLElement>, "rel"> & {
   href?: string;
-  rel?: string;
+  key?: string;
+  rel?: never;
 };
 
 declare global {

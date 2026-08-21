@@ -3,12 +3,12 @@ packages:
   - "extensions/*"
   - "apps/*"
 allowBuilds:
-  '@parcel/watcher': set this to true or false
+  '@parcel/watcher': true
   '@prisma/client': set this to true or false
-  '@prisma/engines': set this to true or false
-  prisma: set this to true or false
+  '@prisma/engines': true
+  prisma: true
   sharp: set this to true or false
-  unrs-resolver: set this to true or false
+  unrs-resolver: true
 minimumReleaseAgeExclude:
   - '@next/env@16.3.2'
   - '@next/eslint-plugin-next@16.3.2'

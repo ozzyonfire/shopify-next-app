@@ -1,19 +1,17 @@
-const LINKS = [
+const links = [
   { label: "Home", destination: "/", rel: "home" },
   { label: "New page", destination: "/new" },
 ];
 
 export default function NavMenuCore(props: { pathname?: string }) {
-  const { pathname = "/" } = props;
-
   return (
     <s-app-nav>
-      {LINKS.map((link) => (
+      {links.map((link) => (
         <s-link
           href={link.destination}
           key={link.label}
+          // @ts-expect-error - rel is not a valid prop for s-link
           rel={link.rel}
-          aria-current={pathname === link.destination ? "page" : undefined}
         >
           {link.label}
         </s-link>

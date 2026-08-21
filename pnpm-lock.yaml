@@ -50,9 +50,6 @@ importers:
       graphql:
         specifier: ^17.0.2
         version: 17.0.2
-      graphql-request:
-        specifier: ^7.4.0
-        version: 7.4.0(graphql@17.0.2)
       next:
         specifier: ^16.3.2
         version: 16.3.2(@babel/core@7.29.7)(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -2853,11 +2850,6 @@ packages:
     peerDependenciesMeta:
       cosmiconfig-toml-loader:
         optional: true
-
-  graphql-request@7.4.0:
-    resolution: {integrity: sha512-xfr+zFb/QYbs4l4ty0dltqiXIp07U6sl+tOKAb0t50/EnQek6CVVBLjETXi+FghElytvgaAWtIOt3EV7zLzIAQ==}
-    peerDependencies:
-      graphql: 14 - 16
 
   graphql-tag@2.12.7:
     resolution: {integrity: sha512-xnE/NFzy+0eIesvAsREJZ284zTl/wYuBAvpsFSDhRGRdRHdnE90M21Q3xAWyYInb0J756c6x0pIQ62+vtvOs1Q==}
@@ -7612,11 +7604,6 @@ snapshots:
       - crossws
       - typescript
       - utf-8-validate
-
-  graphql-request@7.4.0(graphql@17.0.2):
-    dependencies:
-      '@graphql-typed-document-node/core': 3.2.0(graphql@17.0.2)
-      graphql: 17.0.2
 
   graphql-tag@2.12.7(graphql@16.14.2):
     dependencies:
